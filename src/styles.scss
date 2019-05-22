@@ -1,1 +1,44 @@
-/* You can add global styles to this file, and also import other style files */
+// Style Guide: https://siebendev.visualstudio.com/FrontEndHelpers/_git/CSS-Style-Guide
+// Architecture: https://siebendev.visualstudio.com/FrontEndHelpers/_git/SCSS-7-1-pattern
+
+// Abstracts
+@import './assets/scss/abstracts/_variables';
+@import './assets/scss/abstracts/_colors';
+@import './assets/scss/abstracts/_mixins';
+@import './assets/scss/abstracts/_placeholders';
+@import './assets/scss/abstracts/_classes';
+@import './assets/scss/abstracts/_animations'; 
+
+// Vendors
+@import './assets/scss/vendors/example-library';
+
+// Base
+@import './assets/scss/base/_base'; 
+@import './assets/scss/base/_reset'; 
+@import './assets/scss/base/_typography';
+
+// Layout
+@import './assets/scss/layout/_grid';
+@import './assets/scss/layout/_header';
+@import './assets/scss/layout/_footer';
+@import './assets/scss/layout/_menu';
+@import './assets/scss/layout/_forms';
+@import './assets/scss/layout/_tables';
+
+// Components
+@import './assets/scss/components/_buttons';
+@import './assets/scss/components/_dropdown';
+@import './assets/scss/components/_loader';
+@import './assets/scss/components/_modal';
+
+// Vendors Extensions
+@import './assets/scss/vendors-extensions/_example-library';
+
+// Pages
+@import './assets/scss/pages/_home';
+@import './assets/scss/pages/_contact';
+@import './assets/scss/pages/_user-profile';
+
+// Themes
+@import './assets/scss/themes/_admin';
+@import './assets/scss/themes/_authenticated';

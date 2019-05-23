@@ -1,3 +1,6 @@
-<p>
-  nav works!
-</p>
+<nav>
+	<ul>
+		<li *ngIf="!username">Login</li>
+		<li *ngIf="username">{{username}}</li>
+	</ul>
+</nav>

@@ -4,3 +4,11 @@
     border: none;
     background: transparent;
 }
+
+.form-btn {
+    background-color: $btn-submit;
+    min-width: 200px;
+    border: none;
+    color: $white;
+    padding: 10px;
+}

@@ -1,6 +1,37 @@
 // Forms and form inputs styling
 
+form {
+    .form-group {
+        margin-bottom: 2em;
+        min-width: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: stretch;
+        label {
+            text-transform: uppercase !important;
+            letter-spacing: 0.5em;
+            font-size: 0.8em;
+        }
+        input {
+            border: none;
+            border-bottom: 2px solid $input-default;
+            line-height: 2.5em;
+            // TODO: make text vertical align: bottom
+            // TODO: add color transition
+            &:focus {
+                border-bottom: 2px solid $input-focus;
+            }
+        }
+    }
+    button {
+        text-transform: uppercase;
+        letter-spacing: 0.25em;
+    }
+}
 
 .login-form {
-    align-self: center;
+    margin-top: 10vh;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
 }

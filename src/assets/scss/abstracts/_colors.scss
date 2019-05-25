@@ -1,14 +1,7 @@
 // Color Variables | Named with this: http://chir.ag/projects/name-that-color
 
-// Grayscale colors
-$white:    #fff;
-$gallery:  #F0F0F0;
-$mercury:  #e3e3e3;
-$paleSlate: #bdbabb;
-$scorpion: #646060;
-$black:    #000;
 
-
+// Example
 $white: #ffffff;
 $pickledBluewood: #2f404f;
 $orient: #005B72;
@@ -23,3 +16,24 @@ $theme-inactive: $regentGray;
 $theme-error: $persianRed;
 
 
+// Grayscale colors
+$white:    #fff;
+$gallery:  #F0F0F0;
+$mercury:  #e3e3e3;
+$paleSlate: #bdbabb;
+$scorpion: #646060;
+$black:    #000;
+
+// Theme colors
+$crusta: #ff812d;
+
+
+// Form colors
+$input-default: $crusta;
+$input-focus: #60ddcc;
+$input-valid: black;
+$input-invalid: black;
+$input-disabled: black;
+
+// Button colors 
+$btn-submit: $crusta;

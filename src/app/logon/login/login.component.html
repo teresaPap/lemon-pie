@@ -1,11 +1,14 @@
-<form [formGroup]="loginForm" (ngSubmit)="login()" class="flex-wrapper login-form">
-	<div class="form-item">
-		<label>Username</label>
-		<input type="text" formControlName="username">
-	</div>
-	<div class="form-item">
-		<label>Password</label>
-		<input type="password" formControlName="password">
-	</div>
-	<button type="submit">Login</button>
-</form>
+
+<div class="center">
+	<form [formGroup]="loginForm" (ngSubmit)="login()" class="login-form">
+		<div class="form-group">
+			<label>Username</label>
+			<input type="text" formControlName="username">
+		</div>
+		<div class="form-group">
+			<label>Password</label>
+			<input type="password" formControlName="password">
+		</div>
+		<button type="submit" class="form-btn">Login</button>
+	</form>
+</div>

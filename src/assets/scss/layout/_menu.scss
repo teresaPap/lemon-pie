@@ -8,7 +8,19 @@
     // TODO: use a function and a variable to customize aside menu position to right or left
     right: 0;
 
-    width: 50px;
     background-color: $gallery;
     box-shadow: 0px 1px 7px 1px rgba(0,0,0,0.2);
+    transition: width 0.1s;
+}
+.aside-menu-collapse {
+    width: 50px;
+}
+.aside-menu-expand {
+    width: 400px;
+}
+.aside-menu-expand-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 10px;
 }

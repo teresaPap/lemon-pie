@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-	selector: 'app-nav',
-	templateUrl: './nav.component.html',
-	styleUrls: ['./nav.component.scss']
+	selector: 'app-nav-top',
+	templateUrl: './nav-top.component.html',
+	styleUrls: ['./nav-top.component.scss']
 })
-export class NavComponent implements OnInit {
+export class NavTopComponent implements OnInit {
 
 	public username: string;
 

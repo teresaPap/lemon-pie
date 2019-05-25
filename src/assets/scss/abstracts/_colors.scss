@@ -1,15 +1,25 @@
 // Color Variables | Named with this: http://chir.ag/projects/name-that-color
 
-// Example
-// Colors
+// Grayscale colors
+$white:    #fff;
+$gallery:  #F0F0F0;
+$mercury:  #e3e3e3;
+$paleSlate: #bdbabb;
+$scorpion: #646060;
+$black:    #000;
+
+
 $white: #ffffff;
 $pickledBluewood: #2f404f;
 $orient: #005B72;
 $regentGray: #8e969d;
 $persianRed: #d32f2f;
+
 // Theme colors
 $theme-background: $white;
 $theme-text: $pickledBluewood;
 $theme-button: $orient;
 $theme-inactive: $regentGray;
 $theme-error: $persianRed;
+
+

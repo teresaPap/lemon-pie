@@ -12,6 +12,12 @@ export class NavAsideComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit() {
+		this.collapseBtnText = 'Expand';
+	}
+
+	public toggleAsideMenu() {
+		if (this.collapseBtnText==='Expand') this.collapseBtnText = 'Collapse';
+		else this.collapseBtnText = 'Expand';
 	}
 
 }

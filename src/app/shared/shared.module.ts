@@ -4,6 +4,7 @@ import { NavTopComponent } from './components/nav-top/nav-top.component';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { CoreModule } from '../core/core.module';
 
 @NgModule({
     declarations: [ 
@@ -13,7 +14,8 @@ import { RouterModule } from '@angular/router';
     imports: [ 
         RouterModule,
         CommonModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        CoreModule
     ],
     exports: [
         RouterModule,

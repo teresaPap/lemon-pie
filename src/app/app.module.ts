@@ -11,14 +11,17 @@ import { SharedModule } from './shared/shared.module';
 import { LogonModule } from './logon/logon.module';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './logon/login/login.component';
+import { HomeComponent } from './main/home/home.component';
 
 const routes : Routes = [
-	{ path: 'login', component : LoginComponent }
+	{ path: 'login', component : LoginComponent },
+	{ path: '', component : HomeComponent }
 ]
 
 @NgModule({
 	declarations: [
-		AppComponent
+		AppComponent,
+		HomeComponent
 	],
 	imports: [
 		BrowserModule,

@@ -9,11 +9,11 @@ import { CommonModule } from '@angular/common';
         NavAsideComponent
     ],
     imports: [ 
-        CommonModule
+        CommonModule,
     ],
     exports: [ 
         NavTopComponent,
-        NavAsideComponent
+        NavAsideComponent,
     ],
     providers: [ ]
 })

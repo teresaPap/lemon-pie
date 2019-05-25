@@ -1,3 +1,5 @@
 <aside class="aside-menu-container">
-	<button type="button" (click)="toggleAsideMenu()">{{collapseBtnText}}</button>
+	<button type="button" (click)="toggleAsideMenu()">
+		<i [ngClass]="[ collapseMenu ? 'fa fa-angle-double-right' : 'fa fa-angle-double-left' ]"></i>
+	</button>
 </aside>

@@ -1,5 +1,4 @@
-<aside class="aside-menu-container" 
-	[ngClass]="{ 'aside-menu-expand' : expandMenu ,  'aside-menu-collapse' : !expandMenu  }">
+<aside [ngClass]="{ 'aside-menu-expand' : expandMenu ,  'aside-menu-collapse' : !expandMenu  }">
 	<button class="icon-btn aside-menu-expand-btn" type="button" (click)="toggleAsideMenu()">
 		<i class="fa " [ngClass]="{ 'fa-angle-double-right' : expandMenu ,  'fa-angle-double-left' : !expandMenu  }"></i>
 	</button>

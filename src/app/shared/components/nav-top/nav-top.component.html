@@ -1,6 +1,15 @@
 <nav>
-	<ul>
-		<li *ngIf="!username">Login</li>
-		<li *ngIf="username">{{username}}</li>
+	<a class="nav-brand">
+		<h1>Lemon Pie</h1>
+	</a>
+	<ul class="nav-menu-items">
+		<li *ngIf="!username">
+			<a>Login</a>
+		</li>
+		<li *ngIf="username">
+			<a>
+				{{username}}
+			</a>
+		</li>
 	</ul>
 </nav>

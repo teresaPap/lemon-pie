@@ -1,3 +1,14 @@
+// Font imports
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800&display=swap&subset=greek,greek-ext');
+
+
+// Font declarations
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+
+
 // Typography rules
 
 // Example
@@ -7,3 +18,4 @@
 .text-maincolor {
     color: $theme-text;
 }
+

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-	selector: 'app-nav-aside',
-	templateUrl: './nav-aside.component.html',
-	styleUrls: ['./nav-aside.component.scss']
+	selector: 'app-aside',
+	templateUrl: './aside.component.html',
+	styleUrls: ['./aside.component.scss']
 })
-export class NavAsideComponent implements OnInit {
+export class AsideComponent implements OnInit {
 
 	public expandMenu: boolean;
 

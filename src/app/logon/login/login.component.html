@@ -1,0 +1,11 @@
+<form [formGroup]="loginForm" (ngSubmit)="login()" class="flex-wrapper login-form">
+	<div class="form-item">
+		<label>Username</label>
+		<input type="text" formControlName="username">
+	</div>
+	<div class="form-item">
+		<label>Password</label>
+		<input type="password" formControlName="password">
+	</div>
+	<button type="submit">Login</button>
+</form>

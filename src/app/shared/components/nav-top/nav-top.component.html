@@ -3,7 +3,7 @@
 		<h1>Lemon Pie</h1>
 	</a>
 	<ul class="nav-menu-items">
-		<li *ngIf="!username">
+		<li *ngIf="!username" [routerLink]="['/login']">
 			<a>Login</a>
 		</li>
 		<li *ngIf="username">

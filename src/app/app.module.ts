@@ -8,7 +8,13 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
+import { LogonModule } from './logon/logon.module';
+import { RouterModule, Routes } from '@angular/router';
+import { LoginComponent } from './logon/login/login.component';
 
+const routes : Routes = [
+	{ path: 'login', component : LoginComponent }
+]
 
 @NgModule({
 	declarations: [
@@ -19,8 +25,10 @@ import { SharedModule } from './shared/shared.module';
 		ReactiveFormsModule,
 		CommonModule, 
 		HttpClientModule,
+		RouterModule.forRoot(routes),
 		CoreModule,
-		SharedModule
+		SharedModule,
+		LogonModule
 	],
 	providers: [],
 	bootstrap: [AppComponent]

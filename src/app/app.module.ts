@@ -12,16 +12,19 @@ import { LogonModule } from './logon/logon.module';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './logon/login/login.component';
 import { HomeComponent } from './main/home/home.component';
+import { ProfileComponent } from './main/profile/profile.component';
 
 const routes : Routes = [
 	{ path: 'login', component : LoginComponent },
+	{ path: 'profile', component : ProfileComponent },
 	{ path: '', component : HomeComponent }
 ]
 
 @NgModule({
 	declarations: [
 		AppComponent,
-		HomeComponent
+		HomeComponent,
+		ProfileComponent
 	],
 	imports: [
 		BrowserModule,

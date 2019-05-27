@@ -9,12 +9,20 @@ import { AuthService } from '../../../core/services/auth.service';
 export class NavComponent implements OnInit {
 
 	public username: string;
+	public showBubbleMenu: boolean;
 
 	constructor( private authService: AuthService ) { }
 
 	ngOnInit() {
-		// TODO: get user info from auth service and set username variable
-		this.username = this.authService.getUsername();
+		this.authService.getActiveUsername().subscribe( 
+			username => {
+				this.username = username ;
+				console.log('username: ', this.username );
+			});
+			
 	}
 
+	public logout(): void {
+		this.authService.logout();
+	}
 }

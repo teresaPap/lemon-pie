@@ -14,15 +14,19 @@ export class NavComponent implements OnInit {
 	constructor( private authService: AuthService ) { }
 
 	ngOnInit() {
+		console.log('nav on init', this.username);
 		this.authService.getActiveUsername().subscribe( 
 			username => {
 				this.username = username ;
 				console.log('username: ', this.username );
 			});
-			
 	}
 
 	public logout(): void {
 		this.authService.logout();
+		this.toggleBubbleMenu();
+	}
+	public toggleBubbleMenu(): void {
+		this.showBubbleMenu = !this.showBubbleMenu;
 	}
 }

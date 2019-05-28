@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from './core/services/auth.service';
 
 @Component({
 	selector: 'app-root',
@@ -8,13 +7,11 @@ import { AuthService } from './core/services/auth.service';
 })
 export class AppComponent implements OnInit {
 	
-	public isLoggedIn : boolean;
 	title = 'lemon pie';
 
-	constructor( private authSevice : AuthService ) {	}
+	constructor() {	}
 
 	ngOnInit(): void {
-		this.isLoggedIn = this.authSevice.isLoggedIn();
 	}
 
 }

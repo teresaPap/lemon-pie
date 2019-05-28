@@ -6,13 +6,13 @@
 		<li *ngIf="!username" [routerLink]="['/login']">
 			<a>Login</a>
 		</li>
-		<li *ngIf="username" (click)="showBubbleMenu = !showBubbleMenu">
+		<li *ngIf="username" (click)="toggleBubbleMenu()">
 			<a> {{username}} </a>
 		</li>
 	</ul>
 	<div class="bubble-menu" [ngClass]="{'visible':showBubbleMenu}">
 		<ul>
-			<li><a [routerLink]="['/profile']">Profile</a></li>
+			<li><a [routerLink]="['/profile']" (click)="toggleBubbleMenu()">Profile</a></li>
 			<li><a (click)="logout()">Logout</a></li>
 		</ul>
 	</div>

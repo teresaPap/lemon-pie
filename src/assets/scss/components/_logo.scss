@@ -1,0 +1,47 @@
+// LEMOINPIE LOGO
+
+$lemonLogoSize: 100px;// pixels
+.lemon-outter {
+    height: $lemonLogoSize;
+    width: $lemonLogoSize;
+    background-color: #aeb10b;
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    &::before {
+        content: '';
+        // TODO: add basic shadow
+    }
+    &::after {
+        content: '';
+        height: calc( 100px - 20px) ;
+        width: calc( 100px - 20px) ;
+        background-color: #f5ea56;
+        border-radius: 50%;
+    }
+}
+.lemon-petal { 
+    background-color: #aeb10b;
+    width: 4px;
+    height: $lemonLogoSize;
+    position: absolute;
+    &:nth-child(2) {
+        transform: rotate(45deg);
+    }
+    &:nth-child(3) {
+        transform: rotate(90deg);
+    }
+    &:nth-child(4) {
+        transform: rotate(135deg);
+    }
+    &:nth-child(5) {
+        transform: rotate(180deg);
+    }
+    &:nth-child(6) {
+        transform: rotate(225deg);
+    }
+}

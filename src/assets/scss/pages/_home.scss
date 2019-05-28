@@ -1,1 +1,10 @@
 // Specific style for home page
+
+.display-center {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+

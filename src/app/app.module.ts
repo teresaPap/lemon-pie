@@ -9,34 +9,24 @@ import { CoreModule } from './core/core.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { LogonModule } from './logon/logon.module';
-import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './logon/login/login.component';
-import { HomeComponent } from './main/home/home.component';
-import { ProfileComponent } from './main/profile/profile.component';
-import { AuthGuard } from './core/guards/auth.guard';
-
-const routes : Routes = [
-	{ path: 'login', component : LoginComponent },
-	{ path: 'profile', component : ProfileComponent, canActivate: [AuthGuard] },
-	{ path: 'home', component : HomeComponent },
-	{ path: '', component : HomeComponent }
-]
+import { MainModule } from './main/main.module';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
 	declarations: [
-		AppComponent,
-		HomeComponent,
-		ProfileComponent
+		AppComponent
 	],
 	imports: [
 		BrowserModule,
 		ReactiveFormsModule,
 		CommonModule, 
 		HttpClientModule,
-		RouterModule.forRoot(routes),
 		CoreModule,
 		SharedModule,
-		LogonModule
+		LogonModule,
+
+		MainModule,
+		AppRoutingModule
 	],
 	providers: [],
 	bootstrap: [AppComponent]

@@ -4,7 +4,6 @@ import { TokenHelperService } from './token-helper.service';
 import { ILoginData } from '../../shared/interfaces/ILoginData';
 import { Constants } from '../../config/constants';
 import { Observable } from 'rxjs/Observable';
-import { tap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/of';
 
@@ -13,11 +12,11 @@ const API_ENDPOINT: string = Constants.API_ENDPOINT;
 @Injectable()
 export class AuthService {
 
-    private activeUsername = new Subject<string>();
+    private subject = new Subject<string>();
 
-    public setActiveUsername( username : string): void { this.activeUsername.next(username) };
+    public setActiveUsername( username : string): void { this.subject.next(username) };
     
-    public getActiveUsername(): Observable<string> { return this.activeUsername.asObservable(); }
+    public getActiveUsername(): Observable<string> { return this.subject.asObservable(); }
 
     constructor( 
         private http: HttpClient,

@@ -14,12 +14,8 @@ export class NavComponent implements OnInit {
 	constructor( private authService: AuthService ) { }
 
 	ngOnInit() {
-		console.log('nav on init', this.username);
-		this.authService.getActiveUsername().subscribe( 
-			username => {
-				this.username = username ;
-				console.log('username: ', this.username );
-			});
+		this.username = localStorage.getItem('Username');
+		this.authService.getActiveUsername().subscribe( username => this.username = username );
 	}
 
 	public logout(): void {

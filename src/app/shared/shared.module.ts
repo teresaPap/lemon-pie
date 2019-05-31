@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CoreModule } from '../core/core.module';
 import { NavComponent } from './components/nav/nav.component';
+import { FileUploadService } from './services/file-upload.service';
 
 @NgModule({
     declarations: [ 
@@ -19,8 +20,11 @@ import { NavComponent } from './components/nav/nav.component';
         RouterModule,
         CommonModule,
         ReactiveFormsModule, 
+        
         NavComponent,
     ],
-    providers: [ ]
+    providers: [ 
+        FileUploadService
+    ]
 })
 export class SharedModule { }

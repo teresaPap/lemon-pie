@@ -1,6 +1,10 @@
 <div>
 
-	<label>Upload</label>
+	<h3>Select images to upload: </h3>
 	<input type="file" (change)="handleFileInput($event.target.files)" />
+	<br>
+	<img *ngIf="imgPreview" [src]="imgPreview" class="img-preview" />
+	<br>
+	<button type="button" (click)="uploadFile()">Upload</button>
 
 </div>

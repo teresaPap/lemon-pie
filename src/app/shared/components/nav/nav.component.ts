@@ -22,6 +22,7 @@ export class NavComponent implements OnInit {
 		this.authService.logout();
 		this.toggleBubbleMenu();
 	}
+	
 	public toggleBubbleMenu(): void {
 		this.showBubbleMenu = !this.showBubbleMenu;
 	}

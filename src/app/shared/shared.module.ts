@@ -17,6 +17,7 @@ import { NavComponent } from './components/nav/nav.component';
     ],
     exports: [
         RouterModule,
+        CommonModule,
         ReactiveFormsModule, 
         NavComponent,
     ],

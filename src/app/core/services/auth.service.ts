@@ -8,19 +8,14 @@ import * as firebase from 'firebase/app';
 @Injectable()
 export class AuthService {
 
-	// private subject = new Subject<string>();
-	// public setActiveUsername(email: string): void { this.subject.next(email) };
-	// public getActiveUsername(): Observable<string> { return this.subject.asObservable(); }
-
 	constructor(
-		public afAuth: AngularFireAuth) { }r
-
+		public afAuth: AngularFireAuth) { }
 
 	public isLoggedIn(): boolean {
 		return !!localStorage.getItem('uid');
 	}
 
-	public firebaseLogin(data: ILoginData) {
+	public login(data: ILoginData) {
 		return new Promise<any>((resolve, reject) => {
 			firebase.auth().signInWithEmailAndPassword( data.email, data.password ).then(
 				res => {
@@ -31,8 +26,20 @@ export class AuthService {
 		});
 	}
 
-	public onAuthStateChanged() {
-		console.log( "Current user: " , firebase.auth().currentUser );
+	public register(data: ILoginData) {
+		return new Promise<any>((resolve, reject) => {
+			firebase.auth().createUserWithEmailAndPassword( data.email, data.password ).then(
+				res => {
+					localStorage.setItem('uid', res.user.uid );
+					resolve(res);
+				},
+				err => reject(err) )
+		});
+	}
+
+	public getCurrentUser() {
+		const  {email, uid} = firebase.auth().currentUser;
+		return {email, uid};
 	}
 
 	public logout(): void {
@@ -40,8 +47,5 @@ export class AuthService {
 		localStorage.clear();
 		// this.setActiveUsername('');
 	}
-
-
-
 
 }

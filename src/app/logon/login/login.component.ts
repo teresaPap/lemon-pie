@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
 	}
 
 	public firebaseLogin() {
-		this.authService.firebaseLogin(this.loginForm.value).then(
+		this.authService.login(this.loginForm.value).then(
 			res => {
 				console.log('Login success!', res);
 				this.router.navigate(['/home']);
@@ -34,8 +34,5 @@ export class LoginComponent implements OnInit {
 		)
 	}
 
-	currentUser() {
-		this.authService.onAuthStateChanged();
-	}
-
+	
 }

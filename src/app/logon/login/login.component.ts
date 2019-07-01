@@ -34,4 +34,12 @@ export class LoginComponent implements OnInit {
 		);
 	}
 
+
+	firebaseLogin() {
+		this.authService.firebaseLogin(this.loginForm.value).then(
+			res => console.log('Login success!' , res) , 
+		  	err => console.log('An error has occured' , err)
+		)
+	  }
+
 }

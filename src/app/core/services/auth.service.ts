@@ -38,6 +38,7 @@ export class AuthService {
 	}
 
 	public getCurrentUser() {
+		if ( !firebase.auth().currentUser ) return 'No user is logged in at the moment'
 		const  {email, uid} = firebase.auth().currentUser;
 		return {email, uid};
 	}

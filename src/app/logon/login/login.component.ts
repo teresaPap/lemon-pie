@@ -34,5 +34,9 @@ export class LoginComponent implements OnInit {
 		)
 	}
 
+	public currentUser() {
+		let user = this.authService.getCurrentUser();
+		console.log(user);
+	}
 	
 }

@@ -12,34 +12,30 @@ export class LoginComponent implements OnInit {
 
 	public loginForm: FormGroup;
 
-	constructor( 
+	constructor(
 		private fb: FormBuilder,
 		private authService: AuthService,
-		private router: Router ) { }
+		private router: Router) { }
 
 	ngOnInit() {
 		this.loginForm = this.fb.group({
-			username: ['', Validators.required ],
-			password: ['', Validators.required ]
+			email: ['', Validators.required],
+			password: ['', Validators.required]
 		});
 	}
 
-	public login() {
-		console.log('login: ', this.loginForm.value);
-		this.authService.login(this.loginForm.value).subscribe(
-			(loginSuccess: boolean) => {
-				if (loginSuccess) this.router.navigate(['']);
-			}
-			// TODO: handle login error
-		);
+	public firebaseLogin() {
+		this.authService.firebaseLogin(this.loginForm.value).then(
+			res => {
+				console.log('Login success!', res);
+				this.router.navigate(['/home']);
+			},
+			err => console.log('An error has occured', err)
+		)
 	}
 
-
-	firebaseLogin() {
-		this.authService.firebaseLogin(this.loginForm.value).then(
-			res => console.log('Login success!' , res) , 
-		  	err => console.log('An error has occured' , err)
-		)
-	  }
+	currentUser() {
+		this.authService.onAuthStateChanged();
+	}
 
 }

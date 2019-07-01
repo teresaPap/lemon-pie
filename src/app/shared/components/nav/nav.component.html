@@ -3,11 +3,11 @@
 		Lemon Pie
 	</a>
 	<ul class="nav-menu-items">
-		<li *ngIf="!username" [routerLink]="['/login']">
+		<li *ngIf="!uid" [routerLink]="['/login']">
 			<a>Login</a>
 		</li>
-		<li *ngIf="username" (click)="toggleBubbleMenu()">
-			<a> {{username}} </a>
+		<li *ngIf="uid" (click)="toggleBubbleMenu()">
+			<a> {{email}} </a>
 		</li>
 	</ul>
 	<div class="bubble-menu" [ngClass]="{'visible':showBubbleMenu}">

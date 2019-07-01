@@ -8,14 +8,14 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class NavComponent implements OnInit {
 
-	public username: string;
+	public email: string;
 	public showBubbleMenu: boolean;
 
 	constructor( private authService: AuthService ) { }
 
 	ngOnInit() {
-		this.username = localStorage.getItem('Username');
-		this.authService.getActiveUsername().subscribe( username => this.username = username );
+		this.email = localStorage.getItem('uid');
+		// this.authService.getActiveUsername().subscribe( email => this.email = email );
 	}
 
 	public logout(): void {

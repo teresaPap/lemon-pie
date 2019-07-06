@@ -26,4 +26,10 @@ export class NavComponent implements OnInit {
 	public toggleBubbleMenu(): void {
 		this.showBubbleMenu = !this.showBubbleMenu;
 	}
+
+	public currentUser() {
+		// NOTE: this is a test function
+		let user = this.authService.getCurrentUser();
+		console.log(user);
+	}
 }

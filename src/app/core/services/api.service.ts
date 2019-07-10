@@ -4,6 +4,8 @@ import { TokenHelperService } from './token-helper.service';
 import { Constants } from '../../config/constants';
 
 import { HttpClient } from '@angular/common/http';
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import { of } from 'rxjs/observable/of';
 
 
 const API_ENDPOINT: string = Constants.API_ENDPOINT;
@@ -14,6 +16,7 @@ export class ApiService {
     public contractId:number;
     
     constructor( 
+		public storage: AngularFireStorage,
         private http: HttpClient,
         private tokenHelper: TokenHelperService ) { }
 
@@ -24,6 +27,17 @@ export class ApiService {
     public post( url:string ,data: any ) : Observable<any> {
         return this.http.post( `${API_ENDPOINT}/${url}`, data );
     }
+
+	public firebasePost(path: string, data: any) : Observable<AngularFireUploadTask> {
+		return of( this.storage.upload(path, data) );
+	}
+
+
+
+
+
+
+
 
     // // TODO: use interceptors instead of authOptions() 
     

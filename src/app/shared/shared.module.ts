@@ -5,10 +5,16 @@ import { RouterModule } from '@angular/router';
 import { CoreModule } from '../core/core.module';
 import { NavComponent } from './components/nav/nav.component';
 import { FileUploadService } from './services/file-upload.service';
+import { DropzoneDirective } from './directives/dropzone.directive';
+import { FileUploaderComponent } from './components/file-uploader/file-uploader.component';
+import { UploadTaskComponent } from './components/upload-task/upload-task.component';
 
 @NgModule({
     declarations: [ 
-        NavComponent, 
+		NavComponent, 
+		DropzoneDirective, 
+		FileUploaderComponent, 
+		UploadTaskComponent, 
     ],
     imports: [ 
         RouterModule,
@@ -21,7 +27,8 @@ import { FileUploadService } from './services/file-upload.service';
         CommonModule,
         ReactiveFormsModule, 
         
-        NavComponent,
+		NavComponent,
+		FileUploaderComponent
     ],
     providers: [ 
         FileUploadService

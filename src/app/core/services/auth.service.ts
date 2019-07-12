@@ -4,7 +4,7 @@ import { ILoginData } from '../../shared/interfaces/ILoginData';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 import { Subject, Observable } from 'rxjs';
-import { IUser } from 'src/app/shared/interfaces/IUser';
+import { IUser } from '../../shared/interfaces/IUser';
 
 
 @Injectable()

@@ -1,15 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
 	selector: 'app-file-uploader',
 	templateUrl: './file-uploader.component.html',
 	styleUrls: ['./file-uploader.component.scss']
 })
-export class FileUploaderComponent {
+export class FileUploaderComponent implements OnInit {
+	
+	public isHovering: boolean;
 
-	isHovering: boolean;
+	public files: File[] = [];
 
-	files: File[] = [];
+	constructor() { }
+
+	ngOnInit(): void { }
 
 	toggleHover(event: boolean) {
 		this.isHovering = event;

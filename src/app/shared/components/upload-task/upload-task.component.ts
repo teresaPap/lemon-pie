@@ -1,57 +1,64 @@
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'upload-task',
-  templateUrl: './upload-task.component.html',
-  styleUrls: ['./upload-task.component.scss']
+	selector: 'app-upload-task',
+	templateUrl: './upload-task.component.html',
+	styleUrls: ['./upload-task.component.scss']
 })
 export class UploadTaskComponent implements OnInit {
 
-  @Input() file: File;
 
-  task: AngularFireUploadTask;
+	@Input() file: File;
 
-  percentage: Observable<number>;
-  snapshot: Observable<any>;
-  downloadURL: string;
+	public task: AngularFireUploadTask;
 
-  constructor(private storage: AngularFireStorage, private db: AngularFirestore) { }
+	percentage: Observable<number>;
+	snapshot: Observable<any>;
+	downloadURL: string;
 
-  ngOnInit() {
-    this.startUpload();
-  }
+	constructor(
+		private storage: AngularFireStorage, 
+		private db: AngularFirestore ) {
+	}
 
-  startUpload() {
+	ngOnInit() {
+		console.log('hello UploadTaskComponent! ' );
+		if (this.file) this.startUpload();
+	}
 
-    // The storage path
-    const path = `test/${Date.now()}_${this.file.name}`;
 
-    // Reference to storage bucket
-    const ref = this.storage.ref(path);
+	startUpload() {
 
-    // The main task
-    this.task = this.storage.upload(path, this.file);
+		// The storage path
+		// TODO: set the db path you want to use as the pic storage. Best practice is to design from now the db schema ypu will folllow
+		const path = `lemonpie-f5dba.firebaseio.com/test/${Date.now()}_${this.file.name}`;
 
-    // Progress monitoring
-    this.percentage = this.task.percentageChanges();
+		// Reference to storage bucket
+		const ref = this.storage.ref(path);
 
-    this.snapshot   = this.task.snapshotChanges().pipe(
-      tap(console.log),
-      // The file's download URL
-      finalize( async() =>  {
-        this.downloadURL = await ref.getDownloadURL().toPromise();
+		// The main task
+		this.task = this.storage.upload(path, this.file);
 
-        this.db.collection('files').add( { downloadURL: this.downloadURL, path });
-      }),
-    );
-  }
+		// Progress monitoring
+		this.percentage = this.task.percentageChanges();
 
-  isActive(snapshot) {
-    return snapshot.state === 'running' && snapshot.bytesTransferred < snapshot.totalBytes;
-  }
+		this.snapshot = this.task.snapshotChanges().pipe(
+			tap(console.log),
+			// The file's download URL
+			finalize( async () => {
+				this.downloadURL = await ref.getDownloadURL().toPromise();
+
+				this.db.collection('files').add({ downloadURL: this.downloadURL, path });
+			}),
+		);
+	}
+
+	isActive(snapshot) {
+		return snapshot.state === 'running' && snapshot.bytesTransferred < snapshot.totalBytes;
+	}
 
 }

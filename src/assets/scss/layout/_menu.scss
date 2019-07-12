@@ -14,10 +14,13 @@ nav {
     .nav-brand {
         text-transform: uppercase;       
     }
-    .nav-menu-items {
+    .nav-menu {
         display: flex;
         align-items: center;
-    }
+	}
+	.nav-item {
+		margin-left: 20px;
+	}
 }
 
 .bubble-menu {

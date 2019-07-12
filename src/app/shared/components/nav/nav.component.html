@@ -1,13 +1,21 @@
 <nav>
-	<a class="nav-brand"  [routerLink]="['/home']">
+	<a class="nav-brand" [routerLink]="['/home']">
 		Lemon Pie
 	</a>
-	<ul class="nav-menu-items">
-		<li *ngIf="!uid" [routerLink]="['/login']">
+	<ul class="nav-menu">
+		<li [routerLink]="['/home']" class="nav-item">
+			<a>Home</a>
+		</li>
+		<li *ngIf="!uid" [routerLink]="['/login']" class="nav-item">
 			<a>Login</a>
 		</li>
-		<li *ngIf="uid" (click)="toggleBubbleMenu()">
+		<li *ngIf="uid" (click)="toggleBubbleMenu()" class="nav-item">
 			<a> {{email}} </a>
+		</li>
+		<li>
+			<a (click)="currentUser()" class="nav-item">
+				[Log Current User]
+			</a>
 		</li>
 	</ul>
 	<div class="bubble-menu" [ngClass]="{'visible':showBubbleMenu}">
@@ -17,4 +25,3 @@
 		</ul>
 	</div>
 </nav>
-

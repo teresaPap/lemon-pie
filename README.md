@@ -3,6 +3,9 @@
 A handoff tool.
 
 
-### setup on my mac
+### run on my mac
 
-1. `nvm use v10.16.0` 
+1. `git config user.name teresaPap`
+2. `git config user.email teresapap27@gmail.com`
+1. `nvm use 10` 
+5. `npm start`

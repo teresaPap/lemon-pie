@@ -3,10 +3,19 @@ import { ILoginData } from '../../shared/interfaces/ILoginData';
 
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
+import { Subject, Observable } from 'rxjs';
+import { IUser } from 'src/app/shared/interfaces/IUser';
 
 
 @Injectable()
 export class AuthService {
+
+	public authStateSubject: Subject<IUser>;
+
+	private setAuthState( user: IUser ): void { this.authStateSubject.next( user ) };
+    
+	public getAuthState(): Observable<IUser> { return this.authStateSubject.asObservable(); }
+	
 
 	constructor(
 		public afAuth: AngularFireAuth) { }
@@ -20,6 +29,7 @@ export class AuthService {
 			firebase.auth().signInWithEmailAndPassword( data.email, data.password ).then(
 				res => {
 					localStorage.setItem('uid', res.user.uid );
+					this.authStateChanges();
 					resolve(res);
 				},
 				err => reject(err) )
@@ -31,6 +41,7 @@ export class AuthService {
 			firebase.auth().createUserWithEmailAndPassword( data.email, data.password ).then(
 				res => {
 					localStorage.setItem('uid', res.user.uid );
+					this.authStateChanges();
 					resolve(res);
 				},
 				err => reject(err) )
@@ -43,10 +54,27 @@ export class AuthService {
 		return {email, uid};
 	}
 
-	public logout(): void {
+	public logout(): Promise<void> {
 		console.log('TODO: log user out')
-		localStorage.clear();
-		// this.setActiveUsername('');
+		return firebase.auth().signOut().then(
+			() => this.authStateChanges()
+		);
 	}
+
+	private authStateChanges() {
+		firebase.auth().onAuthStateChanged( auth => {
+			
+			console.log("New Auth State is: " , auth);
+
+			const {email, uid, refreshToken, emailVerified, isAnonymous} = auth;
+
+			const user = {email, uid, refreshToken, emailVerified, isAnonymous };
+
+			console.log("New user is: " ,  {email, uid, refreshToken, emailVerified, isAnonymous } );
+
+			this.setAuthState( user );
+		});
+	}
+	
 
 }

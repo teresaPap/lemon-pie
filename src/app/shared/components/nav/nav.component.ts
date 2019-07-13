@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
+import { IUser } from '../../interfaces/IUser';
 
 @Component({
 	selector: 'app-nav',
@@ -8,14 +9,19 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class NavComponent implements OnInit {
 
-	public email: string;
+	public currentUser: IUser ;
 	public showBubbleMenu: boolean;
 
 	constructor( private authService: AuthService ) { }
 
 	ngOnInit() {
-		this.email = localStorage.getItem('uid');
-		// this.authService.getActiveUsername().subscribe( email => this.email = email );
+		this.currentUser = this.authService.getCurrentUser();
+
+		this.authService.getAuthState().subscribe(
+			(currentUser: IUser) => {
+				this.currentUser = currentUser;
+			}
+		);
 	}
 
 	public logout(): void {
@@ -27,9 +33,10 @@ export class NavComponent implements OnInit {
 		this.showBubbleMenu = !this.showBubbleMenu;
 	}
 
-	public currentUser() {
+	public logCurrentUser() {
 		// NOTE: this is a test function
 		let user = this.authService.getCurrentUser();
 		console.log(user);
+		this.authService.getAuthState();
 	}
 }

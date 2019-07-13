@@ -10,71 +10,70 @@ import { IUser } from '../../shared/interfaces/IUser';
 @Injectable()
 export class AuthService {
 
-	public authStateSubject: Subject<IUser>;
-
-	private setAuthState( user: IUser ): void { this.authStateSubject.next( user ) };
-    
-	public getAuthState(): Observable<IUser> { return this.authStateSubject.asObservable(); }
-	
+	public authStateSubject: Subject<IUser> = new Subject;
+	private currentUser: IUser;
 
 	constructor(
 		public afAuth: AngularFireAuth) { }
 
+		
+	public getAuthState(): Observable<IUser> { return this.authStateSubject.asObservable(); }
+
+	public setAuthState(): void {
+		firebase.auth().onAuthStateChanged( 
+			auth => {
+				console.log("New Auth State is: ", auth);
+				this.currentUser = this.parseUser(auth);
+				this.authStateSubject.next( this.currentUser )
+		});
+	}
+
 	public isLoggedIn(): boolean {
-		return !!localStorage.getItem('uid');
+		return !!this.currentUser;
 	}
 
 	public login(data: ILoginData) {
 		return new Promise<any>((resolve, reject) => {
-			firebase.auth().signInWithEmailAndPassword( data.email, data.password ).then(
+			firebase.auth().signInWithEmailAndPassword(data.email, data.password).then(
 				res => {
-					localStorage.setItem('uid', res.user.uid );
-					this.authStateChanges();
+					localStorage.setItem('uid', res.user.uid);
+					this.setAuthState();
 					resolve(res);
 				},
-				err => reject(err) )
+				err => reject(err))
 		});
 	}
 
 	public register(data: ILoginData) {
 		return new Promise<any>((resolve, reject) => {
-			firebase.auth().createUserWithEmailAndPassword( data.email, data.password ).then(
+			firebase.auth().createUserWithEmailAndPassword(data.email, data.password).then(
 				res => {
-					localStorage.setItem('uid', res.user.uid );
-					this.authStateChanges();
+					localStorage.setItem('uid', res.user.uid);
+					this.setAuthState();
 					resolve(res);
 				},
-				err => reject(err) )
+				err => reject(err))
 		});
-	}
-
-	public getCurrentUser() {
-		if ( !firebase.auth().currentUser ) return 'No user is logged in at the moment'
-		const  {email, uid} = firebase.auth().currentUser;
-		return {email, uid};
 	}
 
 	public logout(): Promise<void> {
 		console.log('TODO: log user out')
 		return firebase.auth().signOut().then(
-			() => this.authStateChanges()
+			() => this.setAuthState()
 		);
 	}
 
-	private authStateChanges() {
-		firebase.auth().onAuthStateChanged( auth => {
-			
-			console.log("New Auth State is: " , auth);
-
-			const {email, uid, refreshToken, emailVerified, isAnonymous} = auth;
-
-			const user = {email, uid, refreshToken, emailVerified, isAnonymous };
-
-			console.log("New user is: " ,  {email, uid, refreshToken, emailVerified, isAnonymous } );
-
-			this.setAuthState( user );
-		});
+	public getCurrentUser(): IUser {
+		const user = firebase.auth().currentUser;
+		console.log("user: ", user); 
+		if (!user) return null;
+		return this.parseUser( user );
 	}
-	
+
+	private parseUser( fbUserdata ): IUser {
+		const { email, uid, refreshToken, emailVerified, isAnonymous } = fbUserdata;
+		const user = { email, uid, refreshToken, emailVerified, isAnonymous };
+		return user;
+	}
 
 }

@@ -6,14 +6,14 @@
 		<li [routerLink]="['/home']" class="nav-item">
 			<a>Home</a>
 		</li>
-		<li *ngIf="!uid" [routerLink]="['/login']" class="nav-item">
+		<li *ngIf="!currentUser" [routerLink]="['/login']" class="nav-item">
 			<a>Login</a>
 		</li>
-		<li *ngIf="uid" (click)="toggleBubbleMenu()" class="nav-item">
-			<a> {{email}} </a>
+		<li *ngIf="currentUser" (click)="toggleBubbleMenu()" class="nav-item">
+			<a> {{currentUser.email}} </a>
 		</li>
 		<li>
-			<a (click)="currentUser()" class="nav-item">
+			<a (click)="logCurrentUser()" class="nav-item">
 				[Log Current User]
 			</a>
 		</li>

@@ -10,25 +10,25 @@ import { IUser } from '../../shared/interfaces/IUser';
 @Injectable()
 export class AuthService {
 
-	public authStateSubject: Subject<IUser> = new Subject;
+	private authStateSubject: Subject<IUser> = new Subject;
 	private currentUser: IUser;
 
-	constructor(
-		public afAuth: AngularFireAuth) { }
+	constructor( public afAuth: AngularFireAuth) { 
+		// detect auth state changes and push them in the subject
+		afAuth.authState.subscribe( 
+			change => {
+				console.log("authState.change!", change)
+				this.currentUser = this.parseUser(change);
+				this.authStateSubject.next( this.currentUser )
+			}
+		)
+	}
 
 		
 	public getAuthState(): Observable<IUser> { return this.authStateSubject.asObservable(); }
 
-	public setAuthState(): void {
-		firebase.auth().onAuthStateChanged( 
-			auth => {
-				console.log("New Auth State is: ", auth);
-				this.currentUser = this.parseUser(auth);
-				this.authStateSubject.next( this.currentUser )
-		});
-	}
-
 	public isLoggedIn(): boolean {
+		// console.log("is logged in" , this.currentUser)
 		return !!this.currentUser;
 	}
 
@@ -37,7 +37,6 @@ export class AuthService {
 			firebase.auth().signInWithEmailAndPassword(data.email, data.password).then(
 				res => {
 					localStorage.setItem('uid', res.user.uid);
-					this.setAuthState();
 					resolve(res);
 				},
 				err => reject(err))
@@ -49,7 +48,6 @@ export class AuthService {
 			firebase.auth().createUserWithEmailAndPassword(data.email, data.password).then(
 				res => {
 					localStorage.setItem('uid', res.user.uid);
-					this.setAuthState();
 					resolve(res);
 				},
 				err => reject(err))
@@ -59,18 +57,19 @@ export class AuthService {
 	public logout(): Promise<void> {
 		console.log('TODO: log user out')
 		return firebase.auth().signOut().then(
-			() => this.setAuthState()
+			() => console.log( "User is now logged out ")
 		);
 	}
 
-	public getCurrentUser(): IUser {
-		const user = firebase.auth().currentUser;
-		console.log("user: ", user); 
-		if (!user) return null;
-		return this.parseUser( user );
+	public getCurrentUser() {
+		// const user = firebase.auth().currentUser;
+		// console.log("user: ", user); 
+		// if (!user) return null;
+		return firebase.auth().currentUser;
 	}
 
 	private parseUser( fbUserdata ): IUser {
+		if (!fbUserdata) return;
 		const { email, uid, refreshToken, emailVerified, isAnonymous } = fbUserdata;
 		const user = { email, uid, refreshToken, emailVerified, isAnonymous };
 		return user;

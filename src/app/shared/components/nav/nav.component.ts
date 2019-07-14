@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { IUser } from '../../interfaces/IUser';
 
@@ -9,19 +9,12 @@ import { IUser } from '../../interfaces/IUser';
 })
 export class NavComponent implements OnInit {
 
-	public currentUser: IUser ;
+	@Input() currentUser: IUser ;
 	public showBubbleMenu: boolean;
 
 	constructor( private authService: AuthService ) { }
 
 	ngOnInit() {
-		this.currentUser = this.authService.getCurrentUser();
-
-		this.authService.getAuthState().subscribe(
-			(currentUser: IUser) => {
-				this.currentUser = currentUser;
-			}
-		);
 	}
 
 	public logout(): void {
@@ -37,6 +30,9 @@ export class NavComponent implements OnInit {
 		// NOTE: this is a test function
 		let user = this.authService.getCurrentUser();
 		console.log(user);
-		this.authService.getAuthState();
+		// this.authService.getAuthState().subscribe( 
+		// 	res => console.log("dfsd", res),
+		// 	err => console.log("errr", err)
+		// );
 	}
 }

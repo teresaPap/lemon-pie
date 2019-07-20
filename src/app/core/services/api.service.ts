@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { TokenHelperService } from './token-helper.service';
 import { Constants } from '../../config/constants';
 
 import { HttpClient } from '@angular/common/http';
@@ -17,8 +16,7 @@ export class ApiService {
     
     constructor( 
 		public storage: AngularFireStorage,
-        private http: HttpClient,
-        private tokenHelper: TokenHelperService ) { }
+        private http: HttpClient ) { }
 
     public get( url:string ) : Observable<any> {
         return this.http.get( `${API_ENDPOINT}/${url}` );

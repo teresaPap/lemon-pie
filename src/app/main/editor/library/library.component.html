@@ -1,6 +1,9 @@
-<div>
 
-	<h3>Select images to upload: </h3>
-	<app-file-uploader></app-file-uploader>
-
-</div>
+<article>
+	<h2>My projects</h2>
+	<ul>
+		<li *ngFor="let project of projects">
+			{{project.name}}
+		</li>
+	</ul>
+</article>

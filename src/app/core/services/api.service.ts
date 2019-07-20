@@ -1,33 +1,41 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Constants } from '../../config/constants';
 
-import { HttpClient } from '@angular/common/http';
-import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
-import { of } from 'rxjs/observable/of';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { AngularFirestore,AngularFirestoreDocument, AngularFirestoreCollection, DocumentSnapshot } from '@angular/fire/firestore';
+import { ITask } from '../../shared/interfaces/IFirebase';
+import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
+import { map, switchMap, tap } from 'rxjs/operators';
 
-
-const API_ENDPOINT: string = Constants.API_ENDPOINT;
 
 @Injectable()
 export class ApiService {
 
-    public contractId:number;
-    
+    public uid: string = this.authService.getCurrentUserId(); 
+	
+	public tasks: AngularFirestoreCollection<ITask>;
+	private taskDoc: AngularFirestoreDocument<ITask>;
+
     constructor( 
-		public storage: AngularFireStorage,
-        private http: HttpClient ) { }
+		public firestore: AngularFirestore,
+		private authService: AuthService ) { }
 
-    public get( url:string ) : Observable<any> {
-        return this.http.get( `${API_ENDPOINT}/${url}` );
-    }
+	public getProjects() {
 
-    public post( url:string ,data: any ) : Observable<any> {
-        return this.http.post( `${API_ENDPOINT}/${url}`, data );
-    }
-
-	public firebasePost(path: string, data: any) : Observable<AngularFireUploadTask> {
-		return of( this.storage.upload(path, data) );
+		return this.firestore.collection('users').doc(this.uid).get().pipe(
+			map( doc => {
+				if (doc.exists) {
+					return doc.data();
+				} else {
+					throw console.error( `Uid ${this.uid} does not exist` );
+				}
+			}),
+			map( userData => userData.projects ),
+			map( project => {
+				console.log(project)
+			})
+		)
+		
 	}
 
 
@@ -37,15 +45,32 @@ export class ApiService {
 
 
 
-    // // TODO: use interceptors instead of authOptions() 
-    
-    // private authOptions(): RequestOptions {
-    //     const token = this.tokenHelper.getToken();
-    //     let headers = new Headers();
-    //     headers.append('Content-type', 'application/json' );
-    //     headers.append('Authorization', `Bearer `+ token );
-    //     return new RequestOptions( {  headers: headers });
-    // }
 
+	private testGet() {
+		console.log("current user: " , this.uid );
+		// get test doc.data()
+		// return this.getTestDoc().subscribe( doc => {
+		// 	if (doc.exists) {
+		// 		console.log(doc.data());
+		// 	} else {
+		// 		console.log('doc does not exist');
+		// 	}
+		// })	
+		// get test collection data
+		return this.getTestCollection().pipe(
+			map( collection => {
+				console.log(collection.docs);
+				for (let doc of collection.docs) {
+					console.log(doc.data());
+				}
+			})
+		)	
+	}
+	private getTestDoc(): Observable<any> {
+		return this.firestore.collection('users').doc('VUBjSTUEhBTzg5C6PVtpIGqEM9i1').get();
+	}
+	private getTestCollection(): Observable<any> {
+		return this.firestore.collection('users').get();
+	}
 
 }

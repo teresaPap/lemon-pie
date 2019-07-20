@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../core/services/api.service';
 
 
 @Component({
@@ -8,12 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LibraryComponent implements OnInit {
 
-	public projects = [];
+	public projects;
 
-	constructor() { }
+	constructor( private apiService: ApiService ) { }
 
 	ngOnInit() {
-		this.projects = [];
+		this.apiService.getProjects().subscribe();
 	}
 
 

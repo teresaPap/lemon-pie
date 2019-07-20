@@ -16,7 +16,7 @@ export class AuthService {
 		// detect auth state changes and push them in the subject
 		afAuth.authState.subscribe( 
 			change => {
-				console.log("authState.change!", change)
+				// console.log("authState.change!", change)
 				this.currentUser = this.parseUser(change);
 				this.authStateSubject.next( this.currentUser )
 			}
@@ -52,15 +52,15 @@ export class AuthService {
 	}
 
 	public logout(): Promise<void> {
-		console.log('TODO: log user out')
+		console.log('Logging user out...')
 		return this.afAuth.auth.signOut().then(
-			() => console.log( "User is now logged out ")
+			() => console.log( "User is now logged out !")
 		);
 	}
 
-	public getCurrentUser() {
-		
-		return this.afAuth.auth.currentUser;
+	public getCurrentUserId(): string {
+		const user = this.afAuth.auth.currentUser;
+		return user.uid;
 	}
 
 	private parseUser( fbUserdata ): IUser {

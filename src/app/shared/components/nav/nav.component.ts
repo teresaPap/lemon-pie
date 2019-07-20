@@ -35,7 +35,7 @@ export class NavComponent implements OnInit {
 
 	public logCurrentUser() {
 		// NOTE: this is a test function
-		let user = this.authService.getCurrentUser();
+		let user = this.authService.getCurrentUserId();
 		console.log(user);
 		// this.authService.getAuthState().subscribe( 
 		// 	res => console.log("dfsd", res),

@@ -5,5 +5,8 @@
 		<li *ngFor="let project of projects">
 			{{project.name}}
 		</li>
+		<li>
+			<button type="button" (click)="createProject()">Create new project</button>
+		</li>
 	</ul>
 </article>

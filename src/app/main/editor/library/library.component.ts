@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../core/services/api.service';
-
+import { ProjectsService } from '../../../shared/data-services/projects.service';
 
 @Component({
 	selector: 'app-library',
@@ -11,14 +10,17 @@ export class LibraryComponent implements OnInit {
 
 	public projects;
 
-	constructor( private apiService: ApiService ) { }
+	constructor( private projectCtlr: ProjectsService ) { }
 
 	ngOnInit() {
-		this.apiService.getProjects().subscribe(
-			projects => {
-				console.log('RESPONSE\n', projects);
-				this.projects = projects;
-			}
+		this.projectCtlr.read().subscribe(
+			projects => this.projects = projects
+		);
+	}
+
+	public createProject() {
+		this.projectCtlr.create('lalalali').subscribe(
+			res => console.log('\nCreated a new project with id: '+ res.id )
 		);
 	}
 

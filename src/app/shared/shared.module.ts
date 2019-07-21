@@ -7,6 +7,7 @@ import { NavComponent } from './components/nav/nav.component';
 import { DropzoneDirective } from './directives/dropzone.directive';
 import { FileUploaderComponent } from './components/file-uploader/file-uploader.component';
 import { UploadTaskComponent } from './components/upload-task/upload-task.component';
+import { ProjectsService } from './data-services/projects.service';
 
 @NgModule({
     declarations: [ 
@@ -30,6 +31,7 @@ import { UploadTaskComponent } from './components/upload-task/upload-task.compon
 		FileUploaderComponent
     ],
     providers: [ 
+		ProjectsService
     ]
 })
 export class SharedModule { }

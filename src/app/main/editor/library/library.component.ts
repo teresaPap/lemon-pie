@@ -14,7 +14,12 @@ export class LibraryComponent implements OnInit {
 	constructor( private apiService: ApiService ) { }
 
 	ngOnInit() {
-		this.apiService.getProjects().subscribe();
+		this.apiService.getProjects().subscribe(
+			projects => {
+				console.log('RESPONSE\n', projects);
+				this.projects = projects;
+			}
+		);
 	}
 
 

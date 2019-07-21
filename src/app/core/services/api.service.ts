@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFirestore,AngularFirestoreDocument, AngularFirestoreCollection, DocumentSnapshot } from '@angular/fire/firestore';
 import { ITask } from '../../shared/interfaces/IFirebase';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { AuthService } from './auth.service';
 import { map, switchMap, tap } from 'rxjs/operators';
 
@@ -20,22 +20,28 @@ export class ApiService {
 		public firestore: AngularFirestore,
 		private authService: AuthService ) { }
 
-	public getProjects() {
-
-		return this.firestore.collection('users').doc(this.uid).get().pipe(
-			map( doc => {
-				if (doc.exists) {
-					return doc.data();
-				} else {
-					throw console.error( `Uid ${this.uid} does not exist` );
-				}
+	public getProjects(): Observable<any> {
+		return this.firestore.doc(`users/${this.uid}`).get().pipe(
+			// Check if a user with this uid exists
+			map( (user: firebase.firestore.DocumentData) => {
+				if (user.exists) return user.data().projects;
+				throw console.warn( `Uid ${this.uid} does not exist` ); //TODO: Handle error uid does not exist
 			}),
-			map( userData => userData.projects ),
-			map( project => {
-				console.log(project)
+			// For each of the projects referenced by this user, get the actual document
+			switchMap( (projects: firebase.firestore.DocumentReference[] ) => {
+				const referencesToGet = [];
+				projects.forEach( (documentRef : firebase.firestore.DocumentReference) => {
+					referencesToGet.push( this.firestore.doc( documentRef.path ).get() )
+				});
+				return forkJoin(referencesToGet);
+			}),
+			// Map the DocumentData to the actual json data and return them to the component
+			map( (project: firebase.firestore.DocumentData) => {
+				const projectData = [] ;
+				project.forEach( documentSnapsot => projectData.push( documentSnapsot.data() ) );
+				return projectData;
 			})
 		)
-		
 	}
 
 

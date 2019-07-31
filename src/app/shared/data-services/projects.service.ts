@@ -4,8 +4,8 @@ import { Observable, forkJoin, from } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AuthService } from '../../core/services/auth.service';
-import { elementStart } from '@angular/core/src/render3/instructions';
 import * as firebase from 'firebase/app';
+import { IProject } from '../interfaces/IProject';
 
 @Injectable()
 export class ProjectsService {
@@ -18,12 +18,13 @@ export class ProjectsService {
 	) { }
 
 
-	public create(projectName: string) {
+	public create(project: IProject): Observable<any> {
 		const projectsCollectionRef: AngularFirestoreCollection = this.firestore.collection('projects');
 		const userIdDocumentRef: AngularFirestoreDocument = this.firestore.doc(`users/${this.uid}`);
 
 		const action = projectsCollectionRef.add({
-				name: projectName,
+				name: project.name,
+				description: project.description,
 				createdOn: new Date(Date.now())
 			}).then((documentRef: firebase.firestore.DocumentReference) => {
 				userIdDocumentRef.update({
@@ -32,11 +33,13 @@ export class ProjectsService {
 			}).catch( error => {
 				throw console.warn(error); //TODO: Handle error				
 			});
-			
+
 		return from(action);
 	}
 
 	public read(): Observable<any> {
+		// TODO: fix this 
+
 		const action = this.firestore.doc(`users/${this.uid}`).get().pipe(
 			// Check if a user with this uid exists
 			map((user: firebase.firestore.DocumentData) => {

@@ -15,4 +15,7 @@ export interface IUser {
 	isAnonymous: boolean;
 	phoneNumber?: string;
 	photoURL?: string;
+	
+	// Generated data
+	projects?: Array<firebase.firestore.DocumentReference>;
 }

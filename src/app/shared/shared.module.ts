@@ -8,6 +8,7 @@ import { DropzoneDirective } from './directives/dropzone.directive';
 import { FileUploaderComponent } from './components/file-uploader/file-uploader.component';
 import { UploadTaskComponent } from './components/upload-task/upload-task.component';
 import { ProjectsService } from './data-services/projects.service';
+import { AddProjectComponent } from './components/add-project/add-project.component';
 
 @NgModule({
     declarations: [ 
@@ -15,6 +16,7 @@ import { ProjectsService } from './data-services/projects.service';
 		DropzoneDirective, 
 		FileUploaderComponent, 
 		UploadTaskComponent, 
+		AddProjectComponent, 
     ],
     imports: [ 
         RouterModule,
@@ -28,7 +30,8 @@ import { ProjectsService } from './data-services/projects.service';
         ReactiveFormsModule, 
         
 		NavComponent,
-		FileUploaderComponent
+		FileUploaderComponent,
+		AddProjectComponent
     ],
     providers: [ 
 		ProjectsService

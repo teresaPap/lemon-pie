@@ -13,14 +13,14 @@ export class LibraryComponent implements OnInit {
 	constructor( private projectCtlr: ProjectsService ) { }
 
 	ngOnInit() {
-		this.projectCtlr.read().subscribe(
-			projects => this.projects = projects
-		);
+		// this.projectCtlr.read().subscribe(
+		// 	projects => this.projects = projects
+		// );
 	}
 
 	public createProject() {
-		this.projectCtlr.create('lalalali').subscribe(
-			res => console.log('\nCreated a new project with id: '+ res.id )
+		this.projectCtlr.create('test').subscribe(
+			res => console.log('\nCreated a new project with id: '+ res )
 		);
 	}
 

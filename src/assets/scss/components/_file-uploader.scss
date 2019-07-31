@@ -26,3 +26,9 @@
 progress::-webkit-progress-value {
 	transition: width 0.1s ease;
 }
+
+.file-preview {
+	height: 300px;
+	width: 300px;
+	overflow: hidden;
+}

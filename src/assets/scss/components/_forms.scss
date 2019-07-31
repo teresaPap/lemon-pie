@@ -1,6 +1,11 @@
 // Forms and form inputs styling
 
-form {
+.login-form {
+	margin-top: 10vh;
+    display: flex;
+    flex-direction: column; 
+	align-items: center;
+	
     .form-group {
         margin-bottom: 2em;
         min-width: 400px;
@@ -27,13 +32,6 @@ form {
         text-transform: uppercase;
         letter-spacing: 0.25em;
     }
-}
-
-.login-form {
-    margin-top: 10vh;
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
 }
 
 .img-preview {

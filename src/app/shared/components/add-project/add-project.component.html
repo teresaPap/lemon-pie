@@ -1,0 +1,12 @@
+<form [formGroup]="addProjectForm" (ngSubmit)="onSubmit()">
+
+	<div class="form-group">
+		<label>Project name</label>
+		<input type="text" formControlName="name">
+	</div>
+
+	<app-file-uploader></app-file-uploader>
+	
+	<button type="submit" class="" >Save</button>
+
+</form>

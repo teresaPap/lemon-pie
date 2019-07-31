@@ -25,21 +25,14 @@ export class ProjectsService {
 		const action = projectsCollectionRef.add({
 				name: projectName,
 				createdOn: new Date(Date.now())
-			})
-			
-			// TODO: fix this
-			
-			// .then((documentRef: firebase.firestore.DocumentReference) => {
-			// 	userIdDocumentRef.update({
-			// 		"projects": firebase.firestore.FieldValue.arrayUnion( documentRef.id ) 
-			// 	});
-			// })
-
-			// .then ((documentRef: firebase.firestore.DocumentReference) => documentRef.id )
-			.catch( error => {
+			}).then((documentRef: firebase.firestore.DocumentReference) => {
+				userIdDocumentRef.update({
+					"projects": firebase.firestore.FieldValue.arrayUnion(documentRef) 
+				})
+			}).catch( error => {
 				throw console.warn(error); //TODO: Handle error				
 			});
-
+			
 		return from(action);
 	}
 
@@ -54,7 +47,7 @@ export class ProjectsService {
 			switchMap((projects: firebase.firestore.DocumentReference[]) => {
 				const referencesToGet = [];
 				projects.forEach((documentRef: firebase.firestore.DocumentReference) => {
-					referencesToGet.push(this.firestore.doc(documentRef.path).get())
+					referencesToGet.push(this.firestore.doc( documentRef.path ).get())
 				});
 				return forkJoin(referencesToGet);
 			}),

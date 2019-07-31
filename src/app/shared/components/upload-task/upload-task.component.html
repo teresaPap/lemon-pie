@@ -9,7 +9,10 @@
 
 	<div *ngIf="downloadURL as url">
 		<h3>Results!</h3>
-		<img [src]="url"><br>
+		<div class="file-preview">
+			<img [src]="url">
+		</div>
+		<br>
 		<a [href]="url" target="_blank" rel="noopener">Download Me!</a>
 	</div>
 

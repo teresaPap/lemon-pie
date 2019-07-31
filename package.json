@@ -2,10 +2,14 @@
   "name": "lemon-pie",
   "version": "0.0.0",
   "license": "MIT",
+  "engines": {
+	"node": "10.15.0",
+	"npm": "6.5.0"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve -o --port 5200",
-    "build": "ng build --prod",
+    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

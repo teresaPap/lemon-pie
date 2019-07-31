@@ -1,11 +1,25 @@
 # lemon-pie
 
-A handoff tool.
+A handoff tool. 
 
+## Run project 
+1. install Node.js v10.16.0
+2. install npm
+3. Open terminal to the project root folder and run 
+	- `npm install`
+	- `npm start`
 
-### run on my mac
+## Deploy to Firebase Hosting 
+Open terminal to the project root folder and run 
+- `npm run build`
+- `firebase deploy --only hosting`. Dist folder will be deployed to this [url](https://lemonpie-f5dba.firebaseapp.com)
 
-1. `git config user.name teresaPap`
-2. `git config user.email teresapap27@gmail.com`
-1. `nvm use 10` 
-5. `npm start`
+### Git/env config
+Open terminal to the project root folder and run 
+- `git config user.name teresaPap`
+- `git config user.email teresapap27@gmail.com`
+- `nvm use 10` 
+- `npm start`
+
+### Heroku 
+TODO: add the links here - if applicable 

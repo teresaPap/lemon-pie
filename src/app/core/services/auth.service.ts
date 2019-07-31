@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ILoginData } from '../../shared/interfaces/ILoginData';
 
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, from } from 'rxjs';
 import { IUser } from '../../shared/interfaces/IUser';
 
 
@@ -51,11 +51,16 @@ export class AuthService {
 		});
 	}
 
-	public logout(): Promise<void> {
+	public logout():  Observable<void> {
 		console.log('Logging user out...')
-		return this.afAuth.auth.signOut().then(
-			() => console.log( "User is now logged out !")
-		);
+		const action = this.afAuth.auth.signOut().then(
+			() => console.log( 'User is now logged out !')
+		).catch( error => {
+			// TODO: Handle error
+			throw console.warn('logging out error: ', error )
+		});
+
+		return from(action);
 	}
 
 	public getCurrentUserId(): string {

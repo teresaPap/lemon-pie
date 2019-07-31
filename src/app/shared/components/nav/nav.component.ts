@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { IUser } from '../../interfaces/IUser';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-nav',
@@ -12,7 +13,9 @@ export class NavComponent implements OnInit {
 	public currentUser: IUser ;
 	public showBubbleMenu: boolean;
 
-	constructor( private authService: AuthService ) { }
+	constructor( 
+		public router: Router, 
+		private authService: AuthService ) { }
 
 	ngOnInit() {
 		console.log("Now listening to auth state changes");
@@ -25,7 +28,9 @@ export class NavComponent implements OnInit {
 	}
 
 	public logout(): void {
-		this.authService.logout();
+		this.authService.logout().subscribe( () =>
+			this.router.navigate(['/home'])
+		);
 		this.toggleBubbleMenu();
 	}
 	

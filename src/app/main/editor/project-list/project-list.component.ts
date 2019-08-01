@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectsService } from '../../../shared/data-services/projects.service';
 
 @Component({
-	selector: 'app-library',
-	templateUrl: './library.component.html',
-	styleUrls: ['./library.component.scss']
+	selector: 'app-project-list',
+	templateUrl: './project-list.component.html'
 })
-export class LibraryComponent implements OnInit {
+export class ProjectListComponent implements OnInit {
 
 	public projects;
 	public showCreateForm: boolean = false;

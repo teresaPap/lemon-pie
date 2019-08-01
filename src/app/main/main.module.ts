@@ -4,16 +4,18 @@ import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
 import { MainRoutingModule } from './main-routing.module';
 import { AsideComponent } from './editor/aside/aside.component';
-import { LibraryComponent } from './editor/library/library.component';
-import { ProjectComponent } from './editor/project/project.component';
+import { ProjectDetailComponent } from './editor/project-detail/project-detail.component';
+import { ProjectListComponent } from './editor/project-list/project-list.component';
+import { ProjectEditComponent } from './editor/project-edit/project-edit.component';
 
 @NgModule({
     declarations: [
         HomeComponent,
 		ProfileComponent,
 		AsideComponent,
-		LibraryComponent,
-		ProjectComponent
+		ProjectListComponent,
+		ProjectDetailComponent,
+		ProjectEditComponent
     ],
     imports: [
 		SharedModule,

@@ -39,11 +39,9 @@ export class ProjectsService {
 
 	public read(): Observable<any> {
 		const action = this.firestore.doc(`users/${this.uid}`).get().pipe(
-			// Check if a user with this uid exists
-			map((user: firebase.firestore.DocumentData) => {
-				if (user.exists) return user.data().projects;
-				throw console.warn(`Uid ${this.uid} does not exist`); //TODO: Handle error uid does not exist
-			}),
+			// Read projects[] from given uid
+			map((user: firebase.firestore.DocumentData) => user.data().projects
+			),
 			// For each of the projects referenced by this user, get the actual document
 			switchMap((projects: firebase.firestore.DocumentReference[]) => {
 				const referencesToGet = [];
@@ -55,7 +53,9 @@ export class ProjectsService {
 			// Map the DocumentData to the actual json data and return them to the component
 			map((project: firebase.firestore.DocumentData) => {
 				const projectData = [];
-				project.forEach(documentSnapsot => projectData.push(documentSnapsot.data()));
+				project.forEach(documentSnapsot =>
+					projectData.push({ id: documentSnapsot.id, ...documentSnapsot.data() })
+				);
 				return projectData;
 			})
 		)

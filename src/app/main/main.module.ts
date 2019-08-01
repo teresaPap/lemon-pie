@@ -5,13 +5,15 @@ import { HomeComponent } from './home/home.component';
 import { MainRoutingModule } from './main-routing.module';
 import { AsideComponent } from './editor/aside/aside.component';
 import { LibraryComponent } from './editor/library/library.component';
+import { ProjectComponent } from './editor/project/project.component';
 
 @NgModule({
     declarations: [
         HomeComponent,
 		ProfileComponent,
 		AsideComponent,
-		LibraryComponent
+		LibraryComponent,
+		ProjectComponent
     ],
     imports: [
 		SharedModule,

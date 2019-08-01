@@ -2,7 +2,7 @@
 <article>
 	<h2>My projects</h2>
 	<ul class="flex-container">
-		<li *ngFor="let project of projects" class="project-preview">
+		<li *ngFor="let project of projects" class="project-preview" [routerLink]="project.id">
 			{{project.name}} 
 			<br>
 			{{project.description}}

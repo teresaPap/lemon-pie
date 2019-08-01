@@ -38,8 +38,6 @@ export class ProjectsService {
 	}
 
 	public read(): Observable<any> {
-		// TODO: fix this 
-
 		const action = this.firestore.doc(`users/${this.uid}`).get().pipe(
 			// Check if a user with this uid exists
 			map((user: firebase.firestore.DocumentData) => {

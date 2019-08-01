@@ -1,19 +1,17 @@
 
 <article>
 	<h2>My projects</h2>
-	<ul>
-		<li *ngFor="let project of projects">
-			{{project.name}}
+	<ul class="flex-container">
+		<li *ngFor="let project of projects" class="project-preview">
+			{{project.name}}, {{project.description}}
 		</li>
-		<li>
-		</li>
-		<li>
-			<!-- <button type="button" (click)="createProject()">Create new project</button> -->
+		<li class="project-preview" (click)="createProject()">
+			Create new project + 
 		</li>
 	</ul>
-	<br>
-
-	<h2>Create new project</h2>
-	<app-add-project ></app-add-project>	
+	
+	<ng-container *ngIf="showCreateForm">
+		<app-add-project></app-add-project>	
+	</ng-container>
 
 </article>

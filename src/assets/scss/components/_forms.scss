@@ -37,3 +37,17 @@
 .img-preview {
     max-height: 200px;
 }
+
+.form-container {
+	padding: 20px;
+	margin: 30px;
+	border: 1px $gallery solid;
+
+	position: relative;
+	.x-btn {
+		position: absolute;
+		top: -15px;
+    	right: -15px;
+    	background-color: $white;
+	}
+}

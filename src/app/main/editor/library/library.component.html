@@ -3,15 +3,17 @@
 	<h2>My projects</h2>
 	<ul class="flex-container">
 		<li *ngFor="let project of projects" class="project-preview">
-			{{project.name}}, {{project.description}}
+			{{project.name}} 
+			<br>
+			{{project.description}}
 		</li>
-		<li class="project-preview" (click)="createProject()">
+		<li class="project-preview" (click)="toggleCreateProjectForm(true)">
 			Create new project + 
 		</li>
 	</ul>
 	
 	<ng-container *ngIf="showCreateForm">
-		<app-add-project></app-add-project>	
+		<app-add-project (onClose)="toggleCreateProjectForm(false)"></app-add-project>	
 	</ng-container>
 
 </article>

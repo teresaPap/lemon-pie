@@ -11,6 +11,7 @@ import { ProjectsService } from '../../data-services/projects.service';
 })
 export class AddProjectComponent implements OnInit {
 
+	@Output() onClose: EventEmitter<any> = new EventEmitter();
 	public addProjectForm: FormGroup;
 
 	constructor( 
@@ -25,6 +26,10 @@ export class AddProjectComponent implements OnInit {
 		})
 	}
 
+	public close(): void {
+		this.onClose.emit();
+	}
+
 	public onSubmit(): void {
 		this.createProject(this.addProjectForm.value);
 	}
@@ -34,5 +39,7 @@ export class AddProjectComponent implements OnInit {
 			res => console.log('\nCreated a new project with id: '+ res )
 		);
 	}
+
+
 
 }

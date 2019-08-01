@@ -19,8 +19,8 @@ export class LibraryComponent implements OnInit {
 		);
 	}
 
-	public createProject() {
-		this.showCreateForm = true;
+	public toggleCreateProjectForm(isVisible: boolean) {
+		this.showCreateForm = isVisible;
 	}
 	
 

@@ -1,3 +1,13 @@
 <p>
   project works!
 </p>
+
+
+
+<ul>
+	<li *ngFor="let file of files">
+		{{file.id}}
+	</li>
+</ul>
+
+<button [routerLink]="'edit'">Edit this project</button>

@@ -1,10 +1,13 @@
 // LEMOINPIE LOGO
 
+$outter: #319960fa;
+$inner: $theme-focus;
+
 $lemonLogoSize: 100px;// pixels
 .logo {
     height: $lemonLogoSize;
     width: $lemonLogoSize;
-    background-color: #aeb10b;
+    background-color: $outter;
     border-radius: 50%;
 
     display: flex;
@@ -20,12 +23,12 @@ $lemonLogoSize: 100px;// pixels
         content: '';
         height: calc( 100px - 20px) ;
         width: calc( 100px - 20px) ;
-        background-color: #f5ea56;
+        background-color: $inner;
         border-radius: 50%;
     }
 }
 .lemon-petal { 
-    background-color: #aeb10b;
+    background-color: $outter;
     width: 4px;
     height: $lemonLogoSize;
     position: absolute;

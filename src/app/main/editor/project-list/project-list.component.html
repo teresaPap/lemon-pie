@@ -1,16 +1,23 @@
 
 <article>
 	<h2>My projects</h2>
-	<ul class="flex-container">
-		<li *ngFor="let project of projects" class="project-preview" [routerLink]="project.id">
-			{{project.name}} 
-			<br>
-			{{project.description}}
-		</li>
-		<li class="project-preview" [routerLink]="0">
+	<div class="flex-container">
+		<div *ngFor="let project of projects" class="project-preview-container">			
+			<div class="project-preview" 
+				style="background-image: url('https://www.jobbnorge.no/search/img/no-hits.png')">
+				<a href="#" class="transparent-btn" [routerLink]="project.id">View Project</a>			
+			</div>
+			<div class="project-description">
+				{{project.name}} 
+				<br>
+				{{project.description}}
+			</div>
+			
+		</div>
+		<div class="project-preview-container" [routerLink]="0">
 			Create new project + 
-		</li>
-	</ul>
+		</div>
+	</div>
 	
 	<ng-container *ngIf="showCreateForm">
 		<app-add-project (onClose)="toggleCreateProjectForm(false)"></app-add-project>	

@@ -20,3 +20,11 @@
 	border: 1px $gallery solid; 
 	text-align: center;
 }
+
+.transparent-btn {
+	padding: 5px 10px;
+	border: 1px solid $theme-background;
+	color: $theme-background;
+	background: transparent;
+	border-radius: 20px;
+}

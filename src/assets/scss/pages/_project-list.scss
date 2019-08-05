@@ -55,7 +55,7 @@ $transition-easing: cubic-bezier(0.075, 0.82, 0.165, 1);
 	}
 
 	.project-description {
-		padding: 5px; 
+		padding: 10px; 
 		min-height: 3em;
 		background-color: $theme-background;
 		border: 1px $gallery solid;
@@ -65,10 +65,16 @@ $transition-easing: cubic-bezier(0.075, 0.82, 0.165, 1);
 		text-overflow: ellipsis;
 
 		label {
-			// TODO: set max dimentions and text style			
+			// TODO: set max dimentions and text style
+			font-size: 1.2em;			
 		}
 		p {
-			// TODO: set max dimentions and text style
+			// TODO: set max dimentions and text style	
+			height: 2.5em;
+			line-height: 2.5em;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
 		}
 	}
 

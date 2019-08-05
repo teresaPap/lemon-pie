@@ -23,17 +23,17 @@ $theme-text: $scorpion;
 $theme-button: $mercury;
 
 $theme-focus: $viking;
-$theme-inactive: $mercury;
 $theme-error: $mercury;
+$theme-muted: $mercury;
 
 
 
 // Form colors
 $input-default: $theme-accent;
 $input-focus: $theme-focus;
-$input-valid: black;
-$input-invalid: black;
-$input-disabled: black;
+$input-valid: $theme-text;
+$input-invalid: $theme-error;
+$input-disabled: $theme-muted;
 
 // Button colors 
 $btn-submit: $crusta;

@@ -9,15 +9,15 @@ body {
 
 h1 { 
     font-size: 3em; 
-    line-height: 2em; 
+    line-height: 3em; 
 }
 h2 { 
     font-size: 2em; 
-    line-height: 1.3em;
+    line-height: 2em;
 }
 h3 { 
     font-size: 1.6em; 
-    line-height: 1.3em;
+    line-height: 1.6em;
 }
 h4 { 
     font-size: 1.2em; 
@@ -44,7 +44,3 @@ p {
 .text-error {
     color: $theme-error;
 }
-.text-maincolor {
-    color: $theme-text;
-}
-

@@ -4,7 +4,7 @@
 	<div class="flex-container">
 		<div *ngFor="let project of projects" class="project-preview-container">			
 			<div class="project-preview" 
-				style="background-image: url('https://www.jobbnorge.no/search/img/no-hits.png')">
+				[ngStyle]="{'background-image': project.previewSrc }">
 			</div>
 			<div class="project-actions">
 				<a href="#" class="transparent-btn" [routerLink]="project.id">View Project</a>			

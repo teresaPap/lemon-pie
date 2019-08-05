@@ -19,7 +19,7 @@ export class FilesService {
 				if (project.data().files) 
 					return project.data().files;
 				else 
-					// TODO: handle no files error! Escape pipe and return empty []
+					// TODO: handle no projects error! Escape pipe and return empty []
 					throw 'no files for this project!';
 			}),
 			// For each of the files referenced by this project, get the actual document
@@ -41,6 +41,12 @@ export class FilesService {
 		)
 
 		return action;
+	}
+
+	public getFile( ref ) {
+		return this.firestore.doc( ref ).get().pipe(
+			map( file => file.data() )
+		);
 	}
 
 }

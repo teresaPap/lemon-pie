@@ -37,7 +37,7 @@ export class ProjectsService {
 		return from(action);
 	}
 
-	public read(): Observable<any> {
+	public read(): Observable<IProject[]> {
 		const action = this.firestore.doc(`users/${this.uid}`).get().pipe(
 			// Read projects[] from given uid
 			map((user: firebase.firestore.DocumentData) => user.data().projects
@@ -50,17 +50,44 @@ export class ProjectsService {
 				});
 				return forkJoin(referencesToGet);
 			}),
+			// map( (projects: firebase.firestore.DocumentData) => {
+			// 	const projectData = [];
+			// 	projects.forEach(documentSnapsot =>
+			// 		projectData.push(documentSnapsot.data())
+			// 	);
+			// 	return projectData;
+			// }),
 			// Map the DocumentData to the actual json data and return them to the component
-			map((project: firebase.firestore.DocumentData) => {
+			map( (projects: firebase.firestore.DocumentData) => {
+				console.log(projects);
 				const projectData = [];
-				project.forEach(documentSnapsot =>
+
+				projects.forEach( documentSnapsot =>
 					projectData.push({ id: documentSnapsot.id, ...documentSnapsot.data() })
 				);
+				console.log(projectData);
+
 				return projectData;
-			})
+			}), 
+			map( (projectData: IProject[]) => {
+				projectData.forEach( elem => {
+					if (elem.files) {
+						console.log('has files');
+						elem.preview = this.getFile( elem.files[0] )
+					}
+				})
+				return projectData;
+			})	
 		)
 
 		return action;
 	}
+
+	private getFile( ref ) {
+		return this.firestore.doc( ref ).get().pipe(
+			map( file => file.data() )
+		);
+	}
+
 
 }

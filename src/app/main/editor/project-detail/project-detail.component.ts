@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FilesService } from '../../../shared/data-services/files.service';
+import { IProject } from '../../../shared/interfaces/IProject';
 
 // PAGE DESCRIPTION: 
 // In this view the user can add files to the current project
@@ -12,6 +13,7 @@ import { FilesService } from '../../../shared/data-services/files.service';
 })
 export class ProjectDetailComponent implements OnInit {
 
+	public project: IProject = {} as IProject;
 	public files: any[] = [];
 
 	constructor(
@@ -21,16 +23,16 @@ export class ProjectDetailComponent implements OnInit {
 
 	ngOnInit() {
 		this.route.params.subscribe(params => {
-			console.log("Edidting project with id: " + params.id );
+			console.log("Edidting project with id: " + params.id , params );
 			if ( params.id!='0' ) this.getFiles(params.id);
 		})
 	}
 
-	private getFiles(projectId:string) {
+	private getFiles(projectId: string): void {
 		this.fileCtrl.read(projectId).subscribe(
 			files => {
-			console.log("Files: ", files);
-			this.files = files;
+				console.log("Files: ", files);
+				this.files = files;
 			}, 
 			error => {
 				console.log(error)

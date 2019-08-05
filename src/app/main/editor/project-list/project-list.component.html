@@ -1,28 +1,21 @@
+<h2 class="page-header">My Active Projects</h2>
 
-<article>
-	<h2 class="page-header">My Active Projects</h2>
-	<div class="flex-container">
-		<div *ngFor="let project of projects" class="project-preview-container">			
-			<div class="project-preview" 
-				[ngStyle]="{'background-image': project.previewSrc }">
-			</div>
-			<div class="project-actions">
-				<a href="#" class="transparent-btn" [routerLink]="project.id">View Project</a>			
-			</div>
-			<div class="project-description">
-				<label>{{project.name}}</label> 
-				<br>
-				<p>{{project.description}}</p>
-			</div>
-			
+<div class="flex-container">
+	<div *ngFor="let project of projects" class="item-preview-container">
+		<div class="item-preview" [ngStyle]="{'background-image': project.previewSrc }">
 		</div>
-		<div class="project-preview-container" [routerLink]="0">
-			Create new project + 
+		<div class="item-actions">
+			<a href="#" class="transparent-btn" [routerLink]="[project.id]">View Project</a>
+		</div>
+		<div class="item-description">
+			<label>{{project.name}}</label>
+			<br>
+			<p>{{project.description}}</p>
 		</div>
 	</div>
-	
-	<ng-container *ngIf="showCreateForm">
-		<app-add-project (onClose)="toggleCreateProjectForm(false)"></app-add-project>	
-	</ng-container>
 
-</article>
+	<div class="item-preview-container" [routerLink]="0">
+		Create new project +
+	</div>
+</div>
+

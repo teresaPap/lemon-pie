@@ -17,9 +17,9 @@ export class ProjectEditComponent implements OnInit {
 		) { }
 
 	ngOnInit() {
-		this.route.params.subscribe( params => {
-			console.log("Edidting project with id: " + params.id);
-		})
+		// this.route.params.subscribe( params => {
+		// 	console.log("Edidting project with id: " + params.id);
+		// })
 	}
 
 	

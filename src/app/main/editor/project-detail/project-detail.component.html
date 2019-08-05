@@ -1,7 +1,25 @@
-<p>
-  project works!
-</p>
 
+<h2 class="page-header">Project name {{project.name}}</h2>
+
+<div class="flex-container">
+	<div *ngFor="let file of files" class="item-preview-container">
+		<div class="item-preview" [ngStyle]="{'background-image': project.previewSrc }">
+		</div>
+		<div class="item-actions">
+			<a href="#" class="transparent-btn" [routerLink]="'./edit'">Open Flow Editor</a>
+		</div>
+		<div class="item-description">
+			<label>{{file.name}}</label>
+			<br>
+			<p>{{file.description}}</p>
+		</div>
+
+	</div>
+	
+	<div class="item-preview-container" [routerLink]="0">
+		Create new project +
+	</div>
+</div>
 
 
 <ul>
@@ -11,3 +29,7 @@
 </ul>
 
 <button [routerLink]="'edit'">Edit this project</button>
+
+<!-- <ng-container *ngIf="showCreateForm"> -->
+	<app-add-project (onClose)="toggleCreateProjectForm(false)"></app-add-project>
+<!-- </ng-container> -->

@@ -4,9 +4,9 @@
 	(dropped)="onDrop($event)" 
 	[class.hovering]="isHovering">
 
-	<h4>Upload project files</h4>
+	<h4>{{promptText}}</h4>
 </div>
 
 <div *ngFor="let file of files">
-	<app-upload-task [file]="file"></app-upload-task>
+	<app-upload-task [file]="file" [uploadPath]="'blah'"></app-upload-task>
 </div>

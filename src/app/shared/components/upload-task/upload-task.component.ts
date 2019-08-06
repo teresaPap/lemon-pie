@@ -13,6 +13,7 @@ export class UploadTaskComponent implements OnInit {
 
 
 	@Input() file: File;
+	@Input() uploadPath: string;
 
 	public task: AngularFireUploadTask;
 
@@ -35,13 +36,13 @@ export class UploadTaskComponent implements OnInit {
 
 		// The storage path
 		// TODO: set the db path you want to use as the pic storage. Best practice is to design from now the db schema ypu will folllow
-		const path = `lemonpie-f5dba.firebaseio.com/test/${Date.now()}_${this.file.name}`;
+		// const path = `lemonpie-f5dba.firebaseio.com/test/${Date.now()}_${this.file.name}`;
 
 		// Reference to storage bucket
-		const ref = this.storage.ref(path);
+		const ref = this.storage.ref(this.uploadPath);
 
 		// The main task
-		this.task = this.storage.upload(path, this.file);
+		this.task = this.storage.upload(this.uploadPath, this.file);
 
 		// Progress monitoring
 		this.percentage = this.task.percentageChanges();
@@ -51,8 +52,8 @@ export class UploadTaskComponent implements OnInit {
 			// The file's download URL
 			finalize( async () => {
 				this.downloadURL = await ref.getDownloadURL().toPromise();
-
-				this.db.collection('files').add({ downloadURL: this.downloadURL, path });
+				let uploadPath = this.uploadPath;
+				this.db.collection('files').add({ downloadURL: this.downloadURL, uploadPath });
 			}),
 		);
 	}

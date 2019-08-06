@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
-import { Observable, forkJoin, from } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
 
 

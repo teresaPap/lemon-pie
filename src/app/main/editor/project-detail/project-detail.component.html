@@ -31,8 +31,4 @@
 	</div>
 </div>
 
-<button [routerLink]="'edit'">Edit this project</button>
-
-<!-- <ng-container *ngIf="showCreateForm"> -->
-	<app-add-project (onClose)="toggleCreateProjectForm(false)"></app-add-project>
-<!-- </ng-container> -->
+<app-file-uploader [promptText]="'Upload more files'"></app-file-uploader>

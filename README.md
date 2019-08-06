@@ -16,6 +16,7 @@ Open terminal to the project root folder and run
 
 
 <!---
+
 ## Misc
 
 ### Git/env config
@@ -27,4 +28,8 @@ Open terminal to the project root folder and run
 
 ### Heroku 
 TODO: add the links here - if applicable 
+
+### Netlify
+[link](https://www.netlify.com/)
+
 --->

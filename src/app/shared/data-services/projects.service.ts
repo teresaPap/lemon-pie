@@ -83,6 +83,12 @@ export class ProjectsService {
 		return action;
 	}
 
+	public readSingle(projectId:string): Observable<firebase.firestore.DocumentSnapshot> {
+		const action = this.firestore.doc(`projects/${projectId}`).get();
+		return action;
+
+	}
+
 	private getFile( ref ) {
 		return this.firestore.doc( ref ).get().pipe(
 			map( file => file.data() )

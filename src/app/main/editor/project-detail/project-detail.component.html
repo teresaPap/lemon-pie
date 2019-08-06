@@ -1,32 +1,35 @@
 
-<h2 class="page-header">Project name {{project.name}}</h2>
+<!-- <h2 class="page-header">page header</h2> -->
+
+<h3>Project details</h3>
+
+<!-- <form > -->
+	<div class="form-group">
+		<label>Name</label>
+		<input [value]="project.name">
+	</div>
+	<div class="form-group">
+		<label>Description</label>
+		<textarea [value]="project.description"></textarea>
+	</div>
+<!-- </form> -->
+	
+
 
 <div class="flex-container">
 	<div *ngFor="let file of files" class="item-preview-container">
-		<div class="item-preview" [ngStyle]="{'background-image': project.previewSrc }">
+		<div class="item-preview" [ngStyle]="{'background-image': 'url(' +file.downloadURL+ ')' }">
 		</div>
 		<div class="item-actions">
 			<a href="#" class="transparent-btn" [routerLink]="'./edit'">Open Flow Editor</a>
 		</div>
-		<div class="item-description">
+		<!-- <div class="item-description">
 			<label>{{file.name}}</label>
 			<br>
 			<p>{{file.description}}</p>
-		</div>
-
-	</div>
-	
-	<div class="item-preview-container" [routerLink]="0">
-		Create new project +
+		</div> -->
 	</div>
 </div>
-
-
-<ul>
-	<li *ngFor="let file of files">
-		{{file.id}}
-	</li>
-</ul>
 
 <button [routerLink]="'edit'">Edit this project</button>
 

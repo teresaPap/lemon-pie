@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FilesService } from '../../../shared/data-services/files.service';
 import { IProject } from '../../../shared/interfaces/IProject';
+import { ProjectsService } from '../../../shared/data-services/projects.service';
+import { switchMap, tap } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
+import { IFile } from '../../../shared/interfaces/IFile';
 
 // PAGE DESCRIPTION: 
 // In this view the user can add files to the current project
@@ -14,29 +18,31 @@ import { IProject } from '../../../shared/interfaces/IProject';
 export class ProjectDetailComponent implements OnInit {
 
 	public project: IProject = {} as IProject;
-	public files: any[] = [];
+	public files: IFile[] = [];
 
 	constructor(
 		private route: ActivatedRoute,
-		private fileCtrl: FilesService
+		private fileCtrl: FilesService,
+		private projectCtrl: ProjectsService
 	) { }
 
 	ngOnInit() {
-		this.route.params.subscribe(params => {
-			console.log("Edidting project with id: " + params.id , params );
-			if ( params.id!='0' ) this.getFiles(params.id);
+		this.route.params.pipe(
+			switchMap( params => {
+				let dataToGet: [ Observable<any>, Observable<IFile[]>? ] = [ this.projectCtrl.readSingle(params.id)];
+				if ( params.id!='0' ) dataToGet.push(this.getFiles(params.id))
+				return forkJoin(dataToGet);
+			})
+		).subscribe( res => {
+			console.log("Edidting project with id: " , res );
+			this.project = res[0].data();
+			if (res[1]) this.files = res[1];
+
 		})
 	}
 
-	private getFiles(projectId: string): void {
-		this.fileCtrl.read(projectId).subscribe(
-			files => {
-				console.log("Files: ", files);
-				this.files = files;
-			}, 
-			error => {
-				console.log(error)
-		})
+	private getFiles(projectId: string) {
+		return this.fileCtrl.read(projectId);
 	}
 
 

@@ -14,6 +14,8 @@ Open terminal to the project root folder and run
 - `npm run build`
 - `firebase deploy --only hosting`. Dist folder will be deployed to this [url](https://lemonpie-f5dba.firebaseapp.com)
 
+
+<!---
 ## Misc
 
 ### Git/env config
@@ -25,3 +27,4 @@ Open terminal to the project root folder and run
 
 ### Heroku 
 TODO: add the links here - if applicable 
+--->

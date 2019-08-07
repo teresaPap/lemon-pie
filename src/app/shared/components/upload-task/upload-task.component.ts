@@ -4,13 +4,22 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
 
+// COMPONENT DESCRIPTION: 
+// UploadTaskComponent takes as an Input a file and a db path 
+// where this file should be stored.
+// Then, it calls fileCtrl.upload() to do the actual file upload
+// When the upload is completed (observable on subscribe): 
+// - parent component should (?) be notified
+// - a small preview of the uploaded file should (?) be shown 
+// - πρέπει να ειδοποιήσω τον parent component με ενα string που περιέχει το file preview.
+
+
 @Component({
 	selector: 'app-upload-task',
 	templateUrl: './upload-task.component.html',
 	styleUrls: ['./upload-task.component.scss']
 })
 export class UploadTaskComponent implements OnInit {
-
 
 	@Input() file: File;
 	@Input() uploadPath: string;
@@ -30,7 +39,6 @@ export class UploadTaskComponent implements OnInit {
 		console.log('hello UploadTaskComponent! ' );
 		if (this.file) this.startUpload();
 	}
-
 
 	startUpload() {
 

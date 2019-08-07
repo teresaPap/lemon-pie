@@ -18,7 +18,7 @@ export class ProjectsService {
 	) { }
 
 
-	public create(project: IProject): Observable<any> {
+	public create(project: IProject): Observable<void> {
 		const projectsCollectionRef: AngularFirestoreCollection = this.firestore.collection('projects');
 		const userIdDocumentRef: AngularFirestoreDocument = this.firestore.doc(`users/${this.uid}`);
 

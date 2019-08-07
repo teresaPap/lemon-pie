@@ -8,4 +8,5 @@ export interface IProject {
 	// added afterwards
 	preview?: Observable<firebase.firestore.DocumentData>;
 	previewSrc?: string;
+	id?: string;
 }

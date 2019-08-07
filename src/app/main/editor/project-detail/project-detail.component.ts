@@ -30,15 +30,18 @@ export class ProjectDetailComponent implements OnInit {
 		this.route.params.pipe(
 			switchMap( params => {
 				let dataToGet: [ Observable<any>, Observable<IFile[]>? ] = [ this.projectCtrl.readSingle(params.id)];
-				if ( params.id!='0' ) dataToGet.push(this.getFiles(params.id))
+				if ( params.id!='0' ) {
+					this.project.id = params.id;
+					dataToGet.push(this.getFiles(params.id));
+				}
 				return forkJoin(dataToGet);
+			}),
+			tap( res => {
+				this.project = { ...this.project , ...res[0].data() };
+				console.log("Editing project: " , this.project );
+				if (res[1]) this.files = res[1];
 			})
-		).subscribe( res => {
-			console.log("Edidting project with id: " , res );
-			this.project = res[0].data();
-			if (res[1]) this.files = res[1];
-
-		})
+		).subscribe();
 	}
 
 	private getFiles(projectId: string) {

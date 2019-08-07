@@ -59,20 +59,15 @@ export class ProjectsService {
 			// }),
 			// Map the DocumentData to the actual json data and return them to the component
 			map( (projects: firebase.firestore.DocumentData) => {
-				console.log(projects);
 				const projectData = [];
-
 				projects.forEach( documentSnapsot =>
 					projectData.push({ id: documentSnapsot.id, ...documentSnapsot.data() })
 				);
-				console.log(projectData);
-
 				return projectData;
 			}), 
 			map( (projectData: IProject[]) => {
 				projectData.forEach( elem => {
 					if (elem.files) {
-						console.log('has files');
 						elem.preview = this.getFile( elem.files[0] )
 					}
 				})

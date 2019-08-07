@@ -1,10 +1,12 @@
+<h4>{{promptText}}</h4>
+
 <div class="dropzone" 
 	dropzone 
 	(hovered)="toggleHover($event)" 
 	(dropped)="onDrop($event)" 
 	[class.hovering]="isHovering">
 
-	<h4>{{promptText}}</h4>
+	<h4>Drop files here</h4>
 </div>
 
 <div *ngFor="let file of files">

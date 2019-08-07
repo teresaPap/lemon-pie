@@ -15,6 +15,8 @@ import { Component, OnInit, Input } from '@angular/core';
 // User has the chance to upload as many files as they want. 
 // User clicks a dedicated button to exit/close the file uploader.
 
+// TODO: convert this component to a modal 
+
 @Component({
 	selector: 'app-file-uploader',
 	templateUrl: './file-uploader.component.html',
@@ -22,8 +24,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class FileUploaderComponent implements OnInit {
 	
-	@Input() promptText:string;
-	@Input() uploadPath:string;
+	@Input() promptText: string;
+	@Input() uploadPath: string;
 
 
 	public isHovering: boolean;

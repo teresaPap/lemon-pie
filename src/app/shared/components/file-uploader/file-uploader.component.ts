@@ -34,7 +34,9 @@ export class FileUploaderComponent implements OnInit {
 
 	constructor() { }
 
-	ngOnInit(): void { }
+	ngOnInit(): void { 
+		console.log('uploadpath: '+this.uploadPath);
+	}
 
 	toggleHover(event: boolean) {
 		this.isHovering = event;

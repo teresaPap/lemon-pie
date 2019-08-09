@@ -16,9 +16,9 @@ export class FilesService {
 
 
 	
-	public uploadFile( file, projectId ) {
+	public uploadFile( file, projectId, fileName ) {
 
-		const action = this.storeFile(file, projectId)
+		const action = this.storeFile(file, projectId, fileName)
 			.subscribe( downloadURL => {
 				let fileData = {
 					name: file.name,
@@ -31,9 +31,9 @@ export class FilesService {
 	}
 
 
-	private storeFile(file:File, projectId:string): Observable<string> {
+	private storeFile(file:File, projectId:string, fileName:string ): Observable<string> {
 
-		const action = this.fireStorage.upload( `files/${projectId}`, file )
+		const action = this.fireStorage.upload( `files-by-project/${projectId}`, file )
 		
 		// .then(
 		// 	res => {

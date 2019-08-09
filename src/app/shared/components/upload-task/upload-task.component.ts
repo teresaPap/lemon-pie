@@ -45,9 +45,9 @@ export class UploadTaskComponent implements OnInit {
 	startUpload() {
 		console.log('file to upload', this.file);
 
-		const fileName = this.file.lastModified+this.file.name;
+		const fileName = `${this.file.lastModified}_${this.file.name}`;
 
-		this.fileCtrl.uploadFile( this.file, 'test' )
+		this.fileCtrl.uploadFile( this.file, `${this.uploadPath}/${fileName}` , fileName )
 		// .subscribe(
 		// 	docReference => console.log("\nUpload completed successfully.\nPlease find the uploaded file in the following link:\n", docReference ), 
 		// 	error => console.warn("Upload failed.", error)

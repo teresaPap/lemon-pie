@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, forkJoin, from } from 'rxjs';
+import { Observable, forkJoin, from, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AuthService } from '../../core/services/auth.service';
@@ -50,13 +50,6 @@ export class ProjectsService {
 				});
 				return forkJoin(referencesToGet);
 			}),
-			// map( (projects: firebase.firestore.DocumentData) => {
-			// 	const projectData = [];
-			// 	projects.forEach(documentSnapsot =>
-			// 		projectData.push(documentSnapsot.data())
-			// 	);
-			// 	return projectData;
-			// }),
 			// Map the DocumentData to the actual json data and return them to the component
 			map( (projects: firebase.firestore.DocumentData) => {
 				const projectData = [];
@@ -67,9 +60,8 @@ export class ProjectsService {
 			}), 
 			map( (projectData: IProject[]) => {
 				projectData.forEach( elem => {
-					if (elem.files) {
+					if (elem.files && elem.files.length ) 
 						elem.preview = this.getFile( elem.files[0] )
-					}
 				})
 				return projectData;
 			})	

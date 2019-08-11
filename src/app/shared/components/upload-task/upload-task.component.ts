@@ -43,23 +43,40 @@ export class UploadTaskComponent implements OnInit {
 	}
 
 	startUpload() {
-		console.log('file to upload', this.file);
 
 		const fileName = `${this.file.lastModified}_${this.file.name}`;
 
-		this.fileCtrl.uploadFile( this.file, `${this.uploadPath}/${fileName}` , fileName )
-		// .subscribe(
-		// 	docReference => console.log("\nUpload completed successfully.\nPlease find the uploaded file in the following link:\n", docReference ), 
-		// 	error => console.warn("Upload failed.", error)
-		// )
+		this.fileCtrl.saveFileLinkedToProject( this.file, this.uploadPath , fileName ).subscribe(
+			() => console.log(`File ${fileName} was saved`), 
+			err => console.warn(err)
+		)
+
+
+	}
 
 
 
-		// // The storage path
-		// // TODO: set the db path you want to use as the pic storage. Best practice is to design from now the db schema ypu will folllow
-		// // const path = `lemonpie-f5dba.firebaseio.com/test/${Date.now()}_${this.file.name}`;
 
-		// // Reference to storage bucket
+
+
+
+	isActive(snapshot) {
+		return snapshot.state === 'running' && snapshot.bytesTransferred < snapshot.totalBytes;
+	}
+
+}
+
+
+
+
+
+
+
+		// The storage path
+		// TODO: set the db path you want to use as the pic storage. Best practice is to design from now the db schema ypu will folllow
+		// const path = `lemonpie-f5dba.firebaseio.com/test/${Date.now()}_${this.file.name}`;
+
+		// Reference to storage bucket
 		// const ref = this.storage.ref(this.uploadPath);
 
 		// // The main task
@@ -77,10 +94,3 @@ export class UploadTaskComponent implements OnInit {
 		// 		this.db.collection('files').add({ downloadURL: this.downloadURL, uploadPath });
 		// 	}),
 		// );
-	}
-
-	isActive(snapshot) {
-		return snapshot.state === 'running' && snapshot.bytesTransferred < snapshot.totalBytes;
-	}
-
-}

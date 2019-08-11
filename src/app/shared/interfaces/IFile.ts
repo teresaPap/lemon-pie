@@ -3,4 +3,5 @@ export interface IFile {
 	path: string;
 
 	// TODO: declare more fields like areas[], linkedFiles[] etc
+	name?: string;
 }

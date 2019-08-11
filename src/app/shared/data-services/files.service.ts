@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { map, switchMap, tap, finalize } from 'rxjs/operators';
+import { map, switchMap, tap, finalize, retry, catchError, withLatestFrom } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
-import { Observable, forkJoin, from } from 'rxjs';
+import { Observable, forkJoin, from, of } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { IFile } from '../interfaces/IFile';
 
 
 @Injectable()
@@ -16,39 +17,20 @@ export class FilesService {
 
 
 	
-	public uploadFile( file, projectId, fileName ) {
+	public saveFileLinkedToProject( file:File, projectId:string, fileName:string ) {
 
-		const action = this.storeFile(file, projectId, fileName)
-			.subscribe( downloadURL => {
-				let fileData = {
-					name: file.name,
-					path: 'blah'
-				};
-				this.create( {...fileData, downloadURL:downloadURL }, projectId)
-			}
-		)
-		return action;
+		// Store the file in firebase storage
+		const storeAction = this.storeFile( file, projectId, fileName ); 
+
+		// Create file document in firestore and this file document ref to projectId
+		const createAction = storeAction.pipe(
+			switchMap( filedata => this.create( filedata, projectId ) ));
+
+		return createAction;
 	}
 
 
-	private storeFile(file:File, projectId:string, fileName:string ): Observable<string> {
-
-		const action = this.fireStorage.upload( `files-by-project/${projectId}`, file )
-		
-		// .then(
-		// 	res => {
-		// 		console.log('res.downloadURL: '+ res );
-		// 		return res.downloadURL 
-		// 	}
-		// );
-
-		return from(action).pipe(
-			switchMap => 
-				this.fireStorage.ref(`files/${projectId}`).getDownloadURL()
-		);
-	}
-
-	private create( fileData , projectId:string ) {
+	public create( fileData: IFile , projectId: string ) {
 		const filesCollectionRef: AngularFirestoreCollection = this.firestore.collection('files');
 		const projectIdDocumentRef: AngularFirestoreDocument = this.firestore.doc(`projects/${projectId}`);
 
@@ -66,16 +48,11 @@ export class FilesService {
 	}
 
 
-	
-
-
-	// works
-
 	public read(projectId:string): Observable<any[]> {
 		const action = this.firestore.doc(`projects/${projectId}`).get().pipe(
 			// Read files[] from given projectId
 			map((project: firebase.firestore.DocumentData) => {
-				if (project.data().files) 
+				if ( project.data().files ) 
 					return project.data().files;
 				else 
 					// TODO: handle no projects error! Escape pipe and return empty []
@@ -101,6 +78,41 @@ export class FilesService {
 
 		return action;
 	}
+
+
+	private storeFile( file:File, projectId:string, fileName:string ): Observable<IFile> {
+
+		const uploadPath = `files/${projectId}/${fileName}`;
+
+		// Reference to storage bucket
+		const ref = this.fireStorage.ref(uploadPath);
+		
+		// Main task
+		const uploadTask = this.fireStorage.upload( uploadPath, file );
+		
+		// NOTE: comment in if needed
+		// Progress monitoring 
+		// this.percentage = this.uploadTask.percentageChanges();
+
+		const monitorSnapshotAction = uploadTask.snapshotChanges().pipe(
+			withLatestFrom( ref.getDownloadURL() ),
+			map( res => {
+				// console.log('\ndownloadURL: ', res[1] );
+				// NOTE: res[0] is an upload task progress object, res[1] is the returned string from withLatestFrom rxjs opperator. 
+				return res[1];
+			}), 
+			map( downloadUrl => {
+				const fileData: IFile = {
+					name: fileName,
+					path: uploadPath,
+					downloadURL: downloadUrl 
+				};
+				return fileData;
+			})
+		)
+		return monitorSnapshotAction;
+	}
+
 
 }
 

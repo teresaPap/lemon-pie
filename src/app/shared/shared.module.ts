@@ -10,6 +10,7 @@ import { UploadTaskComponent } from './components/upload-task/upload-task.compon
 import { ProjectsService } from './data-services/projects.service';
 import { AddProjectComponent } from './components/add-project/add-project.component';
 import { FilesService } from './data-services/files.service';
+import { StorageService } from './services/storage.service';
 
 @NgModule({
     declarations: [ 
@@ -36,7 +37,8 @@ import { FilesService } from './data-services/files.service';
     ],
     providers: [ 
 		ProjectsService,
-		FilesService
+		FilesService,
+		StorageService
     ]
 })
 export class SharedModule { }

@@ -51,15 +51,10 @@ export class UploadTaskComponent implements OnInit {
 			err => console.warn(err)
 		)
 
-
 	}
 
 
-
-
-
-
-
+	
 	isActive(snapshot) {
 		return snapshot.state === 'running' && snapshot.bytesTransferred < snapshot.totalBytes;
 	}

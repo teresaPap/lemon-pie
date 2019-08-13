@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { map, switchMap, tap, finalize, retry, catchError, withLatestFrom } from 'rxjs/operators';
+import { map, switchMap, tap, finalize, retry, catchError, withLatestFrom, publishLast } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
 import { Observable, forkJoin, from, of } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
@@ -17,7 +17,7 @@ export class FilesService {
 
 
 	
-	public saveFileLinkedToProject( file:File, projectId:string, fileName:string ) {
+	public saveFileLinkedToProject( file:File, projectId:string, fileName:string ): Observable<void> {
 
 		// Store the file in firebase storage
 		const storeAction = this.storeFile( file, projectId, fileName ); 

@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "engines": {
-	"node": "10.15.0",
-	"npm": "6.5.0"
+    "node": "10.15.0",
+    "npm": "6.5.0"
   },
   "scripts": {
     "ng": "ng",
@@ -16,6 +16,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-devkit/build-angular": "^0.802.2",
     "@angular/animations": "^5.2.0",
     "@angular/common": "^5.2.0",
     "@angular/compiler": "^5.2.0",
@@ -35,8 +36,7 @@
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.13.0",
-    "@angular/cli": "^7.3.9",
+    "@angular/cli": "^8.1.0",
     "@angular/compiler-cli": "^7.2.15",
     "@angular/language-service": "^5.2.0",
     "@types/jasmine": "~2.8.3",

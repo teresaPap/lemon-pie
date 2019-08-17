@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { StorageService } from '../../../shared/services/storage.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IFile } from '../../../shared/interfaces/IFile';
@@ -12,33 +12,63 @@ import { IFile } from '../../../shared/interfaces/IFile';
 	selector: 'app-project-edit',
 	templateUrl: './project-edit.component.html'
 })
-export class ProjectEditComponent implements OnInit {
-
-	// @ViewChild('editor') editor: ElementRef ; 
+export class ProjectEditComponent implements AfterViewInit {
 
 	public file: IFile;
 
-	constructor( 
+	@ViewChild('canvas', { static: false }) public canvas: ElementRef;
+	private cx: CanvasRenderingContext2D;
+	private editor;
+
+	constructor(
 		public storage: StorageService,
 		public router: Router,
 		private route: ActivatedRoute
-		) { }
+	) { }
 
-	ngOnInit() {
+	// ngOnInit() {
+	ngAfterViewInit() {
+		// get the context
+		const editor: HTMLCanvasElement = this.canvas.nativeElement;
+		this.cx = editor.getContext('2d');
+		
+		
+		// set some default properties about the line
+		this.cx.lineWidth = 3;
+		this.cx.lineCap = 'round';
+		this.cx.strokeStyle = '#555555';
+
+
 		this.route.queryParamMap.subscribe(res => {
-			this.file = this.storage.load( res.get('id') )
-			console.log(res.get('id'), this.file );
+			this.file = this.storage.load(res.get('id'))
+			console.log(res.get('id'), this.file);
+			// set the width and height
+			this.setSize(this.file.downloadURL)
 			this.setBackground(this.file.downloadURL)
 		})
 	}
 
 	// #region - Canvas Manipulation Functions
 
-	private setBackground(url:string) {
-		
-		// const ctx = this.editor.getContext('2d');
-		// ctx.setBackground(url);
+	private setSize(url) {
+
+		const img = new Image();
+		img.addEventListener("load", () =>  {
+			// this.editor.width = img.naturalWidth; 
+			// this.editor.height = img.naturalHeight;
+		});
+		img.src = url;
 	}
+
+	private setBackground(url: string) {
+		// create img element
+		const img = new Image();
+		img.src = url;
+
+		//set this img as a canvas background
+		this.cx.drawImage(img, 0, 0);
+	}
+
 
 
 

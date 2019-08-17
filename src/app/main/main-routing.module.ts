@@ -3,9 +3,9 @@ import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../core/guards/auth.guard';
-import { ProjectListComponent } from './editor/project-list/project-list.component';
-import { ProjectDetailComponent } from './editor/project-detail/project-detail.component';
-import { ProjectEditComponent } from './editor/project-edit/project-edit.component';
+import { ProjectListComponent } from './projects/project-list/project-list.component';
+import { ProjectDetailComponent } from './projects/project-detail/project-detail.component';
+import { ProjectEditComponent } from './projects/project-edit/project-edit.component';
 
 
 const routes : Routes = [

@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { fromEvent } from 'rxjs';
+import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { fromEvent, Subscription } from 'rxjs';
 import { switchMap, takeUntil, pairwise } from 'rxjs/operators';
 
 @Component({
@@ -7,7 +7,7 @@ import { switchMap, takeUntil, pairwise } from 'rxjs/operators';
 	templateUrl: './editor.component.html',
 	styleUrls: ['./editor.component.scss']
 })
-export class EditorComponent implements AfterViewInit, OnInit {
+export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 
 	@Input() imgUrl: string;
 
@@ -26,7 +26,7 @@ export class EditorComponent implements AfterViewInit, OnInit {
 		this.editor = this.canvas.nativeElement;
 		this.cx = this.editor.getContext('2d');
 
-		this.setBackground(this.imgUrl);
+		this.setBackground(this.imgUrl); 
 
 
 		// #region - https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
@@ -38,7 +38,10 @@ export class EditorComponent implements AfterViewInit, OnInit {
 		// we'll implement this method to start capturing mouse events
 		this.captureEvents();
 		// #endregion
+	}
 
+	ngOnDestroy(): void {
+		// TODO: unsubscribe ??
 	}
 
 	// #region - https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
@@ -107,17 +110,18 @@ export class EditorComponent implements AfterViewInit, OnInit {
 
 	// #endregion
 
-	private setBackground(url): void {
+	private setBackground(url): Subscription {
 		const img = new Image();
 		img.src = url;
 		// read img
-		img.addEventListener('load', () => {
-			// resize canvas to the image size
-			this.editor.height = img.naturalHeight;
-			this.editor.width = img.naturalWidth;
-			// display the image
-			this.cx.drawImage(img, 0, 0);
-		});
+		return fromEvent(img, 'load').subscribe(
+			() => {
+				// resize canvas to the image size
+				this.editor.height = img.naturalHeight;
+				this.editor.width = img.naturalWidth;
+				// display the image
+				this.cx.drawImage(img, 0, 0);
+			});
 	}
 
 }

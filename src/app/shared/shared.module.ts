@@ -11,6 +11,7 @@ import { ProjectsService } from './data-services/projects.service';
 import { AddProjectComponent } from './components/add-project/add-project.component';
 import { FilesService } from './data-services/files.service';
 import { StorageService } from './services/storage.service';
+import { EditorComponent } from './components/editor/editor.component';
 
 @NgModule({
     declarations: [ 
@@ -19,6 +20,7 @@ import { StorageService } from './services/storage.service';
 		FileUploaderComponent, 
 		UploadTaskComponent, 
 		AddProjectComponent, 
+		EditorComponent, 
     ],
     imports: [ 
         RouterModule,
@@ -33,7 +35,8 @@ import { StorageService } from './services/storage.service';
         
 		NavComponent,
 		FileUploaderComponent,
-		AddProjectComponent
+		AddProjectComponent,
+		EditorComponent
     ],
     providers: [ 
 		ProjectsService,

@@ -1,7 +1,11 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
-import { fromEvent, Subscription } from 'rxjs';
-import { switchMap, takeUntil, pairwise } from 'rxjs/operators';
+import { fromEvent, Subscription, pipe } from 'rxjs';
+import { switchMap, takeUntil, pairwise, tap, takeWhile } from 'rxjs/operators';
 
+interface ICanvasPosition {
+	x: number; 
+	y: number;
+}
 @Component({
 	selector: 'app-editor',
 	templateUrl: './editor.component.html',
@@ -28,84 +32,52 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 
 		this.setBackground(this.imgUrl); 
 
-
-		// #region - https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
-		// set some default properties about the line
-		this.cx.lineWidth = 3;
-		this.cx.lineCap = 'round';
-		this.cx.strokeStyle = '#000';
-
-		// we'll implement this method to start capturing mouse events
+		// Start watching for canvas events
 		this.captureEvents();
-		// #endregion
 	}
 
 	ngOnDestroy(): void {
 		// TODO: unsubscribe ??
 	}
 
-	// #region - https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
+	// #region - Canvas events handling - see also https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
 
 	private captureEvents() {
-		const canvasEl = this.editor;
-		// this will capture all mousedown events from the canvas element
-		fromEvent(canvasEl, 'mousedown')
-			.pipe(
-				switchMap((e) => {
-					// after a mouse down, we'll record all mouse moves
-					return fromEvent(canvasEl, 'mousemove')
-						.pipe(
-							// we'll stop (and unsubscribe) once the user releases the mouse
-							// this will trigger a 'mouseup' event    
-							takeUntil(fromEvent(canvasEl, 'mouseup')),
-							// we'll also stop (and unsubscribe) once the mouse leaves the canvas (mouseleave event)
-							takeUntil(fromEvent(canvasEl, 'mouseleave')),
-							// pairwise lets us get the previous value to draw a line from
-							// the previous point to the current point    
-							pairwise()
-						)
-				})
-			)
-			.subscribe((res: [MouseEvent, MouseEvent]) => {
-				const rect = canvasEl.getBoundingClientRect();
+		
+		const mousedown$ = fromEvent(this.editor, 'mousedown');
+		const mouseup$ = fromEvent(this.editor, 'mouseup');
+		// const mousemove$ = fromEvent(this.editor, 'mousemove');
+		// const mouseleave$ = fromEvent(this.editor, 'mouseleave');
 
-				// previous and current position with the offset
-				const prevPos = {
-					x: res[0].clientX - rect.left,
-					y: res[0].clientY - rect.top
-				};
+		mousedown$.pipe(
+			switchMap(() => {
+				return mouseup$;
+			}),
+			// use pairwise to form the response like "[prev,current] position" 
+			pairwise()
+		).subscribe((res: [MouseEvent, MouseEvent]) => {
+			const rect = this.editor.getBoundingClientRect();
 
-				const currentPos = {
-					x: res[1].clientX - rect.left,
-					y: res[1].clientY - rect.top
-				};
+			console.log(res, rect);
+			// previous and current position with the offset
+			const prevPos: ICanvasPosition = {
+				x: res[0].clientX - rect.left,
+				y: res[0].clientY - rect.top
+			};
 
-				// this method we'll implement soon to do the actual drawing
-				this.drawOnCanvas(prevPos, currentPos);
-			});
+			const currentPos: ICanvasPosition = {
+				x: res[1].clientX - rect.left,
+				y: res[1].clientY - rect.top
+			};
+			this.drawRectangle(prevPos, currentPos)
+		})
 	}
 
-	private drawOnCanvas(
-		prevPos: { x: number, y: number },
-		currentPos: { x: number, y: number }
-	) {
-		// incase the context is not set
-		if (!this.cx) { return; }
+	private drawRectangle( prevPos:ICanvasPosition , currentPos:ICanvasPosition  ) {
+		console.log('prevPos', prevPos, '\ncurrentPos', currentPos);
 
-		// start our drawing path
-		this.cx.beginPath();
-
-		// we're drawing lines so we need a previous position
-		if (prevPos) {
-			// sets the start point
-			this.cx.moveTo(prevPos.x, prevPos.y); // from
-
-			// draws a line from the start pos until the current position
-			this.cx.lineTo(currentPos.x, currentPos.y);
-
-			// strokes the current path with the styles we set earlier
-			this.cx.stroke();
-		}
+		this.cx.rect(20, 20, 150, 100);
+		this.cx.stroke();
 	}
 
 	// #endregion

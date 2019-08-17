@@ -12,7 +12,7 @@ export class EditorComponent implements AfterViewInit, OnInit {
 	
 	@ViewChild('canvas', { static: false }) public canvas: ElementRef;
 	private cx: CanvasRenderingContext2D;
-	private editor;
+	private editor: HTMLCanvasElement;
 
 	constructor() { }
 
@@ -23,9 +23,8 @@ export class EditorComponent implements AfterViewInit, OnInit {
 	ngAfterViewInit(): void {
 
 		// get the context
-		const editor: HTMLCanvasElement = this.canvas.nativeElement;
-		this.cx = editor.getContext('2d');
-		
+		this.editor = this.canvas.nativeElement;
+		this.cx = this.editor.getContext('2d');
 		
 		// set some default properties about the line
 		this.cx.lineWidth = 3;
@@ -33,18 +32,29 @@ export class EditorComponent implements AfterViewInit, OnInit {
 		this.cx.strokeStyle = '#555555';
 
 		// set the width and height
-		this.setSize(this.imgUrl)
-		this.setBackground(this.imgUrl)
+		// TODO: Refactor!
+		this.setSize(this.imgUrl).then(
+			res => {
+				console.log('res' , res);
+			}
+		);		
+
 	}
 
-	private setSize(url) {
+	private async setSize(url) {
 
 		const img = new Image();
-		img.addEventListener("load", () =>  {
-			// this.editor.width = img.naturalWidth; 
-			// this.editor.height = img.naturalHeight;
-		});
 		img.src = url;
+		return await img.addEventListener('load', (e) =>  {
+			console.log('image size: ' + img.naturalHeight +'x'+ img.naturalWidth);
+
+			this.editor.height = img.naturalHeight;
+			this.editor.width = img.naturalWidth;
+		
+			this.setBackground(this.imgUrl);
+		});
+		
+		
 	}
 
 	private setBackground(url: string) {

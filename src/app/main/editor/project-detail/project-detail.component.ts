@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FilesService } from '../../../shared/data-services/files.service';
 import { IProject } from '../../../shared/interfaces/IProject';
 import { ProjectsService } from '../../../shared/data-services/projects.service';
 import { switchMap, tap } from 'rxjs/operators';
 import { forkJoin, Observable } from 'rxjs';
 import { IFile } from '../../../shared/interfaces/IFile';
+import { StorageService } from '../../../shared/services/storage.service';
 
 // PAGE DESCRIPTION: 
 // In this view the user can add files to the current project
@@ -21,9 +22,11 @@ export class ProjectDetailComponent implements OnInit {
 	public files: IFile[] = [];
 
 	constructor(
+		public storage: StorageService,
+		public router: Router, 
 		private route: ActivatedRoute,
 		private fileCtrl: FilesService,
-		private projectCtrl: ProjectsService
+		private projectCtrl: ProjectsService,
 	) { }
 
 	ngOnInit() {
@@ -40,10 +43,17 @@ export class ProjectDetailComponent implements OnInit {
 				this.project = { ...this.project , ...res[0].data() };
 				console.log("Editing project: " , this.project );
 				if (res[1]) this.files = res[1];
+				console.log(this.files);
 			})
 		).subscribe();
 	}
 
+	public navToEdit(file: IFile) {
+		this.storage.store( file.id , file);
+		// this.router.navigate( ['/edit1'], {relativeTo: this.route} ); //, { queryParams: [ {fileId: file.id} ] ,  );
+	}
+
+	
 	private getFiles(projectId: string) {
 		return this.fileCtrl.read(projectId);
 	}

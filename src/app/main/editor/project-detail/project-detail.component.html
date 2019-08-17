@@ -21,7 +21,7 @@
 		<div class="item-preview" [ngStyle]="{'background-image': 'url(' +file.downloadURL+ ')' }">
 		</div>
 		<div class="item-actions">
-			<a href="#" class="transparent-btn" [routerLink]="'./edit'">Open Flow Editor</a>
+			<a href="#" class="transparent-btn" (click)="navToEdit(file)" [routerLink]="['edit']" [queryParams]="{id: file.id}" >Open Flow Editor</a>
 		</div>
 		<!-- <div class="item-description">
 			<label>{{file.name}}</label>

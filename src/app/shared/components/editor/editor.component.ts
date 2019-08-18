@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
-import { fromEvent, Subscription, pipe } from 'rxjs';
-import { switchMap, takeUntil, pairwise, tap, takeWhile } from 'rxjs/operators';
+import { fromEvent, Subscription } from 'rxjs';
+import { switchMap, takeUntil, pairwise, tap } from 'rxjs/operators';
 
 interface ICanvasPosition {
-	x: number; 
+	x: number;
 	y: number;
 }
 @Component({
@@ -30,7 +30,9 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 		this.editor = this.canvas.nativeElement;
 		this.cx = this.editor.getContext('2d');
 
-		this.setBackground(this.imgUrl); 
+		// set up the canvas 
+		this.setBackground(this.imgUrl);
+		this.setStrokeStyle(); // TODO: BUG - this doesn't work here. It would work inside drawRectangle() 
 
 		// Start watching for canvas events
 		this.captureEvents();
@@ -40,18 +42,22 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 		// TODO: unsubscribe ??
 	}
 
+	
 	// #region - Canvas events handling - see also https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
 
 	private captureEvents() {
-		
+
 		const mousedown$ = fromEvent(this.editor, 'mousedown');
 		const mouseup$ = fromEvent(this.editor, 'mouseup');
-		// const mousemove$ = fromEvent(this.editor, 'mousemove');
-		// const mouseleave$ = fromEvent(this.editor, 'mouseleave');
+		const mousemove$ = fromEvent(this.editor, 'mousemove');
+		const mouseleave$ = fromEvent(this.editor, 'mouseleave');
 
 		mousedown$.pipe(
 			switchMap(() => {
-				return mouseup$;
+				return mousemove$.pipe(
+					takeUntil(mouseup$),
+					takeUntil(mouseleave$)
+				);
 			}),
 			// use pairwise to form the response like "[prev,current] position" 
 			pairwise()
@@ -73,14 +79,17 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 		})
 	}
 
-	private drawRectangle( prevPos:ICanvasPosition , currentPos:ICanvasPosition  ) {
-		console.log('prevPos', prevPos, '\ncurrentPos', currentPos);
+	private drawRectangle(prevPos: ICanvasPosition, currentPos: ICanvasPosition) {
+		// console.log('prevPos', prevPos, '\ncurrentPos', currentPos);
 
-		this.cx.rect(20, 20, 150, 100);
+		// incase the context is not set	
+		if (!this.cx) { return; }
+
+
+		this.cx.rect(prevPos.x, prevPos.y, currentPos.x, currentPos.y);
 		this.cx.stroke();
 	}
 
-	// #endregion
 
 	private setBackground(url): Subscription {
 		const img = new Image();
@@ -95,5 +104,17 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 				this.cx.drawImage(img, 0, 0);
 			});
 	}
+
+	private setStrokeStyle() {
+		// TODO: maybe create a panel for user to set the style
+		this.cx.lineWidth = 30;
+		this.cx.lineCap = 'round';
+		this.cx.strokeStyle = '#ff0808';
+
+		console.log('stroke style is set.');
+	}
+
+	// #endregion
+
 
 }

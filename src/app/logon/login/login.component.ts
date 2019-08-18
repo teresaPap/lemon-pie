@@ -24,6 +24,10 @@ export class LoginComponent implements OnInit {
 		});
 	}
 
+
+	// TODO: trim email input
+	// TODO: display user friendly error messages
+	// TODO-css: make responsive
 	public firebaseLogin() {
 		this.authService.login(this.loginForm.value).then(
 			res => {

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
-import { fromEvent, Subscription } from 'rxjs';
-import { switchMap, takeUntil, pairwise, tap } from 'rxjs/operators';
+import { fromEvent, Subscription, forkJoin, of } from 'rxjs';
+import { switchMap, takeUntil, pairwise, tap, map } from 'rxjs/operators';
 
 interface ICanvasPosition {
 	x: number;
@@ -53,41 +53,55 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 		const mouseleave$ = fromEvent(this.editor, 'mouseleave');
 
 		mousedown$.pipe(
-			switchMap(() => {
-				return mousemove$.pipe(
+			map( (mouseDownEvent:MouseEvent) => this.getPositionOnCanvas(mouseDownEvent) ),
+			switchMap( (startingPos: ICanvasPosition) => {
+
+				const watcher =  mousemove$.pipe(
 					takeUntil(mouseup$),
 					takeUntil(mouseleave$)
 				);
+				
+				return forkJoin( of(startingPos), watcher )
+			}),
+			map( (res: [ICanvasPosition, MouseEvent])  => {
+				const ev2 = this.getPositionOnCanvas( res[1] )
+				return [res[0], ev2];
 			}),
 			// use pairwise to form the response like "[prev,current] position" 
-			pairwise()
-		).subscribe((res: [MouseEvent, MouseEvent]) => {
-			const rect = this.editor.getBoundingClientRect();
+			tap( res => console.log('capture events res' , res) ),
+			// map( (res: [ICanvasPosition, [MouseEvent, MouseEvent]] ) => {
 
-			console.log(res, rect);
-			// previous and current position with the offset
-			const prevPos: ICanvasPosition = {
-				x: res[0].clientX - rect.left,
-				y: res[0].clientY - rect.top
-			};
+			// 	const watcher = res[1];
+			// 	const a = this.getPositionOnCanvas( watcher[0] );
+			// 	const b = this.getPositionOnCanvas( watcher[1] );
+			// 	return res;
+			// })
+		).subscribe( res  => {
 
-			const currentPos: ICanvasPosition = {
-				x: res[1].clientX - rect.left,
-				y: res[1].clientY - rect.top
-			};
-			this.drawRectangle(prevPos, currentPos)
+			const startingPos = res[0];
+			const finalPos = res[1]
+			
+			
+			
+			this.drawRectangle(startingPos, finalPos)
 		})
 	}
 
-	private drawRectangle(prevPos: ICanvasPosition, currentPos: ICanvasPosition) {
-		// console.log('prevPos', prevPos, '\ncurrentPos', currentPos);
-
+	private drawRectangle( startingPos: ICanvasPosition, finalPos: ICanvasPosition ) {
 		// incase the context is not set	
-		if (!this.cx) { return; }
+		if (!this.cx) return;
 
+		const width: number = finalPos.x - startingPos.x ;
+		const height: number = finalPos.y - startingPos.y ;
 
-		this.cx.rect(prevPos.x, prevPos.y, currentPos.x, currentPos.y);
+		this.cx.rect(startingPos.x, startingPos.y, width, height );
 		this.cx.stroke();
+
+
+
+		// BUG: offset when painting on canvas occures when the canvas is resided to fit the screen (this happend automatically)
+		// TODO: use css to display image real size and add scroll bars horizontally and vertically
+
 	}
 
 
@@ -98,6 +112,7 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 		return fromEvent(img, 'load').subscribe(
 			() => {
 				// resize canvas to the image size
+				console.log(`Image size: ${img.naturalWidth} x ${img.naturalHeight}`);
 				this.editor.height = img.naturalHeight;
 				this.editor.width = img.naturalWidth;
 				// display the image
@@ -114,7 +129,18 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 		console.log('stroke style is set.');
 	}
 
+	private getPositionOnCanvas(e: MouseEvent): ICanvasPosition {
+		const rect = this.editor.getBoundingClientRect();
+		const position: ICanvasPosition = {
+			x: e.clientX - rect.left,
+			y: e.clientY - rect.top
+		};
+		return position;
+	}
+
 	// #endregion
 
+
+	
 
 }

@@ -36,6 +36,7 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 
 		// Start watching for canvas events
 		this.captureEvents();
+		this.monitorEvents();
 	}
 
 	ngOnDestroy(): void {
@@ -45,43 +46,68 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 	
 	// #region - Canvas events handling - see also https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
 
+	private monitorEvents() {
+
+		const onMouseDown$ = fromEvent(this.editor, 'mousedown');
+		const onMouseUp$ = fromEvent(this.editor, 'mouseup');
+		const onMouseMove$ = fromEvent(this.editor, 'mousemove');
+		const onMouseLeave$ = fromEvent(this.editor, 'mouseleave');
+	
+		let startingPos: ICanvasPosition;
+
+		onMouseDown$.pipe(
+			tap( (mouseDown: MouseEvent) => {
+				startingPos = this.getPositionOnCanvas(mouseDown);
+			}),
+			switchMap( () => 
+				onMouseMove$.pipe(
+					takeUntil(onMouseUp$),
+					takeUntil(onMouseLeave$),
+				)
+			),
+			map( (res:MouseEvent) => this.getPositionOnCanvas(res) ),
+			tap( res => console.log('capture events FOREVER: ' , res) )
+		).subscribe( currentPos  => {
+			this.drawSelection(startingPos, currentPos)
+		})
+	}
+
+	private drawSelection( startingPos, currentPos ) {
+		// TODO: every time you draw a new selection, delete the previous drawing, so that the selection does not have this silly gradient.
+		if (!this.cx) return;
+
+		const width: number = currentPos.x - startingPos.x ;
+		const height: number = currentPos.y - startingPos.y ;
+
+		this.cx.fillStyle = "#fe812d10";
+		this.cx.fillRect(startingPos.x, startingPos.y, width, height );
+	}
+
 	private captureEvents() {
 
-		const mousedown$ = fromEvent(this.editor, 'mousedown');
-		const mouseup$ = fromEvent(this.editor, 'mouseup');
-		const mousemove$ = fromEvent(this.editor, 'mousemove');
-		const mouseleave$ = fromEvent(this.editor, 'mouseleave');
+		const onMouseDown$ = fromEvent(this.editor, 'mousedown');
+		const onMouseUp$ = fromEvent(this.editor, 'mouseup');
+		const onMouseMove$ = fromEvent(this.editor, 'mousemove');
+		const onMouseLeave$ = fromEvent(this.editor, 'mouseleave');
 
-		mousedown$.pipe(
-			map( (mouseDownEvent:MouseEvent) => this.getPositionOnCanvas(mouseDownEvent) ),
+		onMouseDown$.pipe(
+			map( (mouseDown: MouseEvent) => this.getPositionOnCanvas(mouseDown) ),
 			switchMap( (startingPos: ICanvasPosition) => {
-
-				const watcher =  mousemove$.pipe(
-					takeUntil(mouseup$),
-					takeUntil(mouseleave$)
+				const selectionStoped$ =  onMouseMove$.pipe(
+					takeUntil(onMouseUp$),
+					takeUntil(onMouseLeave$)
 				);
-				
-				return forkJoin( of(startingPos), watcher )
+				return forkJoin( of(startingPos), selectionStoped$ );
 			}),
-			map( (res: [ICanvasPosition, MouseEvent])  => {
-				const ev2 = this.getPositionOnCanvas( res[1] )
-				return [res[0], ev2];
+			map( ( res: [ICanvasPosition, MouseEvent] )  => {
+				const finalPos = this.getPositionOnCanvas( res[1] )
+				return [ res[0], finalPos];
 			}),
-			// use pairwise to form the response like "[prev,current] position" 
-			tap( res => console.log('capture events res' , res) ),
-			// map( (res: [ICanvasPosition, [MouseEvent, MouseEvent]] ) => {
-
-			// 	const watcher = res[1];
-			// 	const a = this.getPositionOnCanvas( watcher[0] );
-			// 	const b = this.getPositionOnCanvas( watcher[1] );
-			// 	return res;
-			// })
+			tap( res => console.log('capture events ONCE: ' , res) )
 		).subscribe( res  => {
 
 			const startingPos = res[0];
 			const finalPos = res[1]
-			
-			
 			
 			this.drawRectangle(startingPos, finalPos)
 		})
@@ -98,9 +124,10 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 		this.cx.stroke();
 
 
-
-		// BUG: offset when painting on canvas occures when the canvas is resided to fit the screen (this happend automatically)
+		// BUG: offset when painting on canvas 
+		// occures if the canvas is resided to fit the screen (this happends automatically)
 		// TODO: use css to display image real size and add scroll bars horizontally and vertically
+		// Otherwise, for responsiveness,  give the canvas the size of the image as it appears on the screen (swich img.naturalHeight with sth ele, if applicable)
 
 	}
 
@@ -111,7 +138,7 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 		// read img
 		return fromEvent(img, 'load').subscribe(
 			() => {
-				// resize canvas to the image size
+				// size canvas to the image size
 				console.log(`Image size: ${img.naturalWidth} x ${img.naturalHeight}`);
 				this.editor.height = img.naturalHeight;
 				this.editor.width = img.naturalWidth;

@@ -15,6 +15,7 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 
 	@Input() imgUrl: string;
 
+	@ViewChild('canvasBg', { static: false }) public canvasBg: ElementRef; 
 	@ViewChild('canvas', { static: false }) public canvas: ElementRef;
 	private cx: CanvasRenderingContext2D;
 	private editor: HTMLCanvasElement;
@@ -66,10 +67,14 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 				)
 			),
 			map( (res:MouseEvent) => this.getPositionOnCanvas(res) ),
-			tap( res => console.log('capture events FOREVER: ' , res) )
+			tap( () => this.clearCanvas() )
 		).subscribe( currentPos  => {
-			this.drawSelection(startingPos, currentPos)
+			this.drawSelection(startingPos, currentPos);
 		})
+	}
+
+	private clearCanvas() {
+		this.cx.clearRect(0, 0, this.editor.width, this.editor.height);
 	}
 
 	private drawSelection( startingPos, currentPos ) {
@@ -79,7 +84,7 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 		const width: number = currentPos.x - startingPos.x ;
 		const height: number = currentPos.y - startingPos.y ;
 
-		this.cx.fillStyle = "#fe812d10";
+		this.cx.fillStyle = "#fe812d50";
 		this.cx.fillRect(startingPos.x, startingPos.y, width, height );
 	}
 
@@ -133,17 +138,21 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 
 
 	private setBackground(url): Subscription {
-		const img = new Image();
+		const img = this.canvasBg.nativeElement;
+
 		img.src = url;
+
 		// read img
 		return fromEvent(img, 'load').subscribe(
 			() => {
 				// size canvas to the image size
 				console.log(`Image size: ${img.naturalWidth} x ${img.naturalHeight}`);
+				
+
 				this.editor.height = img.naturalHeight;
 				this.editor.width = img.naturalWidth;
 				// display the image
-				this.cx.drawImage(img, 0, 0);
+				// this.cx.drawImage(img, 0, 0);
 			});
 	}
 

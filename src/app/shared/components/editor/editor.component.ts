@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { fromEvent, Subscription, forkJoin, of } from 'rxjs';
-import { switchMap, takeUntil, pairwise, tap, map } from 'rxjs/operators';
+import { switchMap, takeUntil, pairwise, tap, map, skipUntil } from 'rxjs/operators';
 
 interface ICanvasPosition {
 	x: number;
@@ -15,7 +15,7 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 
 	@Input() imgUrl: string;
 
-	@ViewChild('canvasBg', { static: false }) public canvasBg: ElementRef; 
+	@ViewChild('canvasBg', { static: false }) public canvasBg: ElementRef;
 	@ViewChild('canvas', { static: false }) public canvas: ElementRef;
 	private cx: CanvasRenderingContext2D;
 	private editor: HTMLCanvasElement;
@@ -33,62 +33,20 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 
 		// set up the canvas 
 		this.setBackground(this.imgUrl);
-		this.setStrokeStyle(); // TODO: BUG - this doesn't work here. It would work inside drawRectangle() 
+		this.setStrokeStyle();
 
 		// Start watching for canvas events
-		this.captureEvents();
-		this.monitorEvents();
+		this.watchCanvasEvents();
 	}
 
 	ngOnDestroy(): void {
 		// TODO: unsubscribe ??
 	}
 
-	
+
 	// #region - Canvas events handling - see also https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
 
-	private monitorEvents() {
-
-		const onMouseDown$ = fromEvent(this.editor, 'mousedown');
-		const onMouseUp$ = fromEvent(this.editor, 'mouseup');
-		const onMouseMove$ = fromEvent(this.editor, 'mousemove');
-		const onMouseLeave$ = fromEvent(this.editor, 'mouseleave');
-	
-		let startingPos: ICanvasPosition;
-
-		onMouseDown$.pipe(
-			tap( (mouseDown: MouseEvent) => {
-				startingPos = this.getPositionOnCanvas(mouseDown);
-			}),
-			switchMap( () => 
-				onMouseMove$.pipe(
-					takeUntil(onMouseUp$),
-					takeUntil(onMouseLeave$),
-				)
-			),
-			map( (res:MouseEvent) => this.getPositionOnCanvas(res) ),
-			tap( () => this.clearCanvas() )
-		).subscribe( currentPos  => {
-			this.drawSelection(startingPos, currentPos);
-		})
-	}
-
-	private clearCanvas() {
-		this.cx.clearRect(0, 0, this.editor.width, this.editor.height);
-	}
-
-	private drawSelection( startingPos, currentPos ) {
-		// TODO: every time you draw a new selection, delete the previous drawing, so that the selection does not have this silly gradient.
-		if (!this.cx) return;
-
-		const width: number = currentPos.x - startingPos.x ;
-		const height: number = currentPos.y - startingPos.y ;
-
-		this.cx.fillStyle = "#fe812d50";
-		this.cx.fillRect(startingPos.x, startingPos.y, width, height );
-	}
-
-	private captureEvents() {
+	private watchCanvasEvents() {
 
 		const onMouseDown$ = fromEvent(this.editor, 'mousedown');
 		const onMouseUp$ = fromEvent(this.editor, 'mouseup');
@@ -98,34 +56,51 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 		onMouseDown$.pipe(
 			map( (mouseDown: MouseEvent) => this.getPositionOnCanvas(mouseDown) ),
 			switchMap( (startingPos: ICanvasPosition) => {
-				const selectionStoped$ =  onMouseMove$.pipe(
+				const selectionStoped$ = onMouseMove$.pipe(
+					// While mouse is moving, get the current position and draw a selection
+					map( (mouseMoved: MouseEvent) => this.getPositionOnCanvas(mouseMoved)),
+					tap( currentPos => {
+						this.clearCanvas();
+						this.drawSelection(startingPos, currentPos);
+					}),
+					// Until mouse is up or leaves
 					takeUntil(onMouseUp$),
-					takeUntil(onMouseLeave$)
+					takeUntil(onMouseLeave$),
 				);
 				return forkJoin( of(startingPos), selectionStoped$ );
 			}),
-			map( ( res: [ICanvasPosition, MouseEvent] )  => {
-				const finalPos = this.getPositionOnCanvas( res[1] )
-				return [ res[0], finalPos];
-			}),
-			tap( res => console.log('capture events ONCE: ' , res) )
-		).subscribe( res  => {
+			// TODO: to unsubscribe use takeUntil( .. ) user saves the action. Then restart listening on user add new action
 
+		).subscribe( res  => {
 			const startingPos = res[0];
-			const finalPos = res[1]
-			
-			this.drawRectangle(startingPos, finalPos)
+			const finalPos = res[1];
+
+			// finally capture selection
+			this.drawRectangle(startingPos, finalPos);
 		})
 	}
 
-	private drawRectangle( startingPos: ICanvasPosition, finalPos: ICanvasPosition ) {
+
+
+	private drawSelection(startingPos, currentPos) {
+		// TODO: every time you draw a new selection, delete the previous drawing, so that the selection does not have this silly gradient.
+		if (!this.cx) return;
+
+		const width: number = currentPos.x - startingPos.x;
+		const height: number = currentPos.y - startingPos.y;
+
+		this.cx.fillStyle = "#fe812d50";
+		this.cx.fillRect(startingPos.x, startingPos.y, width, height);
+	}
+
+	private drawRectangle(startingPos: ICanvasPosition, finalPos: ICanvasPosition) {
 		// incase the context is not set	
 		if (!this.cx) return;
 
-		const width: number = finalPos.x - startingPos.x ;
-		const height: number = finalPos.y - startingPos.y ;
+		const width: number = finalPos.x - startingPos.x;
+		const height: number = finalPos.y - startingPos.y;
 
-		this.cx.rect(startingPos.x, startingPos.y, width, height );
+		this.cx.rect(startingPos.x, startingPos.y, width, height);
 		this.cx.stroke();
 
 
@@ -139,7 +114,6 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 
 	private setBackground(url): Subscription {
 		const img = this.canvasBg.nativeElement;
-
 		img.src = url;
 
 		// read img
@@ -147,7 +121,6 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 			() => {
 				// size canvas to the image size
 				console.log(`Image size: ${img.naturalWidth} x ${img.naturalHeight}`);
-				
 
 				this.editor.height = img.naturalHeight;
 				this.editor.width = img.naturalWidth;
@@ -165,6 +138,10 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 		console.log('stroke style is set.');
 	}
 
+	private clearCanvas() {
+		this.cx.clearRect(0, 0, this.editor.width, this.editor.height);
+	}
+
 	private getPositionOnCanvas(e: MouseEvent): ICanvasPosition {
 		const rect = this.editor.getBoundingClientRect();
 		const position: ICanvasPosition = {
@@ -177,6 +154,6 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 	// #endregion
 
 
-	
+
 
 }

@@ -26,6 +26,7 @@ export class ProjectEditComponent implements OnInit {
 	ngOnInit() {
 		this.route.queryParamMap.subscribe(res => {
 			this.file = this.storage.load(res.get('id'))
+			console.log("Editing file: " , this.file );
 		})
 	}
 

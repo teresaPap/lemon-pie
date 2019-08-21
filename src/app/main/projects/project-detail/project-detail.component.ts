@@ -43,7 +43,6 @@ export class ProjectDetailComponent implements OnInit {
 				this.project = { ...this.project , ...res[0].data() };
 				console.log("Editing project: " , this.project );
 				if (res[1]) this.files = res[1];
-				console.log(this.files);
 			})
 		).subscribe();
 	}

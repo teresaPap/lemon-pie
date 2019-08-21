@@ -1,11 +1,18 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { fromEvent, Subscription, forkJoin, of } from 'rxjs';
-import { switchMap, takeUntil, pairwise, tap, map, skipUntil } from 'rxjs/operators';
+import { switchMap, takeUntil, tap, map } from 'rxjs/operators';
 
 interface ICanvasPosition {
 	x: number;
 	y: number;
 }
+
+interface IClickableArea {
+	startingPos: ICanvasPosition;
+	finalPos: ICanvasPosition;
+	link: string; // TODO: decide what kind of string. most probably this should be the linked file id. 
+}
+
 @Component({
 	selector: 'app-editor',
 	templateUrl: './editor.component.html',
@@ -14,6 +21,8 @@ interface ICanvasPosition {
 export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 
 	@Input() imgUrl: string;
+	@Output('saveClickableArea') saveClickableArea: EventEmitter<IClickableArea> = new EventEmitter<IClickableArea>();
+
 
 	@ViewChild('canvasBg', { static: false }) public canvasBg: ElementRef;
 	@ViewChild('canvas', { static: false }) public canvas: ElementRef;
@@ -23,7 +32,7 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 	constructor() { }
 
 	ngOnInit(): void {
-		console.log('Editor Ready \nUrl: ' + this.imgUrl);
+		console.log('Editor Ready' );
 	}
 
 	ngAfterViewInit(): void {

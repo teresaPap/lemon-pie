@@ -17,8 +17,11 @@
 	height: 40px;
 	width: 40px;
 	border-radius: 50%;
-	border: 1px $gallery solid; 
+	border: 2px $gallery solid; 
 	text-align: center;
+	i {
+		color: $theme-text;
+	}
 }
 
 .transparent-btn {

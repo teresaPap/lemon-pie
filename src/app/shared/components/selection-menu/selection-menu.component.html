@@ -1,0 +1,14 @@
+<div>
+	<button type="button" class="x-btn">
+		<i class="fa fa-times"></i>
+	</button>
+
+	<form [formGroup]="linkToFileForm" (ngSubmit)="submitLinkToFileForm()"> 
+		<div class="form-group">
+			<label>Link to:</label>
+			<input type="text" formControlName="fileName" placeholder="fill in something">
+		</div>
+		<button type="submit">Save</button>
+	</form>
+
+</div>

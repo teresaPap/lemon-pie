@@ -98,19 +98,14 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 			const finalPos = res[1];
 
 			this.setStrokeStyle();
-			// finally capture selection
+			// Draw selection and show selection menu
 			this.drawRectangle(startingPos, finalPos);
 			this.canvasSelection = { ... this.canvasSelection, startingPos, finalPos };
 			this.showSelectionMenu = true;
 		})
 	}
 
-
-
 	private drawSelection(startingPos, currentPos) {
-		// TODO: every time you draw a new selection, delete the previous drawing, so that the selection does not have this silly gradient.
-		if (!this.cx) return;
-
 		const width: number = currentPos.x - startingPos.x;
 		const height: number = currentPos.y - startingPos.y;
 
@@ -119,9 +114,6 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 	}
 
 	private drawRectangle(startingPos: ICanvasPosition, finalPos: ICanvasPosition) {
-		// incase the context is not set	
-		if (!this.cx) return;
-
 		const width: number = finalPos.x - startingPos.x;
 		const height: number = finalPos.y - startingPos.y;
 
@@ -134,7 +126,6 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 		// TODO: use css to display image real size and add scroll bars horizontally and vertically
 		// Otherwise, for responsiveness,  give the canvas the size of the image as it appears on the screen (swich img.naturalHeight with sth ele, if applicable)
 	}
-
 
 	private setBackground(url): Subscription {
 		const img = this.canvasBg.nativeElement;
@@ -162,6 +153,7 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 
 	private clearCanvas() {
 		this.cx.clearRect(0, 0, this.editor.width, this.editor.height);
+		this.cx.beginPath();
 	}
 
 	private getPositionOnCanvas(e: MouseEvent): ICanvasPosition {

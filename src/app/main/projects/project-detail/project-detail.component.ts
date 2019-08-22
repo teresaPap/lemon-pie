@@ -35,27 +35,29 @@ export class ProjectDetailComponent implements OnInit {
 				let dataToGet: [ Observable<any>, Observable<IFile[]>? ] = [ this.projectCtrl.readSingle(params.id)];
 				if ( params.id!='0' ) {
 					this.project.id = params.id;
-					dataToGet.push(this.getFiles(params.id));
+					dataToGet.push( this.getFiles(params.id) );
 				}
 				return forkJoin(dataToGet);
 			}),
 			tap( res => {
 				this.project = { ...this.project , ...res[0].data() };
 				console.log("Editing project: " , this.project );
-				if (res[1]) this.files = res[1];
+				if (res[1]) {
+					this.files = res[1];
+					this.project.files = this.files;
+					this.storage.store('activeProject', this.project);
+				};
 			})
 		).subscribe();
 	}
 
 	public navToEdit(file: IFile) {
-		this.storage.store( file.id , file);
+		this.storage.store( 'activeFile' , file);
 		// this.router.navigate( ['/edit1'], {relativeTo: this.route} ); //, { queryParams: [ {fileId: file.id} ] ,  );
 	}
-
 	
 	private getFiles(projectId: string) {
 		return this.fileCtrl.read(projectId);
 	}
-
 
 }

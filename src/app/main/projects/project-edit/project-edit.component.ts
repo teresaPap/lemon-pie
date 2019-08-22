@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StorageService } from '../../../shared/services/storage.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { IFile } from '../../../shared/interfaces/IFile';
 
 
@@ -19,15 +19,12 @@ export class ProjectEditComponent implements OnInit {
 	
 	constructor(
 		public storage: StorageService,
-		public router: Router,
-		private route: ActivatedRoute
+		public router: Router
 	) { }
 
 	ngOnInit() {
-		this.route.queryParamMap.subscribe(res => {
-			this.file = this.storage.load(res.get('id'))
-			console.log("Editing file: " , this.file );
-		})
+		this.file = this.storage.load('activeFile');
+		console.log("Editing file: ", this.file);
 	}
 
 

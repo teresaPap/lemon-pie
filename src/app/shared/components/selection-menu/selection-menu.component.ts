@@ -22,8 +22,8 @@ export class SelectionMenuComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		const projectId:string = this.storage.load('activeProjectId');
-		this.files = this.storage.load(projectId);
+		const activeProject = this.storage.load('activeProject');
+		this.files = this.storage.load(activeProject.id);
 	}
 
 	public submitLinkToFileForm() {

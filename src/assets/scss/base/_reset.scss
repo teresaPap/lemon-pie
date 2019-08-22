@@ -209,6 +209,10 @@ textarea {
     vertical-align: baseline; /* 3 */
     *vertical-align: middle; /* 3 */
 }
+select {
+	border:none;
+	background: none;
+}
 
 /**
  * Address Firefox 3+ setting `line-height` on `input` using `!important` in

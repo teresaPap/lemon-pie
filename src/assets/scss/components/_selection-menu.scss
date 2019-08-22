@@ -1,0 +1,11 @@
+.selection-menu-container {
+	max-width: 200px;	
+	border: $border-width solid $mercury;
+
+	.form-group {
+		* {
+			max-width: 100%;
+			margin-bottom: 0.3em;
+		}
+	}
+}

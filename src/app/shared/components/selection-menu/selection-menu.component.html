@@ -1,18 +1,18 @@
-<div>
+<div class="selection-menu-container form-container">
 	<button type="button" class="x-btn">
 		<i class="fa fa-times"></i>
 	</button>
 
-	<form [formGroup]="linkToFileForm" (ngSubmit)="submitLinkToFileForm()"> 
+	<form [formGroup]="linkToFileForm" (ngSubmit)="submitLinkToFileForm()" class="form"> 
 		<div class="form-group">
 			<label>Link to:</label>
-			<select formControlName="fileId">
+			<select formControlName="fileId" class="select">
 				<ng-container *ngFor="let file of files">
 					<option *ngIf="file.name" [value]="file.id">{{file.name}}</option>
 				</ng-container>
 			</select>
 		</div>
-		<button type="submit">Save</button>
+		<button type="submit" class="form-btn">Save</button>
 	</form>
 
 </div>

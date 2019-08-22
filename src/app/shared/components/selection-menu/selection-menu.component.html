@@ -6,9 +6,9 @@
 	<form [formGroup]="linkToFileForm" (ngSubmit)="submitLinkToFileForm()"> 
 		<div class="form-group">
 			<label>Link to:</label>
-			<select formControlName="fileName">
+			<select formControlName="fileId">
 				<ng-container *ngFor="let file of files">
-					<option *ngIf="file.name" value="file.id"></option>
+					<option *ngIf="file.name" [value]="file.id">{{file.name}}</option>
 				</ng-container>
 			</select>
 		</div>

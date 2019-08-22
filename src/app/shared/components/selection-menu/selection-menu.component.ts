@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { IFile } from '../../interfaces/IFile';
 import { StorageService } from '../../services/storage.service';
@@ -9,6 +9,8 @@ import { StorageService } from '../../services/storage.service';
 })
 export class SelectionMenuComponent implements OnInit {
 
+	@Output() saveLink: EventEmitter<string> = new EventEmitter<string>();
+
 	public files: IFile[];
 	public linkToFileForm: FormGroup;
 
@@ -17,17 +19,17 @@ export class SelectionMenuComponent implements OnInit {
 		public storage: StorageService ) {
 
 		this.linkToFileForm = this.fb.group({
-			fileName: ''
+			fileId: ''
 		})
 	}
 
 	ngOnInit() {
 		const activeProject = this.storage.load('activeProject');
-		this.files = this.storage.load(activeProject.id);
+		this.files = activeProject.files;
 	}
 
 	public submitLinkToFileForm() {
-		console.log(this.linkToFileForm.value);
+		this.saveLink.emit(this.linkToFileForm.controls['fileId'].value);
 	}
 
 }

@@ -52,6 +52,9 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 		// TODO: unsubscribe ??
 	}
 
+	public saveLink(selectedFileId: string) {
+		console.log('TODO: Link active selection to File with id: '+ selectedFileId);
+	}
 
 	// #region - Canvas events handling - see also https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
 

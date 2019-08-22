@@ -10,7 +10,7 @@ interface ICanvasPosition {
 interface IClickableArea {
 	startingPos: ICanvasPosition;
 	finalPos: ICanvasPosition;
-	link: string; // TODO: decide what kind of string. most probably this should be the linked file id. 
+	link: string; // == fileId
 }
 
 @Component({
@@ -28,6 +28,9 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 	private cx: CanvasRenderingContext2D;
 	private editor: HTMLCanvasElement;
 
+	public showSelectionMenu: boolean;
+	private canvasSelection: IClickableArea;
+
 	constructor() { }
 
 	ngOnInit(): void {
@@ -41,7 +44,6 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 
 		// set up the canvas 
 		this.setBackground(this.imgUrl);
-		this.setStrokeStyle();
 
 		// Start watching for canvas events
 		this.watchCanvasEvents();
@@ -51,23 +53,33 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 		// TODO: unsubscribe ??
 	}
 
-	public saveLink(selectedFileId: string) {
-		console.log('TODO: Link active selection to File with id: '+ selectedFileId);
+	public saveLink(selectedFileId: string):void {
+		this.clearCanvas();
+		this.canvasSelection.link = selectedFileId;
+		console.log('Selection saved: ', this.canvasSelection);
+		this.showSelectionMenu = false;
+	}
+
+	public closeSelectionMenu():void {
+		this.clearCanvas();
+		this.canvasSelection.link = null;
+		console.log('Selection canceled.');
+		this.showSelectionMenu = false;
 	}
 
 	// #region - Canvas events handling - see also https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
 
 	private watchCanvasEvents() {
+		const $onMouseDown = fromEvent(this.editor, 'mousedown');
+		const $onMouseUp = fromEvent(this.editor, 'mouseup');
+		const $onMouseMove = fromEvent(this.editor, 'mousemove');
+		const $onMouseLeave = fromEvent(this.editor, 'mouseleave');
 
-		const onMouseDown$ = fromEvent(this.editor, 'mousedown');
-		const onMouseUp$ = fromEvent(this.editor, 'mouseup');
-		const onMouseMove$ = fromEvent(this.editor, 'mousemove');
-		const onMouseLeave$ = fromEvent(this.editor, 'mouseleave');
-
-		onMouseDown$.pipe(
+		$onMouseDown.pipe(
+			tap( () => this.canvasSelection = null ),
 			map( (mouseDown: MouseEvent) => this.getPositionOnCanvas(mouseDown) ),
 			switchMap( (startingPos: ICanvasPosition) => {
-				const selectionStoped$ = onMouseMove$.pipe(
+				const $selectionStoped = $onMouseMove.pipe(
 					// While mouse is moving, get the current position and draw a selection
 					map( (mouseMoved: MouseEvent) => this.getPositionOnCanvas(mouseMoved)),
 					tap( currentPos => {
@@ -75,19 +87,21 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 						this.drawSelection(startingPos, currentPos);
 					}),
 					// Until mouse is up or leaves
-					takeUntil(onMouseUp$),
-					takeUntil(onMouseLeave$),
+					takeUntil($onMouseUp),
+					takeUntil($onMouseLeave),
 				);
-				return forkJoin( of(startingPos), selectionStoped$ );
+				return forkJoin( of(startingPos), $selectionStoped );
 			}),
 			// TODO: to unsubscribe use takeUntil( .. ) user saves the action. Then restart listening on user add new action
-
 		).subscribe( res  => {
 			const startingPos = res[0];
 			const finalPos = res[1];
 
+			this.setStrokeStyle();
 			// finally capture selection
 			this.drawRectangle(startingPos, finalPos);
+			this.canvasSelection = { ... this.canvasSelection, startingPos, finalPos };
+			this.showSelectionMenu = true;
 		})
 	}
 
@@ -119,7 +133,6 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 		// occures if the canvas is resided to fit the screen (this happends automatically)
 		// TODO: use css to display image real size and add scroll bars horizontally and vertically
 		// Otherwise, for responsiveness,  give the canvas the size of the image as it appears on the screen (swich img.naturalHeight with sth ele, if applicable)
-
 	}
 
 
@@ -142,11 +155,9 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 
 	private setStrokeStyle() {
 		// TODO: maybe create a panel for user to set the style
-		this.cx.lineWidth = 30;
+		this.cx.lineWidth = 2;
 		this.cx.lineCap = 'round';
-		this.cx.strokeStyle = '#ff0808';
-
-		console.log('stroke style is set.');
+		this.cx.strokeStyle = '#ff812d';
 	}
 
 	private clearCanvas() {

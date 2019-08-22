@@ -1,9 +1,10 @@
 
-<app-selection-menu (saveLink)="saveLink($event)"></app-selection-menu>
+<ng-container *ngIf="showSelectionMenu">
+	<app-selection-menu (onSaveLink)="saveLink($event)" (onClose)="closeSelectionMenu()" ></app-selection-menu>
+</ng-container>
 <br>
 
 <div class="canvas-container">
 	<img class="canvas-background" #canvasBg>
 	<canvas #canvas></canvas>
-	<!-- <ng-container *ngIf="showSelectionMenu"></ng-container> -->
 </div>

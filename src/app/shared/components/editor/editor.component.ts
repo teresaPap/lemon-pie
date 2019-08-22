@@ -15,8 +15,7 @@ interface IClickableArea {
 
 @Component({
 	selector: 'app-editor',
-	templateUrl: './editor.component.html',
-	styleUrls: ['./editor.component.scss']
+	templateUrl: './editor.component.html'
 })
 export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 

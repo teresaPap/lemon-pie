@@ -6,7 +6,11 @@
 	<form [formGroup]="linkToFileForm" (ngSubmit)="submitLinkToFileForm()"> 
 		<div class="form-group">
 			<label>Link to:</label>
-			<input type="text" formControlName="fileName" placeholder="fill in something">
+			<select formControlName="fileName">
+				<ng-container *ngFor="let file of files">
+					<option *ngIf="file.name" value="file.id"></option>
+				</ng-container>
+			</select>
 		</div>
 		<button type="submit">Save</button>
 	</form>

@@ -1,19 +1,52 @@
 .project-detail-container {
 	height: 150px;
-	margin: 20px 0;
+	margin: 20px 5vw;
 
 	display: flex;
 	align-items: center;
-	justify-content: space-around;
+	justify-content: space-between;
 	flex-direction: row;
 
-	.container-1 {
+	.container-top-right {
 		width: 30%;
 		height: 100%;
 	}
 
-	.container-2 {
+	.container-top-left {
 		width: 60%;
 		height: 100%;
-	}		
+	}	
+}
+
+.container-bottom {
+	margin: 20px 5vw;
+}
+
+.file-list {
+
+	.file-list-item {
+
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		margin-top: 10px;
+		padding-top: 10px;
+		border-top: 1px solid $gallery; 
+
+		.item-preview {
+			height: 100px;
+			width: 150px;
+			display: inline-block;
+
+			background-color: $gallery;
+			background-position: center;
+			background-size: cover;
+		}
+		.item-description {
+			// display: inline-block;
+		}
+
+		
+	}
+	
 }

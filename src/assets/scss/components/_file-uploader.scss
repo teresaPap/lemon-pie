@@ -1,20 +1,21 @@
 // file uploader
-
+.file-uploader-container {
+	display: block;
+	height: 100%;
+}
 .dropzone { 
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	flex-direction: column; 
-	min-width: 80vw;
 	font-weight: 200;
-	height: 300px;
-	border: 2px dashed #f16624;
+	height: 100%;
+	border: 2px dashed $theme-accent;
 	border-radius: 5px;
 	background: white;
-	margin: 10px 0;
   
 	&.hovering {
-		border: 2px solid #f16624;
+		border: 2px solid $theme-accent;
 		color: #dadada !important;
 	}
   

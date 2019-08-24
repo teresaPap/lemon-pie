@@ -1,22 +1,43 @@
 import { Injectable } from '@angular/core';
-import { map, switchMap, tap, finalize, retry, catchError, withLatestFrom, publishLast } from 'rxjs/operators';
+import { map, switchMap, withLatestFrom, tap } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
 import { Observable, forkJoin, from, of } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { IFile } from '../interfaces/IFile';
+import { IClickableArea } from '../interfaces/IClickableArea';
+import { StorageService } from '../services/storage.service';
 
 
 @Injectable()
 export class FilesService {
 
 	constructor(
+		public storage: StorageService,
 		private firestore: AngularFirestore,
 		private fireStorage: AngularFireStorage
 	) { }
 
 
+
+	public saveFileLink( area: IClickableArea ) {
+		const linkCoordinates = {
+			x1: area.startingPos.x,
+			y1: area.startingPos.y,
+			x2: area.finalPos.x,
+			y2: area.finalPos.y
+		};
+		const activeFile = this.storage.load('activeFile');
+		
+		const action = this.firestore.collection(`files/${activeFile.id}/links`).doc(area.link).set(linkCoordinates)
+			.then( () => console.log('Link Created Successfully') )
+			// TODO: handle errors
+			.catch( error => console.log('An error occured: ', error ))
+
+		return from(action);
+	}
 	
+
 	public saveFileLinkedToProject( file:File, projectId:string, fileName:string ): Observable<void> {
 
 		// Store the file in firebase storage

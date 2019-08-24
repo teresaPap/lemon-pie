@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StorageService } from '../../../shared/services/storage.service';
 import { Router } from '@angular/router';
 import { IFile } from '../../../shared/interfaces/IFile';
+import { FilesService } from '../../../shared/data-services/files.service';
 
 
 // PAGE DESCRIPTION: 
@@ -16,10 +17,10 @@ export class ProjectEditComponent implements OnInit {
 
 	public file: IFile;
 
-	
 	constructor(
 		public storage: StorageService,
-		public router: Router
+		public router: Router, 
+		public filesCtrl: FilesService
 	) { }
 
 	ngOnInit() {
@@ -28,4 +29,9 @@ export class ProjectEditComponent implements OnInit {
 	}
 
 
+	public saveArea(event) {
+		console.log(event);
+		this.filesCtrl.saveFileLink(event).subscribe();
+	}
+	
 }

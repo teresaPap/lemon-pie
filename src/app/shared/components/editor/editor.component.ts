@@ -1,17 +1,7 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { fromEvent, Subscription, forkJoin, of } from 'rxjs';
 import { switchMap, takeUntil, tap, map } from 'rxjs/operators';
-
-interface ICanvasPosition {
-	x: number;
-	y: number;
-}
-
-interface IClickableArea {
-	startingPos: ICanvasPosition;
-	finalPos: ICanvasPosition;
-	link: string; // == fileId
-}
+import { IClickableArea, ICanvasPosition } from '../../interfaces/IClickableArea';
 
 @Component({
 	selector: 'app-editor',
@@ -20,7 +10,7 @@ interface IClickableArea {
 export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 
 	@Input() imgUrl: string;
-	@Output('saveClickableArea') saveClickableArea: EventEmitter<IClickableArea> = new EventEmitter<IClickableArea>();
+	@Output('saveArea') saveArea: EventEmitter<IClickableArea> = new EventEmitter<IClickableArea>();
 
 
 	@ViewChild('canvasBg', { static: false }) public canvasBg: ElementRef;
@@ -57,6 +47,7 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 		this.clearCanvas();
 		this.canvasSelection.link = selectedFileId;
 		console.log('Selection saved: ', this.canvasSelection);
+		this.saveArea.emit(this.canvasSelection);
 		this.showSelectionMenu = false;
 	}
 

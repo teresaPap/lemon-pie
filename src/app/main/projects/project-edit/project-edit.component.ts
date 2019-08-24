@@ -29,9 +29,11 @@ export class ProjectEditComponent implements OnInit {
 	}
 
 
-	public saveArea(event) {
-		console.log(event);
-		this.filesCtrl.saveFileLink(event).subscribe();
+	public saveArea(event): void {
+		this.filesCtrl.saveFileLink(event).subscribe(
+			() => console.log('TODO: show user friendly success message'), 
+			err => console.log('TODO: show user friendly failure message')
+		);
 	}
 	
 }

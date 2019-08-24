@@ -46,7 +46,6 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 	public saveLink(selectedFileId: string):void {
 		this.clearCanvas();
 		this.canvasSelection.link = selectedFileId;
-		console.log('Selection saved: ', this.canvasSelection);
 		this.saveArea.emit(this.canvasSelection);
 		this.showSelectionMenu = false;
 	}

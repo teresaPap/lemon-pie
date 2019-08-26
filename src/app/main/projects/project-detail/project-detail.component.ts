@@ -69,6 +69,10 @@ export class ProjectDetailComponent implements OnInit {
 		// this.router.navigate( ['/edit1'], {relativeTo: this.route} ); //, { queryParams: [ {fileId: file.id} ] ,  );
 	}
 
+	public delete(file) {
+		this.fileCtrl.delete(file.id, file.name, this.project.id )
+	}
+
 	
 	private getFiles(projectId: string) {
 		return this.fileCtrl.read(projectId);

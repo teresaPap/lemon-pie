@@ -7,6 +7,7 @@ import { AsideComponent } from './projects/aside/aside.component';
 import { ProjectDetailComponent } from './projects/project-detail/project-detail.component';
 import { ProjectListComponent } from './projects/project-list/project-list.component';
 import { ProjectEditComponent } from './projects/project-edit/project-edit.component';
+import { FileListItemComponent } from './files/file-list-item/file-list-item.component';
 
 @NgModule({
     declarations: [
@@ -15,7 +16,8 @@ import { ProjectEditComponent } from './projects/project-edit/project-edit.compo
 		AsideComponent,
 		ProjectListComponent,
 		ProjectDetailComponent,
-		ProjectEditComponent
+		ProjectEditComponent,
+		FileListItemComponent
     ],
     imports: [
 		SharedModule,

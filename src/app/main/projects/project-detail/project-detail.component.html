@@ -30,7 +30,6 @@
 <div class="container-bottom">
 	<h3>Project files</h3>
 	<ul class="file-list">
-
 		<li *ngFor="let file of files">
 			<app-file-list-item [file]="file" (onSave)="saveFile(file)" (onDelete)='delete(file)' (onEdit)="navToEdit(file)"></app-file-list-item>
 		</li>

@@ -25,13 +25,10 @@
 .file-list {
 
 	.file-list-item {
-
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
 		margin-top: 10px;
 		padding-top: 10px;
 		border-top: 1px solid $gallery; 
+		position: relative;
 
 		.item-preview {
 			height: 100px;
@@ -41,9 +38,16 @@
 			background-color: $gallery;
 			background-position: center;
 			background-size: cover;
+			border-radius: 3px;
 		}
 		.item-description {
-			// display: inline-block;
+			display: inline-block;
+		}
+		.item-actions {
+			position: absolute;
+			right: 0;
+			top: 10px;
+			
 		}
 
 		

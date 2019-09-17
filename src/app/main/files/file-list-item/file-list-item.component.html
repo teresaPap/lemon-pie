@@ -4,20 +4,18 @@
 	<div class="item-preview" [ngStyle]="{'background-image': 'url(' +file.downloadURL+ ')' }"></div>
 
 	<div class="item-description">
-		<div class="form-group form-group-editable">
-			<label>Page name</label>
-			<input class="form-input">
-			<i class="fa fa-edit"></i>
+		<div class="form-group">
+			<input class="form-input" placeholder="Enter the name of this page to link it to another page">
+			<i class="fa fa-pen"></i>
+			<i class="fa fa-save" (click)="save(file)"></i>
 		</div>
 	</div>
 
 
-	<div>
-		<a href="#" (click)="save(file)">Save</a>
-		<br><br>
-		<a href="#" (click)="delete(file)">Delete</a>
-		<br><br>
-		<a href="#" (click)="navToEdit(file)" [routerLink]="['edit']" [queryParams]="{id: file.id}">
+	<div class="item-actions">
+		
+		<i class="fa fa-trash"(click)="delete(file)"></i>
+		<a class="" (click)="navToEdit(file)" [routerLink]="['edit']" [queryParams]="{id: file.id}">
 			Open Flow Editor
 		</a>
 	</div>

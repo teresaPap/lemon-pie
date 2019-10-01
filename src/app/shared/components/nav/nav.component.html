@@ -9,11 +9,14 @@
 		</div>
 	</a>
 	<ul class="nav-menu">
-		<!-- <li [routerLink]="['/home']" class="nav-item">
+		<li [routerLink]="['/home']" class="nav-item">
 			<a>Home</a>
-		</li> -->
+		</li>
 		<li *ngIf="!currentUser" [routerLink]="['/login']" class="nav-item">
 			<a>Login</a>
+		</li>
+		<li *ngIf="currentUser" class="nav-item">
+			<a [routerLink]="['/editor']">Projects</a>
 		</li>
 		<li *ngIf="currentUser" (click)="toggleBubbleMenu()" class="nav-item">
 			<a>{{currentUser.email}}</a>
@@ -21,8 +24,9 @@
 	</ul>
 	<div class="bubble-menu" [ngClass]="{'visible':showBubbleMenu}">
 		<ul>
-			<li><a [routerLink]="['/profile']" (click)="toggleBubbleMenu()">Profile</a></li>
-			<li><a [routerLink]="['/editor']" (click)="toggleBubbleMenu()">Editor</a></li>
+			<li *ngIf="currentUser" (click)="toggleBubbleMenu()">
+				<a [routerLink]="['/profile']">Profile</a>
+			</li>
 			<li><a (click)="logout()">Logout</a></li>
 		</ul>
 	</div>

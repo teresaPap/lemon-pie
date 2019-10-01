@@ -100,6 +100,27 @@ export class FilesService {
 		return action;
 	}
 
+	public delete( fileId: string, fileName: string, projectId:string ) {
+
+		// TODO: delete project.file.id reference from projects collection - somehow! 
+	
+		// delete file.id from files collection
+		const deleteFromFirestore = this.firestore.doc(`files/${fileId}`).delete();
+
+		// delete files.projectId.file.name from fire storage
+		const deleteFromFirestorage = this.fireStorage.ref(`files/${projectId}/${fileName}`).delete();
+
+		const action = forkJoin( from(deleteFromFirestore), deleteFromFirestorage ).pipe(
+			map( res => {
+				console.log('File deleted successfully!')
+				return 'File deleted successfully!';
+			})
+		);
+
+		return action;
+	}
+
+
 
 	private storeFile( file:File, projectId:string, fileName:string ): Observable<IFile> {
 

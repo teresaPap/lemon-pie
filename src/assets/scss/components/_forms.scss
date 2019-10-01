@@ -86,3 +86,50 @@
     max-height: 200px;
 }
 
+.form-container {
+	padding: 20px;
+	margin: 30px;
+	border: 1px $gallery solid;
+
+	position: relative;
+	.x-btn {
+		position: absolute;
+		top: -15px;
+    	right: -15px;
+    	background-color: $white;
+	}
+}
+
+.detail-form {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+.form-group-editable {
+	width: 100%;
+	display: flex;
+
+	padding: 5px;
+	margin-bottom: 5px;
+
+	line-height: 1.1em;
+	border: 1px solid $mercury;
+
+	label{
+		min-width: 110px;
+		line-height: 1.1em;
+		display: inline;
+		vertical-align: middle;
+	} 
+	.form-input {
+		line-height: 1.1em;
+		width: 100%;
+		border: none;
+	}
+	i { 
+		height: 100%;
+		color: $theme-muted;
+	}
+
+}

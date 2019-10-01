@@ -7,6 +7,7 @@ import { switchMap, tap } from 'rxjs/operators';
 import { forkJoin, Observable } from 'rxjs';
 import { IFile } from '../../../shared/interfaces/IFile';
 import { StorageService } from '../../../shared/services/storage.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 // PAGE DESCRIPTION: 
 // In this view the user can add files to the current project
@@ -21,15 +22,24 @@ export class ProjectDetailComponent implements OnInit {
 	public project: IProject = {} as IProject;
 	public files: IFile[] = [];
 
+	public projectDetailForm: FormGroup;
+
 	constructor(
 		public storage: StorageService,
 		public router: Router, 
 		private route: ActivatedRoute,
 		private fileCtrl: FilesService,
 		private projectCtrl: ProjectsService,
+		private fb: FormBuilder
 	) { }
 
 	ngOnInit() {
+
+		this.projectDetailForm = this.fb.group({
+			name: [ '', Validators.required],
+			description: ''
+		});
+
 		this.route.params.pipe(
 			switchMap( params => {
 				let dataToGet: [ Observable<any>, Observable<IFile[]>? ] = [ this.projectCtrl.readSingle(params.id)];
@@ -41,6 +51,7 @@ export class ProjectDetailComponent implements OnInit {
 			}),
 			tap( res => {
 				this.project = { ...this.project , ...res[0].data() };
+				this.initializeForm(this.project.name , this.project.description);
 				console.log("Editing project: " , this.project );
 				if (res[1]) {
 					this.files = res[1];
@@ -51,13 +62,33 @@ export class ProjectDetailComponent implements OnInit {
 		).subscribe();
 	}
 
+	public savePojectDetailForm() {
+		if (this.projectDetailForm.valid) 
+			console.log(this.projectDetailForm.value);
+	}
+
 	public navToEdit(file: IFile) {
 		this.storage.store( 'activeFile' , file);
 		// this.router.navigate( ['/edit1'], {relativeTo: this.route} ); //, { queryParams: [ {fileId: file.id} ] ,  );
 	}
+
+	public delete(file: IFile) {
+		this.fileCtrl.delete(file.id, file.name, this.project.id )
+	}
+
+	public saveFile(file: IFile) {
+		console.log('TODO: implement save');
+	}
+
 	
 	private getFiles(projectId: string) {
 		return this.fileCtrl.read(projectId);
 	}
 
+	private initializeForm( name: string, description: string ): void {
+		this.projectDetailForm.controls['name'].setValue(name);
+		this.projectDetailForm.controls['description'].setValue(description);
+	}
+
 }
+

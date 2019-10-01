@@ -1,0 +1,56 @@
+.project-detail-container {
+	height: 150px;
+	margin: 20px 5vw;
+
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-direction: row;
+
+	.container-top-right {
+		width: 30%;
+		height: 100%;
+	}
+
+	.container-top-left {
+		width: 60%;
+		height: 100%;
+	}	
+}
+
+.container-bottom {
+	margin: 20px 5vw;
+}
+
+.file-list {
+
+	.file-list-item {
+		margin-top: 10px;
+		padding-top: 10px;
+		border-top: 1px solid $gallery; 
+		position: relative;
+
+		.item-preview {
+			height: 100px;
+			width: 150px;
+			display: inline-block;
+
+			background-color: $gallery;
+			background-position: center;
+			background-size: cover;
+			border-radius: 3px;
+		}
+		.item-description {
+			display: inline-block;
+		}
+		.item-actions {
+			position: absolute;
+			right: 0;
+			top: 10px;
+			
+		}
+
+		
+	}
+	
+}

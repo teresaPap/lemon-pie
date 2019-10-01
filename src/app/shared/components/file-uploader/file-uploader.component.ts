@@ -24,7 +24,6 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class FileUploaderComponent implements OnInit {
 	
-	@Input() promptText: string;
 	@Input() uploadPath: string;
 
 

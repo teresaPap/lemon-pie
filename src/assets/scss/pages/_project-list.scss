@@ -1,0 +1,9 @@
+.create-new-item {
+	align-items: center;
+	justify-content: center;
+	border: 1px $gallery solid;
+	i {
+		font-size: 2em;
+		margin-bottom: 1em;
+	}
+}

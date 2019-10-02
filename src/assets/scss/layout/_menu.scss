@@ -3,7 +3,7 @@
 
 // Nav
 nav {
-    height: 50px;
+    height: $nav-height;
     padding: 5px 20px;
     background-color: $white;
     box-shadow: 0px 1px 7px 1px rgba(0,0,0,0.2);
@@ -60,7 +60,7 @@ nav {
 // Aside
 aside {
     position: absolute;
-    top:0;
+    top: $nav-height;
     bottom: 0;
     // TODO: use a function and a variable to customize aside menu position to right or left
     right: 0;

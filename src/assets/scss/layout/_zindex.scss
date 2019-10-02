@@ -1,8 +1,8 @@
 // All z-index changes should be made here
 
-nav {
-    z-index: 200;
+app-nav {
+	z-index: 1000;
 }
-aside {
-    z-index: 100;
+app-aside {
+	z-index: 900;
 }

@@ -10,7 +10,7 @@ import { IClickableArea, ICanvasPosition } from '../../interfaces/IClickableArea
 export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 
 	@Input() imgUrl: string;
-	@Output('saveArea') saveArea: EventEmitter<IClickableArea> = new EventEmitter<IClickableArea>();
+	@Output('onSaveArea') onSaveArea: EventEmitter<IClickableArea> = new EventEmitter<IClickableArea>();
 
 
 	@ViewChild('canvasBg', { static: false }) public canvasBg: ElementRef;
@@ -46,7 +46,7 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 	public saveLink(selectedFileId: string):void {
 		this.clearCanvas();
 		this.canvasSelection.link = selectedFileId;
-		this.saveArea.emit(this.canvasSelection);
+		this.onSaveArea.emit(this.canvasSelection);
 		this.showSelectionMenu = false;
 	}
 

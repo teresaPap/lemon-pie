@@ -35,5 +35,10 @@ export class ProjectEditComponent implements OnInit {
 			err => console.log('TODO: show user friendly failure message')
 		);
 	}
+
+	public onShowLinks(event): void {
+		console.log('show links event', event, this.file)
+		// TODO: get file links here
+	}
 	
 }

@@ -1,6 +1,6 @@
 <br>
 <br>
 
-<app-editor [imgUrl]="file.downloadURL" (saveArea)="saveArea($event)"></app-editor>
+<app-editor [imgUrl]="file.downloadURL" (onSaveArea)="saveArea($event)"></app-editor>
 
-<app-aside></app-aside>
+<app-aside (onShowLinks)="onShowLinks($event)"></app-aside>

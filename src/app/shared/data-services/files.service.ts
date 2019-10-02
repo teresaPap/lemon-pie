@@ -29,7 +29,7 @@ export class FilesService {
 		};
 		const activeFile = this.storage.load('activeFile');
 		
-		const action = this.firestore.collection(`files/${activeFile.id}/links`).doc(area.link).set(linkCoordinates)
+		const action = this.firestore.collection(`files/${activeFile.id}/links`).doc(area.linkedFileId).set(linkCoordinates)
 			.then( () => console.log('Link Created Successfully') )
 			// TODO: handle errors
 			.catch( error => console.log('An error occured: ', error ))
@@ -49,7 +49,8 @@ export class FilesService {
 			// For each of the snapshots, get the document data
 			switchMap( (links: firebase.firestore.DocumentSnapshot[]) => {
 				const linksData = [];
-				links.forEach( snapshot => linksData.push( snapshot.data() ) );
+				console.log(links );
+				links.forEach( snapshot => linksData.push( { ...snapshot.data(), linkedFileId: snapshot.id } ) );
 				console.log(linksData); // TODO: why this doesnt 
 				return linksData;
 			})

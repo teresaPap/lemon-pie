@@ -69,7 +69,9 @@ export class ProjectDetailComponent implements OnInit {
 
 	public navToEdit(file: IFile) {
 		this.storage.store( 'activeFile' , file);
-		// this.router.navigate( ['/edit1'], {relativeTo: this.route} ); //, { queryParams: [ {fileId: file.id} ] ,  );
+		console.log( 'activeFile' , file);
+		// TODO: maybe use relativeTo: this.route attribute
+		this.router.navigate( [`editor/${this.project.id}/edit`], { queryParams: {id: file.id} } );
 	}
 
 	public delete(file: IFile) {

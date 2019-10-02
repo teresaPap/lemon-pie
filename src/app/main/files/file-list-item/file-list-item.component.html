@@ -7,15 +7,15 @@
 		<div class="form-group">
 			<input class="form-input" placeholder="Enter the name of this page to link it to another page">
 			<i class="fa fa-pen"></i>
-			<i class="fa fa-save" (click)="save(file)"></i>
+			<i class="fa fa-save" (click)="onSaveClicked(file)"></i>
 		</div>
 	</div>
 
 
 	<div class="item-actions">
 		
-		<i class="fa fa-trash"(click)="delete(file)"></i>
-		<a class="" (click)="navToEdit(file)" [routerLink]="['edit']" [queryParams]="{id: file.id}">
+		<i class="fa fa-trash"(click)="onDeleteClicked(file)"></i>
+		<a class="" (click)="onEditClicked(file)">
 			Open Flow Editor
 		</a>
 	</div>

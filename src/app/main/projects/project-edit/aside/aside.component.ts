@@ -22,7 +22,7 @@ export class AsideComponent implements OnInit {
 
 	public showLinks() {
 		this.showLinksTrue = !this.showLinksTrue;
-		this.onShowLinks.emit(true);
+		this.onShowLinks.emit(this.showLinksTrue);
 	}
 
 }

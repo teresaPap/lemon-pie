@@ -4,7 +4,7 @@ import * as firebase from 'firebase/app';
 import { Observable, forkJoin, from, of } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { IFile } from '../interfaces/IFile';
+import { IFile, IArea } from '../interfaces/IFile';
 import { IClickableArea } from '../interfaces/IClickableArea';
 import { StorageService } from '../services/storage.service';
 
@@ -34,6 +34,26 @@ export class FilesService {
 			// TODO: handle errors
 			.catch( error => console.log('An error occured: ', error ))
 
+		return from(action);
+	}
+
+	public getFileLinks( fileId: string ): Observable<IArea[]> {
+		const linksCollection = this.firestore.collection(`files/${fileId}/links`);
+		const action = linksCollection.get().pipe(
+			map( links => {
+				if ( links.docs.length ) 
+					return links.docs;
+				else
+					throw 'This file has no links';
+			}),
+			// For each of the snapshots, get the document data
+			switchMap( (links: firebase.firestore.DocumentSnapshot[]) => {
+				const linksData = [];
+				links.forEach( snapshot => linksData.push( snapshot.data() ) );
+				console.log(linksData); // TODO: why this doesnt 
+				return linksData;
+			})
+		)
 		return from(action);
 	}
 	

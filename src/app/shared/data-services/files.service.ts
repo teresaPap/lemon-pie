@@ -4,8 +4,7 @@ import * as firebase from 'firebase/app';
 import { Observable, forkJoin, from, of } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { IFile, IArea } from '../interfaces/IFile';
-import { IClickableArea } from '../interfaces/IClickableArea';
+import { IFile, IClickableArea } from '../interfaces/IFile';
 import { StorageService } from '../services/storage.service';
 
 
@@ -21,15 +20,15 @@ export class FilesService {
 
 
 	public saveFileLink( area: IClickableArea ) {
-		const linkCoordinates = {
-			x1: area.startingPos.x,
-			y1: area.startingPos.y,
-			x2: area.finalPos.x,
-			y2: area.finalPos.y
+		const areaCoordinates = {
+			x1: area.x1,
+			y1: area.y1,
+			x2: area.x2,
+			y2: area.y2
 		};
 		const activeFile = this.storage.load('activeFile');
 		
-		const action = this.firestore.collection(`files/${activeFile.id}/links`).doc(area.linkedFileId).set(linkCoordinates)
+		const action = this.firestore.collection(`files/${activeFile.id}/links`).doc(area.linkedFileId).set(areaCoordinates)
 			.then( () => console.log('Link Created Successfully') )
 			// TODO: handle errors
 			.catch( error => console.log('An error occured: ', error ))
@@ -37,7 +36,7 @@ export class FilesService {
 		return from(action);
 	}
 
-	public getFileLinks( fileId: string ): Observable<IArea[]> {
+	public getFileLinks( fileId: string ): Observable<IClickableArea[]> {
 		const linksCollection = this.firestore.collection(`files/${fileId}/links`);
 		const action = linksCollection.get().pipe(
 			map( links => {
@@ -49,11 +48,12 @@ export class FilesService {
 			// For each of the snapshots, get the document data
 			switchMap( (links: firebase.firestore.DocumentSnapshot[]) => {
 				const linksData = [];
-				console.log(links );
+				console.log( links );
 				links.forEach( snapshot => linksData.push( { ...snapshot.data(), linkedFileId: snapshot.id } ) );
-				console.log(linksData); // TODO: why this doesnt 
+
 				return linksData;
-			})
+			}), 
+			tap( res => console.log(res))
 		)
 		return from(action);
 	}

@@ -39,7 +39,9 @@ export class ProjectEditComponent implements OnInit {
 	public onShowLinks(event): void {
 		console.log('show links event', event, this.file)
 		// TODO: get file links here
-		this.filesCtrl.getFileLinks(this.file.id).subscribe();
+		this.filesCtrl.getFileLinks(this.file.id).subscribe(
+			res => console.log(res)
+		);
 	}
 	
 }

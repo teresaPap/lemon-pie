@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { fromEvent, Subscription, forkJoin, of } from 'rxjs';
 import { switchMap, takeUntil, tap, map } from 'rxjs/operators';
-import { IClickableArea, ICanvasPosition } from '../../interfaces/IClickableArea';
+import { IClickableArea } from '../../interfaces/IFile';
+import { ICanvasPosition } from '../../interfaces/IEditor';
 
 @Component({
 	selector: 'app-editor',
@@ -52,7 +53,7 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 
 	public closeSelectionMenu():void {
 		this.clearCanvas();
-		this.canvasSelection.linkedFileId = null;
+		this.canvasSelection = null as IClickableArea;
 		console.log('Selection canceled.');
 		this.showSelectionMenu = false;
 	}
@@ -66,7 +67,9 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 		const $onMouseLeave = fromEvent(this.editor, 'mouseleave');
 
 		$onMouseDown.pipe(
-			tap( () => this.canvasSelection = null ),
+			// Initialize for security
+			tap( () => this.canvasSelection = null as IClickableArea ),
+			// Watch while mouse is down
 			map( (mouseDown: MouseEvent) => this.getPositionOnCanvas(mouseDown) ),
 			switchMap( (startingPos: ICanvasPosition) => {
 				const $selectionStoped = $onMouseMove.pipe(
@@ -90,7 +93,13 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 			this.setStrokeStyle();
 			// Draw selection and show selection menu
 			this.drawRectangle(startingPos, finalPos);
-			this.canvasSelection = { ... this.canvasSelection, startingPos, finalPos };
+			this.canvasSelection = { 
+				... this.canvasSelection, 
+				x1: startingPos.x, 
+				y1: startingPos.y , 
+				x2: finalPos.x, 
+				y2: finalPos.y 
+			};
 			this.showSelectionMenu = true;
 		})
 	}

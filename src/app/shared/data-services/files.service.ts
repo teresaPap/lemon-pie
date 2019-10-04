@@ -107,10 +107,10 @@ export class FilesService {
 				return forkJoin(referencesToGet);
 			}),
 			// Map the DocumentData to the actual json data and return them to the component
-			map((project: firebase.firestore.DocumentData) => {
+			map((file: firebase.firestore.DocumentData) => {
 				const projectData = [];
-				project.forEach(documentSnapsot =>
-					projectData.push({ id: documentSnapsot.id, ...documentSnapsot.data() })
+				file.forEach(snapsot =>
+					projectData.push({ id: snapsot.id, ...snapsot.data() })
 				);
 				return projectData;
 			})

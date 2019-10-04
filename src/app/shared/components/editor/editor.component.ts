@@ -25,7 +25,7 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 	constructor() { }
 
 	ngOnInit(): void {
-		console.log('Editor Ready' );
+		console.log('Editor Ready');
 	}
 
 	ngAfterViewInit(): void {
@@ -44,14 +44,14 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 		// TODO: unsubscribe ??
 	}
 
-	public saveLink(selectedFileId: string):void {
+	public saveLink(selectedFileId: string): void {
 		this.clearCanvas();
 		this.canvasSelection.linkedFileId = selectedFileId;
 		this.onSaveArea.emit(this.canvasSelection);
 		this.showSelectionMenu = false;
 	}
 
-	public closeSelectionMenu():void {
+	public closeSelectionMenu(): void {
 		this.clearCanvas();
 		this.canvasSelection = null as IClickableArea;
 		console.log('Selection canceled.');
@@ -61,6 +61,7 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 	// #region - Canvas events handling - see also https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
 
 	private watchCanvasEvents() {
+		// TODO: onMouseDown$ instead of onMouseDown :P
 		const $onMouseDown = fromEvent(this.editor, 'mousedown');
 		const $onMouseUp = fromEvent(this.editor, 'mouseup');
 		const $onMouseMove = fromEvent(this.editor, 'mousemove');
@@ -68,14 +69,14 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 
 		$onMouseDown.pipe(
 			// Initialize for security
-			tap( () => this.canvasSelection = null as IClickableArea ),
+			tap(() => this.canvasSelection = null as IClickableArea),
 			// Watch while mouse is down
-			map( (mouseDown: MouseEvent) => this.getPositionOnCanvas(mouseDown) ),
-			switchMap( (startingPos: ICanvasPosition) => {
+			map((mouseDown: MouseEvent) => this.getPositionOnCanvas(mouseDown)),
+			switchMap((startingPos: ICanvasPosition) => {
 				const $selectionStoped = $onMouseMove.pipe(
 					// While mouse is moving, get the current position and draw a selection
-					map( (mouseMoved: MouseEvent) => this.getPositionOnCanvas(mouseMoved)),
-					tap( currentPos => {
+					map((mouseMoved: MouseEvent) => this.getPositionOnCanvas(mouseMoved)),
+					tap(currentPos => {
 						this.clearCanvas();
 						this.drawSelection(startingPos, currentPos);
 					}),
@@ -83,22 +84,22 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 					takeUntil($onMouseUp),
 					takeUntil($onMouseLeave),
 				);
-				return forkJoin( of(startingPos), $selectionStoped );
+				return forkJoin(of(startingPos), $selectionStoped);
 			}),
 			// TODO: to unsubscribe use takeUntil( .. ) user saves the action. Then restart listening on user add new action
-		).subscribe( res  => {
+		).subscribe(res => {
 			const startingPos = res[0];
 			const finalPos = res[1];
 
 			this.setStrokeStyle();
 			// Draw selection and show selection menu
 			this.drawRectangle(startingPos, finalPos);
-			this.canvasSelection = { 
-				... this.canvasSelection, 
-				x1: startingPos.x, 
-				y1: startingPos.y , 
-				x2: finalPos.x, 
-				y2: finalPos.y 
+			this.canvasSelection = {
+				... this.canvasSelection,
+				x1: startingPos.x,
+				y1: startingPos.y,
+				x2: finalPos.x,
+				y2: finalPos.y
 			};
 			this.showSelectionMenu = true;
 		})

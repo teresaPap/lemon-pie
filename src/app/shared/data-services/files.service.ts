@@ -38,6 +38,7 @@ export class FilesService {
 
 	public getFileLinks( fileId: string ): Observable<IClickableArea[]> {
 		const linksCollection = this.firestore.collection(`files/${fileId}/links`);
+
 		const action = linksCollection.get().pipe(
 			map( links => {
 				if ( links.docs.length ) 
@@ -46,14 +47,11 @@ export class FilesService {
 					throw 'This file has no links';
 			}),
 			// For each of the snapshots, get the document data
-			switchMap( (links: firebase.firestore.DocumentSnapshot[]) => {
+			map( (links: firebase.firestore.DocumentSnapshot[] ) => {
 				const linksData = [];
-				console.log( links );
 				links.forEach( snapshot => linksData.push( { ...snapshot.data(), linkedFileId: snapshot.id } ) );
-
 				return linksData;
-			}), 
-			tap( res => console.log(res))
+			})
 		)
 		return from(action);
 	}

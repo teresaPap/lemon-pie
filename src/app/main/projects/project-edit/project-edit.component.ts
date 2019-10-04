@@ -17,6 +17,8 @@ export class ProjectEditComponent implements OnInit {
 
 	public file: IFile;
 
+	public links = [];
+
 	constructor(
 		public storage: StorageService,
 		public router: Router, 
@@ -42,6 +44,7 @@ export class ProjectEditComponent implements OnInit {
 		this.filesCtrl.getFileLinks(this.file.id).subscribe(
 			res => {
 				console.log(res)
+				this.links = res;
 				// TODO: Draw a rectangle for each of the clickable areas using the linker component. 
 			}
 		);

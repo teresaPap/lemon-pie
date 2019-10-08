@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Input, OnChanges } from '@angular/core';
 import { IClickableArea } from '../../interfaces/IFile';
 import { ICanvasPosition } from '../../interfaces/IEditor';
+import { CanvasService } from '../../services/canvas.service';
+import { Subscription } from 'rxjs';
 
 // COMPONENT DESCRIPTION: 
 // LinkerComponent is an Identical Canvas with the Editor component which will be displayed on top of the editor canvas whenever the show links toggle button is on. 
@@ -17,13 +19,14 @@ import { ICanvasPosition } from '../../interfaces/IEditor';
 })
 export class LinkerComponent implements OnInit, AfterViewInit, OnChanges {
 
+	@Input() imgUrl: string;
 	@Input() clickableAreas?: IClickableArea[];
 
 	@ViewChild('canvas', { static: false }) public canvas: ElementRef;
 	private cx: CanvasRenderingContext2D;
 	private linker: HTMLCanvasElement;
 
-	constructor() { }
+	constructor( private canvasCtrl: CanvasService ) { }
 
 	ngOnInit(): void {
 	}
@@ -33,10 +36,13 @@ export class LinkerComponent implements OnInit, AfterViewInit, OnChanges {
 		this.linker = this.canvas.nativeElement;
 		this.cx = this.linker.getContext('2d');
 		this.setStrokeStyle();
+		// set up the canvas 
+		this.setSize(this.imgUrl);
+
 	}
 
 	ngOnChanges() {
-		console.log('Linker changed', this.clickableAreas.length);
+		console.log('Linker changed', !!this.clickableAreas.length);
 		if (this.clickableAreas.length)
 			this.clickableAreas.forEach(area => {
 				const { x1, x2, y1, y2 } = area;
@@ -52,6 +58,20 @@ export class LinkerComponent implements OnInit, AfterViewInit, OnChanges {
 
 		this.cx.rect(x1, y1, width, height);
 		this.cx.stroke();
+	}
+
+	private setSize(url): Subscription {
+		
+		const img = new Image; 
+		img.src = url;
+
+		return this.canvasCtrl.getSizeFromImage(img).subscribe(
+			dimentions => {
+				console.log(dimentions);
+				this.linker.height = dimentions.height;
+				this.linker.width = dimentions.width;
+			}
+		)
 	}
 
 

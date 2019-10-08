@@ -2,6 +2,6 @@
 <br>
 
 <app-editor [imgUrl]="file.downloadURL" (onSaveArea)="saveArea($event)"></app-editor>
-<app-linker [clickableAreas]="links" ></app-linker>
+<app-linker [imgUrl]="file.downloadURL" [clickableAreas]="links" ></app-linker>
 
 <app-aside (onShowLinks)="onShowLinks($event)"></app-aside>

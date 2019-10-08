@@ -3,6 +3,7 @@ import { fromEvent, Subscription, forkJoin, of } from 'rxjs';
 import { switchMap, takeUntil, tap, map } from 'rxjs/operators';
 import { IClickableArea } from '../../interfaces/IFile';
 import { ICanvasPosition } from '../../interfaces/IEditor';
+import { CanvasService } from '../../services/canvas.service';
 
 @Component({
 	selector: 'app-editor',
@@ -22,7 +23,7 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 	public showSelectionMenu: boolean;
 	private canvasSelection: IClickableArea;
 
-	constructor() { }
+	constructor( private canvasCtrl: CanvasService ) { }
 
 	ngOnInit(): void {
 		console.log('Editor Ready');
@@ -45,14 +46,14 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 	}
 
 	public saveLink(selectedFileId: string): void {
-		this.clearCanvas();
+		this.canvasCtrl.clearCanvas(this.cx, this.editor);
 		this.canvasSelection.linkedFileId = selectedFileId;
 		this.onSaveArea.emit(this.canvasSelection);
 		this.showSelectionMenu = false;
 	}
 
 	public closeSelectionMenu(): void {
-		this.clearCanvas();
+		this.canvasCtrl.clearCanvas(this.cx, this.editor);
 		this.canvasSelection = null as IClickableArea;
 		console.log('Selection canceled.');
 		this.showSelectionMenu = false;
@@ -71,14 +72,14 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 			// Initialize for security
 			tap(() => this.canvasSelection = null as IClickableArea),
 			// Watch while mouse is down
-			map((mouseDown: MouseEvent) => this.getPositionOnCanvas(mouseDown)),
+			map((mouseDown: MouseEvent) => this.canvasCtrl.getPositionOnCanvas(mouseDown, this.editor)),
 			switchMap((startingPos: ICanvasPosition) => {
 				const $selectionStoped = $onMouseMove.pipe(
 					// While mouse is moving, get the current position and draw a selection
-					map((mouseMoved: MouseEvent) => this.getPositionOnCanvas(mouseMoved)),
+					map((mouseMoved: MouseEvent) => this.canvasCtrl.getPositionOnCanvas(mouseMoved, this.editor)),
 					tap(currentPos => {
-						this.clearCanvas();
-						this.drawSelection(startingPos, currentPos);
+						this.canvasCtrl.clearCanvas(this.cx, this.editor);
+						this.canvasCtrl.drawSelection(startingPos, currentPos, this.cx);
 					}),
 					// Until mouse is up or leaves
 					takeUntil($onMouseUp),
@@ -91,9 +92,9 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 			const startingPos = res[0];
 			const finalPos = res[1];
 
-			this.setStrokeStyle();
+			this.canvasCtrl.setStrokeStyle( this.cx );
 			// Draw selection and show selection menu
-			this.drawRectangle(startingPos, finalPos);
+			this.canvasCtrl.drawRectangle(startingPos, finalPos, this.cx);
 			this.canvasSelection = {
 				... this.canvasSelection,
 				x1: startingPos.x,
@@ -105,64 +106,17 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 		})
 	}
 
-	private drawSelection(startingPos, currentPos) {
-		const width: number = currentPos.x - startingPos.x;
-		const height: number = currentPos.y - startingPos.y;
-
-		this.cx.fillStyle = "#fe812d50";
-		this.cx.fillRect(startingPos.x, startingPos.y, width, height);
-	}
-
-	private drawRectangle(startingPos: ICanvasPosition, finalPos: ICanvasPosition) {
-		const width: number = finalPos.x - startingPos.x;
-		const height: number = finalPos.y - startingPos.y;
-
-		this.cx.rect(startingPos.x, startingPos.y, width, height);
-		this.cx.stroke();
-
-
-		// BUG: offset when painting on canvas 
-		// occures if the canvas is resided to fit the screen (this happends automatically)
-		// TODO: use css to display image real size and add scroll bars horizontally and vertically
-		// Otherwise, for responsiveness,  give the canvas the size of the image as it appears on the screen (swich img.naturalHeight with sth ele, if applicable)
-	}
-
 	private setBackground(url): Subscription {
-		const img = this.canvasBg.nativeElement;
+		
+		const img = this.canvasBg.nativeElement; 
 		img.src = url;
 
-		// read img
-		return fromEvent(img, 'load').subscribe(
-			() => {
-				// size canvas to the image size
-				console.log(`Image size: ${img.naturalWidth} x ${img.naturalHeight}`);
-
-				this.editor.height = img.naturalHeight;
-				this.editor.width = img.naturalWidth;
-				// display the image
-				// this.cx.drawImage(img, 0, 0);
-			});
-	}
-
-	private setStrokeStyle() {
-		// TODO: maybe create a panel for user to set the style
-		this.cx.lineWidth = 2;
-		this.cx.lineCap = 'round';
-		this.cx.strokeStyle = '#ff812d';
-	}
-
-	private clearCanvas() {
-		this.cx.clearRect(0, 0, this.editor.width, this.editor.height);
-		this.cx.beginPath();
-	}
-
-	private getPositionOnCanvas(e: MouseEvent): ICanvasPosition {
-		const rect = this.editor.getBoundingClientRect();
-		const position: ICanvasPosition = {
-			x: e.clientX - rect.left,
-			y: e.clientY - rect.top
-		};
-		return position;
+		return this.canvasCtrl.getSizeFromImage(img).subscribe(
+			dimentions => {
+				this.editor.height = dimentions.height;
+				this.editor.width = dimentions.width;
+			}
+		)
 	}
 
 	// #endregion

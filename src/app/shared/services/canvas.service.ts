@@ -33,18 +33,10 @@ export class CanvasService {
 	}
 
 	public getSizeFromImage(img): Observable<any> {
-		// TODO: return the heigh and width of the stored downloadURL so that the component creates a canvas this size. 
-		// const activeFile = JSON.parse(localStorage.getItem('activeFile'))
-		// const url = activeFile.downloadURL;
-
-		// const img = new Image; 
-		// img.src = url;
-
-		// read img
 		return fromEvent(img, 'load').pipe(
 			map( () => {
 				// get natural image size
-				console.log(`Image size: ${img.naturalWidth} x ${img.naturalHeight}`);
+				// console.log(`Image size: ${img.naturalWidth} x ${img.naturalHeight}`);
 				return {height:img.naturalHeight, width: img.naturalWidth}
 			}) 
 		);
@@ -54,7 +46,8 @@ export class CanvasService {
 		// TODO: maybe create a panel for user to set the style
 		cx.lineWidth = 2;
 		cx.lineCap = 'round';
-		cx.strokeStyle = '#ff812d';
+		cx.strokeStyle = 'red';
+		// cx.strokeStyle = '#ff812d';
 	}
 
 	public clearCanvas( cx:CanvasRenderingContext2D, editor: HTMLCanvasElement ): void {

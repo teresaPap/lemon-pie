@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Input, OnChang
 import { IClickableArea } from '../../interfaces/IFile';
 import { ICanvasPosition } from '../../interfaces/IEditor';
 import { CanvasService } from '../../services/canvas.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 // COMPONENT DESCRIPTION: 
 // LinkerComponent is an Identical Canvas with the Editor component which will be displayed on top of the editor canvas whenever the show links toggle button is on. 
@@ -17,7 +18,7 @@ import { Subscription } from 'rxjs';
 	selector: 'app-linker',
 	templateUrl: './linker.component.html'
 })
-export class LinkerComponent implements OnInit, AfterViewInit, OnChanges {
+export class LinkerComponent implements AfterViewInit {
 
 	@Input() imgUrl: string;
 	@Input() clickableAreas?: IClickableArea[];
@@ -26,61 +27,43 @@ export class LinkerComponent implements OnInit, AfterViewInit, OnChanges {
 	private cx: CanvasRenderingContext2D;
 	private linker: HTMLCanvasElement;
 
-	constructor( private canvasCtrl: CanvasService ) { }
-
-	ngOnInit(): void {
-	}
+	constructor(private canvasCtrl: CanvasService) { }
 
 	ngAfterViewInit(): void {
 		// get the context
 		this.linker = this.canvas.nativeElement;
 		this.cx = this.linker.getContext('2d');
-		this.setStrokeStyle();
 		// set up the canvas 
-		this.setSize(this.imgUrl);
-
+		this.setSize(this.imgUrl).subscribe(
+			() => {
+				if (this.clickableAreas.length) {
+					this.draw();
+				}
+			}
+		);
 	}
 
-	ngOnChanges() {
-		console.log('Linker changed', !!this.clickableAreas.length);
-		if (this.clickableAreas.length)
-			this.clickableAreas.forEach(area => {
-				const { x1, x2, y1, y2 } = area;
+	private draw() {
+		this.clickableAreas.forEach(area => {
+			console.log(`draw: (${area.x1}, ${ area.y1}) (${area.x2}, ${area.y2})`);
 
-				this.drawRectangle(x1, x2, y1, y2);
-			});
+			const startingPos = { x: area.x1, y: area.y1 };
+			const finalPos = { x: area.x2, y: area.y2 };
+
+			this.canvasCtrl.drawRectangle(startingPos, finalPos, this.cx)
+		});
 	}
 
-	private async drawRectangle(x1: number, y1: number, x2: number, y2: number) {
-		console.log(x1, y1, x2, y2)
-		const width: number = x2 - x1;
-		const height: number = y2 - y1;
-
-		this.cx.rect(x1, y1, width, height);
-		this.cx.stroke();
-	}
-
-	private setSize(url): Subscription {
-		
-		const img = new Image; 
+	private setSize(url): Observable<void> {
+		const img = new Image;
 		img.src = url;
-
-		return this.canvasCtrl.getSizeFromImage(img).subscribe(
-			dimentions => {
+		return this.canvasCtrl.getSizeFromImage(img).pipe(
+			tap( dimentions => {
 				console.log(dimentions);
 				this.linker.height = dimentions.height;
 				this.linker.width = dimentions.width;
-			}
-		)
+			})
+		);
 	}
-
-
-	private setStrokeStyle() {
-		// TODO: maybe create a panel for user to set the style
-		this.cx.lineWidth = 2;
-		this.cx.lineCap = 'round';
-		this.cx.strokeStyle = '#ff812d';
-	}
-
 
 }

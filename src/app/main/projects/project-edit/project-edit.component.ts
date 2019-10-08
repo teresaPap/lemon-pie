@@ -18,6 +18,7 @@ export class ProjectEditComponent implements OnInit {
 	public file: IFile;
 
 	public links = [];
+	public showLinks: boolean = false;
 
 	constructor(
 		public storage: StorageService,
@@ -28,6 +29,10 @@ export class ProjectEditComponent implements OnInit {
 	ngOnInit() {
 		this.file = this.storage.load('activeFile');
 		console.log("Editing file: ", this.file);
+
+		this.filesCtrl.getFileLinks(this.file.id).subscribe(
+			res => this.links = res
+		);
 	}
 
 
@@ -39,15 +44,7 @@ export class ProjectEditComponent implements OnInit {
 	}
 
 	public onShowLinks(event): void {
-		console.log('show links event', event, this.file)
-
-		this.filesCtrl.getFileLinks(this.file.id).subscribe(
-			res => {
-				console.log(res)
-				this.links = res;
-				// TODO: Draw a rectangle for each of the clickable areas using the linker component. 
-			}
-		);
+		this.showLinks = event;
 	}
 	
 }

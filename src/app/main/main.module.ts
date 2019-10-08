@@ -8,6 +8,9 @@ import { ProjectListComponent } from './projects/project-list/project-list.compo
 import { ProjectEditComponent } from './projects/project-edit/project-edit.component';
 import { FileListItemComponent } from './files/file-list-item/file-list-item.component';
 import { AsideComponent } from './projects/project-edit/aside/aside.component';
+import { EditorComponent } from './projects/project-edit/editor/editor.component';
+import { SelectionMenuComponent } from './projects/project-edit/selection-menu/selection-menu.component';
+import { LinkerComponent } from './projects/project-edit/linker/linker.component';
 
 @NgModule({
     declarations: [
@@ -17,7 +20,11 @@ import { AsideComponent } from './projects/project-edit/aside/aside.component';
 		ProjectListComponent,
 		ProjectDetailComponent,
 		ProjectEditComponent,
-		FileListItemComponent
+		FileListItemComponent,
+
+		EditorComponent, 
+		SelectionMenuComponent, 
+		LinkerComponent, 
     ],
     imports: [
 		SharedModule,

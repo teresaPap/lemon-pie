@@ -11,9 +11,7 @@ import { ProjectsService } from './data-services/projects.service';
 import { AddProjectComponent } from './components/add-project/add-project.component';
 import { FilesService } from './data-services/files.service';
 import { StorageService } from './services/storage.service';
-import { EditorComponent } from './components/editor/editor.component';
-import { SelectionMenuComponent } from './components/selection-menu/selection-menu.component';
-import { LinkerComponent } from './components/linker/linker.component';
+
 
 @NgModule({
     declarations: [ 
@@ -22,9 +20,6 @@ import { LinkerComponent } from './components/linker/linker.component';
 		FileUploaderComponent, 
 		UploadTaskComponent, 
 		AddProjectComponent, 
-		EditorComponent, 
-		SelectionMenuComponent, 
-		LinkerComponent, 
     ],
     imports: [ 
         RouterModule,
@@ -40,9 +35,6 @@ import { LinkerComponent } from './components/linker/linker.component';
 		NavComponent,
 		FileUploaderComponent,
 		AddProjectComponent,
-		EditorComponent,
-		SelectionMenuComponent,
-		LinkerComponent,
     ],
     providers: [ 
 		ProjectsService,

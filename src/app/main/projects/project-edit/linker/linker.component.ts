@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Input, OnChanges } from '@angular/core';
-import { IClickableArea } from '../../interfaces/IFile';
-import { ICanvasPosition } from '../../interfaces/IEditor';
-import { CanvasService } from '../../services/canvas.service';
-import { Subscription, Observable } from 'rxjs';
+import { Component, ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
+import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { IClickableArea } from '../../../../shared/interfaces/IFile';
+import { CanvasService } from '../../../../shared/services/canvas.service';
 
 // COMPONENT DESCRIPTION: 
 // LinkerComponent is an Identical Canvas with the Editor component which will be displayed on top of the editor canvas whenever the show links toggle button is on. 

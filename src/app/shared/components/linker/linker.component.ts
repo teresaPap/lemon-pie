@@ -33,6 +33,7 @@ export class LinkerComponent implements AfterViewInit {
 		// get the context
 		this.linker = this.canvas.nativeElement;
 		this.cx = this.linker.getContext('2d');
+
 		// set up the canvas 
 		this.setSize(this.imgUrl).subscribe(
 			() => {
@@ -41,9 +42,11 @@ export class LinkerComponent implements AfterViewInit {
 				}
 			}
 		);
+
 	}
 
 	private draw() {
+		this.canvasCtrl.setStrokeStyle(this.cx,'#b3d4fc' );
 		this.clickableAreas.forEach(area => {
 			console.log(`draw: (${area.x1}, ${ area.y1}) (${area.x2}, ${area.y2})`);
 

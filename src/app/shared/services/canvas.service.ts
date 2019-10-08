@@ -42,12 +42,13 @@ export class CanvasService {
 		);
 	}
 
-	public setStrokeStyle( cx:CanvasRenderingContext2D ) {
+	public setStrokeStyle( cx:CanvasRenderingContext2D, color?:string ) {
 		// TODO: maybe create a panel for user to set the style
 		cx.lineWidth = 2;
 		cx.lineCap = 'round';
-		cx.strokeStyle = 'red';
-		// cx.strokeStyle = '#ff812d';
+		if (color) cx.strokeStyle = color;
+		else cx.strokeStyle = '#ff812d' ;
+
 	}
 
 	public clearCanvas( cx:CanvasRenderingContext2D, editor: HTMLCanvasElement ): void {

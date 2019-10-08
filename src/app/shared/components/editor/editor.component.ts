@@ -92,7 +92,7 @@ export class EditorComponent implements AfterViewInit, OnInit, OnDestroy {
 			const startingPos = res[0];
 			const finalPos = res[1];
 
-			this.canvasCtrl.setStrokeStyle( this.cx );
+			this.canvasCtrl.setStrokeStyle( this.cx, '#ff812d' );
 			// Draw selection and show selection menu
 			this.canvasCtrl.drawRectangle(startingPos, finalPos, this.cx);
 			this.canvasSelection = {

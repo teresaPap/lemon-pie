@@ -12,6 +12,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 // PAGE DESCRIPTION: 
 // In this view the user can add files to the current project
 // and inspect project status (name, description etc)
+// if the current project is not yet created (  -> projectId == 0 ), here the user can create a new project. 
 
 @Component({
 	selector: 'app-project-detail',
@@ -47,12 +48,17 @@ export class ProjectDetailComponent implements OnInit {
 					this.project.id = params.id;
 					dataToGet.push( this.getFiles(params.id) );
 				}
+				else {
+					this.project.id = '';
+				}
 				return forkJoin(dataToGet);
 			}),
 			tap( res => {
 				this.project = { ...this.project , ...res[0].data() };
 				this.initializeForm(this.project.name , this.project.description);
-				console.log("Editing project: " , this.project );
+
+				console.log(`Project ID: ${this.project.id}`);
+
 				if (res[1]) {
 					this.files = res[1];
 					this.project.files = this.files;
@@ -63,8 +69,10 @@ export class ProjectDetailComponent implements OnInit {
 	}
 
 	public savePojectDetailForm() {
-		if (this.projectDetailForm.valid) 
+		if (this.projectDetailForm.valid) {
 			console.log(this.projectDetailForm.value);
+
+		}
 	}
 
 	public navToEdit(file: IFile) {

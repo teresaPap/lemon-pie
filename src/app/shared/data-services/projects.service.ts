@@ -19,6 +19,10 @@ export class ProjectsService {
 
 
 	public create(project: IProject): Observable<void> {
+		console.log('About to create a new project', project);
+
+
+
 		const projectsCollectionRef: AngularFirestoreCollection = this.firestore.collection('projects');
 		const userIdDocumentRef: AngularFirestoreDocument = this.firestore.doc(`users/${this.uid}`);
 
@@ -70,6 +74,7 @@ export class ProjectsService {
 		return action;
 	}
 
+	
 	public readSingle(projectId:string): Observable<firebase.firestore.DocumentSnapshot> {
 		const action = this.firestore.doc(`projects/${projectId}`).get();
 		return action;

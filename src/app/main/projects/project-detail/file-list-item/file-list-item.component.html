@@ -22,16 +22,16 @@
 	<div class="form">
 	
 		<div class="form-group">
-			<button class="form-group-button">
+			<button type="button" class="form-group-button" (click)="onEditClicked(file)">
+				<i class="fa fa-edit"></i>
 				Open Flow Editor
-				<i class="fa fa-edit" (click)="onEditClicked(file)"></i>
 			</button>
-		</div>
+			</div>
 
 		<div class="form-group">
-			<button class="form-group-button">
-				Delete
-				<i class="fa fa-trash" (click)="onDeleteClicked(file)"></i>
+			<button type="button" class="form-group-button" (click)="onDeleteClicked(file)">
+				<i class="fa fa-trash"></i>				
+				Delete page
 			</button>
 		</div>
 		

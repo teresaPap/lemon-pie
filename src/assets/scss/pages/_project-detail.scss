@@ -1,11 +1,7 @@
 .project-detail-container {
-	height: 150px;
 	margin: 20px 5vw;
-
 	display: flex;
-	align-items: center;
 	justify-content: space-between;
-	flex-direction: row;
 
 	.container-top-right {
 		width: 30%;
@@ -28,12 +24,14 @@
 		margin-top: 10px;
 		padding-top: 10px;
 		border-top: 1px solid $gallery; 
-		position: relative;
+		
+		display: flex;
+		flex-direction: row;
 
-		.item-preview {
-			height: 100px;
-			width: 150px;
-			display: inline-block;
+		.page-preview {
+			flex-grow: 2;
+
+			height: 120px;
 
 			background-color: $gallery;
 			background-position: center;
@@ -41,12 +39,14 @@
 			border-radius: 3px;
 		}
 		.item-description {
-			display: inline-block;
+			flex-grow: 4;
+			// display: inline-block;
 		}
 		.item-actions {
-			position: absolute;
-			right: 0;
-			top: 10px;
+			flex-grow: 2;
+			* {
+				float: right;
+			}
 			
 		}
 

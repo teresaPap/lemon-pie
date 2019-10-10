@@ -1,51 +1,36 @@
 // Forms and form inputs styling
 
-.form {
-	display: flex;
-	flex-direction: column;
-	color: $theme-text;
+// .form {
+// 	display: flex;
+// 	flex-direction: column;
+// 	color: $theme-text;
 
-	.form-group {
-		label {
-			display: block;
-			margin-bottom: 0.3em;
-		}
-		input, 
-		select { 
-			display: block;
-			margin-bottom: 0.3em;
-			padding: 10px;
-			margin-bottom: 0.3em;
-			line-height: 1.2em;
-		}
-		.select {
-			border-radius: 0 !important;
-			border: 1px solid $mercury;
-		}
+// 	.form-group {
+// 		label {
+			
+// 		}
+// 		input, 
+// 		select { 
+// 			display: block;
+// 			margin-bottom: 0.3em;
+// 			padding: 10px;
+// 			margin-bottom: 0.3em;
+// 			line-height: 1.2em;
+// 		}
+// 		.select {
+// 			border-radius: 0 !important;
+// 			border: 1px solid $mercury;
+// 		}
 		
-	}
+// 	}
 
-	button[type="submit"] {
-	   background-color: $btn-submit;
-	   color: $theme-background;
-	   margin-top: 0.4em;
-    }
+// 	button[type="submit"] {
+// 	   background-color: $btn-submit;
+// 	   color: $theme-background;
+// 	   margin-top: 0.4em;
+//     }
 	
-}
-
-.form-container {
-	padding: 20px;
-	// margin: 30px;
-	border: 1px $gallery solid;
-	position: relative;
-	.x-btn {
-		position: absolute;
-		top: -15px;
-    	right: -15px;
-    	background-color: $white;
-	}
-}
-
+// }
 
 
 .login-form {
@@ -103,33 +88,46 @@
 .detail-form {
 	display: flex;
 	flex-direction: column;
-	height: 100%;
 }
 
-.form-group-editable {
-	width: 100%;
-	display: flex;
+.form {
+	.form-group {
+		display: flex;
+		margin: 0px 5px 5px 5px;
 
-	padding: 5px;
-	margin-bottom: 5px;
-
-	line-height: 1.1em;
-	border: 1px solid $mercury;
-
-	label{
-		min-width: 110px;
-		line-height: 1.1em;
-		display: inline;
-		vertical-align: middle;
-	} 
-	.form-input {
-		line-height: 1.1em;
-		width: 100%;
-		border: none;
+		.form-group-label {
+			flex-grow: 1;
+			width: 0;
+			text-align: right;
+			padding: 12px 10px;
+		}
+		.form-input {
+			flex-grow: 3;
+			border: 2px solid $mercury;
+			border-radius: 4px;
+			display: flex;
+			input, textarea {
+				flex-grow: 3;
+				border: none;
+				padding: 10px;
+				&::placeholder {
+					font-style: italic;
+				}
+			}
+			.form-group-button {
+				border-radius: 0;
+			}
+		}
+		.form-group-button {
+			padding: 12px;
+			border:none;
+			border-radius: 4px;
+			background-color: $mercury;
+			color: $white;
+			i {
+				color: $white;
+			}
+		}
+		
 	}
-	i { 
-		height: 100%;
-		color: $theme-muted;
-	}
-
 }

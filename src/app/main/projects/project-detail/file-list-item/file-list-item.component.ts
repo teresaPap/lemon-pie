@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { IFile } from '../../../shared/interfaces/IFile';
+import { IFile } from '../../../../shared/interfaces/IFile';
 
 @Component({
 	selector: 'app-file-list-item',

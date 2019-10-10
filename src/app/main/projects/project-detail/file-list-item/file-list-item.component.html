@@ -1,0 +1,40 @@
+<li class="file-list-item">
+
+	<div class="page-preview" [ngStyle]="{'background-image': 'url(' +file.downloadURL+ ')' }"></div>
+
+	<div class="item-description form">
+		<div class="form-group">
+			<label class="form-group-label">
+				Page name
+			</label>
+			
+			<div class="form-input">
+				<input placeholder="Enter the name of this page to link it to another page">
+				<button class="form-group-button">
+					<i class="fa fa-save" (click)="onSaveClicked(file)"></i>
+				</button>
+			</div>
+		</div>
+
+	</div>
+
+
+	<div class="form">
+	
+		<div class="form-group">
+			<button class="form-group-button">
+				Open Flow Editor
+				<i class="fa fa-edit" (click)="onEditClicked(file)"></i>
+			</button>
+		</div>
+
+		<div class="form-group">
+			<button class="form-group-button">
+				Delete
+				<i class="fa fa-trash" (click)="onDeleteClicked(file)"></i>
+			</button>
+		</div>
+		
+	</div>
+
+</li>

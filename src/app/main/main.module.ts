@@ -6,11 +6,11 @@ import { MainRoutingModule } from './main-routing.module';
 import { ProjectDetailComponent } from './projects/project-detail/project-detail.component';
 import { ProjectListComponent } from './projects/project-list/project-list.component';
 import { ProjectEditComponent } from './projects/project-edit/project-edit.component';
-import { FileListItemComponent } from './files/file-list-item/file-list-item.component';
 import { AsideComponent } from './projects/project-edit/aside/aside.component';
 import { EditorComponent } from './projects/project-edit/editor/editor.component';
 import { SelectionMenuComponent } from './projects/project-edit/selection-menu/selection-menu.component';
 import { LinkerComponent } from './projects/project-edit/linker/linker.component';
+import { FileListItemComponent } from './projects/project-detail/file-list-item/file-list-item.component';
 
 @NgModule({
     declarations: [

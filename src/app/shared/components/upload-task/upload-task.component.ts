@@ -1,8 +1,5 @@
-import { Component, OnInit, Input, ChangeDetectorRef, OnChanges } from '@angular/core';
-import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { FilesService } from '../../data-services/files.service';
 
 // COMPONENT DESCRIPTION: 
@@ -20,72 +17,44 @@ import { FilesService } from '../../data-services/files.service';
 	templateUrl: './upload-task.component.html',
 	styleUrls: ['./upload-task.component.scss']
 })
-export class UploadTaskComponent implements OnInit {
+export class UploadTaskComponent implements OnInit, OnDestroy {
 
 	@Input() file: File;
 	@Input() uploadPath: string;
 
-	public task: AngularFireUploadTask;
+
+	private uploadingNewFile: Subscription = new Subscription;
 
 	percentage: Observable<number>;
 	snapshot: Observable<any>;
 	downloadURL: string;
 
 	constructor(
-		// private storage: AngularFireStorage, 
-		// private db: AngularFirestore, 
 		private fileCtrl: FilesService ) {
 	}
 
 	ngOnInit() {
-		console.log('hello UploadTaskComponent!' );
-		if (this.file) this.startUpload();
+		if (this.file) {
+			this.startUpload();
+		}
 	}
 
-	startUpload() {
-
-		const fileName = `${this.file.lastModified}_${this.file.name}`;
-
-		this.fileCtrl.saveFileLinkedToProject( this.file, this.uploadPath , fileName ).subscribe(
-			() => console.log(`File ${fileName} was saved`), 
-			err => console.warn(err)
-		)
-
+	ngOnDestroy() {
+		this.uploadingNewFile.unsubscribe();
+		console.log('UploadTaskComponent ON DESTROY');
 	}
 
-
-	
-	isActive(snapshot) {
+	public isActive(snapshot) {
+		// TODO: What's this?
 		return snapshot.state === 'running' && snapshot.bytesTransferred < snapshot.totalBytes;
 	}
 
+	private startUpload(): void {
+		this.uploadingNewFile = this.fileCtrl.create( this.file, this.uploadPath ).subscribe(
+			res => console.log('FILE CREATE SUCCESS: ', res), 
+			err => console.log('FILE CREATE FAILED: ', err),
+			() => console.log('FILE CREATE COMPLETED')
+		);
+	}
+
 }
-
-
-
-
-
-
-
-		// The storage path
-		// TODO: set the db path you want to use as the pic storage. Best practice is to design from now the db schema ypu will folllow
-		// const path = `lemonpie-f5dba.firebaseio.com/test/${Date.now()}_${this.file.name}`;
-
-		// Reference to storage bucket
-		// const ref = this.storage.ref(this.uploadPath);
-
-		// // The main task
-		// this.task = this.storage.upload(this.uploadPath, this.file);
-
-		// // Progress monitoring
-		// this.percentage = this.task.percentageChanges();
-
-		// this.snapshot = this.task.snapshotChanges().pipe(
-		// 	tap(console.log),
-		// 	// The file's download URL
-		// 	finalize( async () => {
-		// 		this.downloadURL = await ref.getDownloadURL().toPromise();
-		// 		let uploadPath = this.uploadPath;
-		// 		this.db.collection('files').add({ downloadURL: this.downloadURL, uploadPath });
-		// 	}),
-		// );

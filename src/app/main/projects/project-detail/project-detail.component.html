@@ -1,7 +1,6 @@
 <!-- <h2 class="page-header">page header</h2> -->
 
-<div class="project-detail-container">
-	<div class="container-top-left">
+<div class="project-data-container">
 		<h3>Project details</h3>
 
 		<form [formGroup]="projectDetailForm" (ngSubmit)="savePojectDetailForm()" class="form detail-form">
@@ -29,17 +28,14 @@
 				</div>
 			</div>
 		</form>
-	</div>
 
-	<div class="container-top-right">
-		<h3>Upload more files</h3>
+		<h4>Upload more files</h4>
 		<app-file-uploader [uploadPath]="project.id"></app-file-uploader>
-	</div>
+
 
 </div>
 
-<br>
-<div class="container-bottom">
+<div class="project-files-container">
 	<h3>Project files</h3>
 
 	<ul class="file-list">

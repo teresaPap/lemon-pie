@@ -14,8 +14,7 @@ import { FilesService } from '../../data-services/files.service';
 
 @Component({
 	selector: 'app-upload-task',
-	templateUrl: './upload-task.component.html',
-	styleUrls: ['./upload-task.component.scss']
+	templateUrl: './upload-task.component.html'
 })
 export class UploadTaskComponent implements OnInit, OnDestroy {
 

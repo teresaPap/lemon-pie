@@ -31,14 +31,15 @@
 
 		<h4>Upload more files</h4>
 		<app-file-uploader [uploadPath]="project.id"></app-file-uploader>
-
-
 </div>
 
 <div class="project-files-container">
 	<h3>Project files</h3>
 
 	<ul class="file-list">
+		<li *ngIf="!files.length" class="file-list-item">
+			<i>No files have been uploaded yet</i>
+		</li>
 		<li *ngFor="let file of files">
 			<app-file-list-item [file]="file" (onSave)="saveFile(file)" (onDelete)="delete(file)"
 				(onEdit)="navToEdit(file)">

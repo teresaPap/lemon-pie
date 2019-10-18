@@ -49,7 +49,7 @@ export class ProjectDetailComponent implements OnInit {
 				let dataToGet: [ Observable<any>, Observable<IFile[]>? ] = [ this.projectCtrl.readSingle(params.id)];
 				if ( params.id!='0' ) {
 					this.project.id = params.id;
-					dataToGet.push( this.getFiles(params.id) );
+					dataToGet.push( this.readFiles(params.id) );
 				}
 				else {
 					this.project.id = '';
@@ -107,7 +107,7 @@ export class ProjectDetailComponent implements OnInit {
 		console.log('TODO: implement save');
 	}
 	
-	private getFiles(projectId: string) {
+	private readFiles(projectId: string) {
 		return this.fileCtrl.read(projectId);
 	}
 

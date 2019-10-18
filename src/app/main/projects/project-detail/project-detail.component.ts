@@ -4,7 +4,7 @@ import { FilesService } from '../../../shared/data-services/files.service';
 import { IProject } from '../../../shared/interfaces/IProject';
 import { ProjectsService } from '../../../shared/data-services/projects.service';
 import { switchMap, tap } from 'rxjs/operators';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin, Observable, Subscription } from 'rxjs';
 import { IFile } from '../../../shared/interfaces/IFile';
 import { StorageService } from '../../../shared/services/storage.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -24,6 +24,9 @@ export class ProjectDetailComponent implements OnInit {
 	public files: IFile[] = [];
 
 	public projectDetailForm: FormGroup;
+
+
+	private deleteAction: Subscription = new Subscription;
 
 	constructor(
 		public storage: StorageService,
@@ -68,10 +71,12 @@ export class ProjectDetailComponent implements OnInit {
 		).subscribe();
 	}
 
+	ngOnDestroy() {
+		this.deleteAction.unsubscribe();
+	}
 	public savePojectDetailForm() {
 		if (this.projectDetailForm.valid) {
 			console.log(this.projectDetailForm.value);
-
 		}
 	}
 
@@ -83,13 +88,24 @@ export class ProjectDetailComponent implements OnInit {
 	}
 
 	public delete(file: IFile) {
-		this.fileCtrl.delete(file.id, file.name, this.project.id )
+		// always unsubscribe at start 
+		// TODO: Is this a good practice? 
+		this.deleteAction.unsubscribe();
+
+		this.deleteAction = this.fileCtrl.delete(file.id, file.name, this.project.id ).subscribe( 
+			res => {
+				console.log('DELETE SUCCESS: ', res)
+			}, 
+			err => {
+				console.warn('DELETE FAILED: ' , err )
+			}
+		);
+		// TODO: return event successfull delete or delete failed. 
 	}
 
 	public saveFile(file: IFile) {
 		console.log('TODO: implement save');
 	}
-
 	
 	private getFiles(projectId: string) {
 		return this.fileCtrl.read(projectId);

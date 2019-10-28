@@ -59,9 +59,6 @@ export class ProjectDetailComponent implements OnInit {
 			tap( res => {
 				this.project = { ...this.project , ...res[0].data() };
 				this.initializeForm(this.project.name , this.project.description);
-
-				console.log(`Project ID: ${this.project.id}`);
-
 				if (res[1]) {
 					this.files = res[1];
 					this.project.files = this.files;
@@ -76,13 +73,12 @@ export class ProjectDetailComponent implements OnInit {
 	}
 	public savePojectDetailForm() {
 		if (this.projectDetailForm.valid) {
-			console.log(this.projectDetailForm.value);
+			console.log("TODO: save Poject Detail Form", this.projectDetailForm.value);
 		}
 	}
 
 	public navToEdit(file: IFile) {
 		this.storage.store( 'activeFile' , file);
-		console.log( 'activeFile' , file);
 		// TODO: maybe use relativeTo: this.route attribute
 		this.router.navigate( [`editor/${this.project.id}/edit`], { queryParams: {id: file.id} } );
 	}
@@ -101,6 +97,14 @@ export class ProjectDetailComponent implements OnInit {
 			}
 		);
 		// TODO: return event successfull delete or delete failed. 
+	}
+
+	public uploadFiles(files) {
+		console.warn('TODO: Upload files from Project Detail Component instead of Upload Task Component');
+	}
+
+	public startUpload() {
+
 	}
 
 	public saveFile(file: IFile) {

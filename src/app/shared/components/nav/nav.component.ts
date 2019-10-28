@@ -18,7 +18,7 @@ export class NavComponent implements OnInit {
 		private authService: AuthService ) { }
 
 	ngOnInit() {
-		console.log("Now listening to auth state changes");
+		// console.log("Now listening to auth state changes");
 		this.authService.getAuthState().subscribe(
 			(currentUser: IUser) => {
 				this.currentUser = currentUser;

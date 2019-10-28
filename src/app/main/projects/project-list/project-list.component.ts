@@ -21,7 +21,6 @@ export class ProjectListComponent implements OnInit {
 	ngOnInit() {
 		this.projectCtlr.read().subscribe( projects => {
 				this.projects = projects; 
-				console.log(projects);
 				for ( let p of projects ) {
 					if (p.preview) p.preview.subscribe( res => p.previewSrc = `url(${res.downloadURL})` );
 					else p.previewSrc = "url('https://www.jobbnorge.no/search/img/no-hits.png')";

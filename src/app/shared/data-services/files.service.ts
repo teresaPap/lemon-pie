@@ -64,7 +64,6 @@ export class FilesService {
 				files.forEach( (fileDocRef: firebase.firestore.DocumentReference) => {
 					referencesToGet.push( this.firestore.doc( fileDocRef.path ).get() )
 				});
-				console.log('referencesToGet:', referencesToGet);
 				return forkJoin(referencesToGet);
 			}),
 			// Map the DocumentData to the actual json data and return them to the component

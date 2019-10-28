@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { FilesService } from '../../data-services/files.service';
 
@@ -20,7 +20,7 @@ export class UploadTaskComponent implements OnInit, OnDestroy {
 
 	@Input() file: File;
 	@Input() uploadPath: string;
-
+	@Output('onStartUpload') public onStartUpload: EventEmitter<any> = new EventEmitter<any>();
 
 	private uploadingNewFile: Subscription = new Subscription;
 
@@ -49,6 +49,8 @@ export class UploadTaskComponent implements OnInit, OnDestroy {
 	}
 
 	private startUpload(): void {
+		this.onStartUpload.emit();
+		
 		this.uploadingNewFile = this.fileCtrl.create( this.file, this.uploadPath ).subscribe(
 			res => console.log('FILE CREATE SUCCESS: ', res), 
 			err => console.log('FILE CREATE FAILED: ', err),

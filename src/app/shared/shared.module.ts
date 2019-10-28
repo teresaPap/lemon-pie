@@ -34,6 +34,7 @@ import { StorageService } from './services/storage.service';
         
 		NavComponent,
 		FileUploaderComponent,
+		UploadTaskComponent, 
 		AddProjectComponent,
     ],
     providers: [ 

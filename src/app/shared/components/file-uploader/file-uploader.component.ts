@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 // COMPONENT DESCRIPTION: 
 // FileUploaderComponent is used wherever the user needs to drag and drop files to be uploaded.
@@ -24,7 +24,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class FileUploaderComponent implements OnInit {
 	
 	@Input() uploadPath: string;
-
+	@Output('onFilesDrop') onFilesDrop: EventEmitter<FileList> = new EventEmitter<FileList>();
 
 	public isHovering: boolean;
 
@@ -33,14 +33,17 @@ export class FileUploaderComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit(): void { 
-		console.log('uploadpath: '+this.uploadPath);
+		// console.log('uploadpath: '+this.uploadPath);
 	}
 
-	toggleHover(event: boolean) {
-		this.isHovering = event;
+	public toggleHover(isHovering: boolean) {
+		this.isHovering = isHovering;
 	}
 
-	onDrop(files: FileList) {
+	public onDrop(files: FileList) {
+		this.onFilesDrop.emit(files);
+		
+		// TODO: Upload files from Project Detail Component instead of Upload Task Component
 		for (let i = 0; i < files.length; i++) {
 			this.files.push(files.item(i));
 		}

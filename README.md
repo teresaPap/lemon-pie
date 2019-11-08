@@ -1,18 +1,30 @@
-# lemon-pie
+# Lemon Pie - An Interactive Prototyping Tool
+A web tool for creating interactive prototypes by creating links between mockup images. 
 
-A handoff tool. 
+Built with Angular 8 and Firebase. 
 
-## Run project 
-1. install Node.js v10.16.0
-2. install npm
-3. Open terminal to the project root folder and run 
-	- `npm install`
-	- `npm start`
+## Setup
+1. Install [Node.js v10.15.0](https://nodejs.org/en/download/)
+2. Install npm globally
+```
+  npm install npm@6.5.0 -g
+```
+3. Open terminal in the project's root folder and run
+``` 
+  npm install
+  npm start
+```
 
-## Deploy to Firebase Hosting 
-Open terminal to the project root folder and run 
-- `npm run build`
-- `firebase deploy --only hosting`. Dist folder will be deployed to this [url](https://lemonpie-f5dba.firebaseapp.com)
+
+## Deploy 
+#### Firebase Hosting 
+Open terminal in the project's root folder and run
+```
+  npm run build
+  firebase deploy --only hosting
+```
+
+A *dist* folder will be created in the project's root folder and will be deployed to [https://lemonpie-f5dba.firebaseapp.com](https://lemonpie-f5dba.firebaseapp.com)
 
 
 <!---
@@ -21,10 +33,12 @@ Open terminal to the project root folder and run
 
 ### Git/env config
 Open terminal to the project root folder and run 
-- `git config user.name teresaPap`
-- `git config user.email teresapap27@gmail.com`
-- `nvm use 10` 
-- `npm start`
+```
+  git config user.name teresaPap
+  git config user.email teresapap27@gmail.com
+  nvm use 10
+  npm start
+```
 
 ### Heroku 
 TODO: add the links here - if applicable 

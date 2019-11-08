@@ -5,24 +5,17 @@ Built with Angular 8 and Firebase.
 
 ## Setup
 1. Install [Node.js v10.15.0](https://nodejs.org/en/download/)
-2. Install npm globally
-```
-  npm install npm@6.5.0 -g
-```
+2. Install npm globally `npm install npm@6.5.0 -g`
 3. Open terminal in the project's root folder and run
-``` 
-  npm install
-  npm start
-```
+  * `npm install`
+  * `npm start`
 
 
 ## Deploy 
 #### Firebase Hosting 
 Open terminal in the project's root folder and run
-```
-  npm run build
-  firebase deploy --only hosting
-```
+  * `npm run build`
+  * `firebase deploy --only hosting`
 
 A *dist* folder will be created in the project's root folder and will be deployed to [https://lemonpie-f5dba.firebaseapp.com](https://lemonpie-f5dba.firebaseapp.com)
 

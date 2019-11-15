@@ -6,13 +6,11 @@ import { Component, Output, EventEmitter } from '@angular/core';
 })
 export class AsideComponent {
 	@Output('onShowLinks') onShowLinks: EventEmitter<boolean> = new EventEmitter<boolean>();
-	public showLinksTrue: boolean = false;
 
 	constructor() { }
 
-	public showLinks() {
-		this.showLinksTrue = !this.showLinksTrue;
-		this.onShowLinks.emit(this.showLinksTrue);
+	public showLinks(event) {
+		this.onShowLinks.emit(event);
 	}
 }
 

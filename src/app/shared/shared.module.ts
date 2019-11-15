@@ -11,6 +11,7 @@ import { ProjectsService } from './data-services/projects.service';
 import { AddProjectComponent } from './components/add-project/add-project.component';
 import { FilesService } from './data-services/files.service';
 import { StorageService } from './services/storage.service';
+import { ButtonToggleComponent } from './components/button-toggle/button-toggle.component';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { StorageService } from './services/storage.service';
 		FileUploaderComponent, 
 		UploadTaskComponent, 
 		AddProjectComponent, 
+		ButtonToggleComponent, 
     ],
     imports: [ 
         RouterModule,
@@ -36,6 +38,7 @@ import { StorageService } from './services/storage.service';
 		FileUploaderComponent,
 		UploadTaskComponent, 
 		AddProjectComponent,
+		ButtonToggleComponent
     ],
     providers: [ 
 		ProjectsService,

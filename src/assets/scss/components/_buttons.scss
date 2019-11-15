@@ -36,3 +36,29 @@
 	background: transparent;
 	border-radius: 20px;
 }
+
+.toggle-btn {
+	margin: 5px auto;
+	border-radius: 10px;
+	width: 40px;
+	height: 20px;
+	border: none;
+	background-color: pink;
+	position: relative;
+	&::after {
+		content: '';
+		height: 26px;
+		width: 26px;
+		background-color: plum;
+		position: absolute;
+		border-radius: 50%;
+		top: -3px;
+		left: -3px;
+	}
+	&.on {
+		&::after {
+			left: unset;
+			right: -3px;
+		}
+	}
+}

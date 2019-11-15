@@ -18,7 +18,7 @@ export class FilesService {
 	) { }
 
 	
-	public create( file:File, projectId:string ): Observable<void> {
+	public create(file:File, projectId:string): Observable<void> {
 
 		// NOTE: takes a File and 
 		// saves it in firestorage, files collection, projects collection project/files array as a collection ref 
@@ -77,7 +77,7 @@ export class FilesService {
 		);
 	}
 
-	public delete( fileId:string, fileName:string, projectId:string ): Observable<any> {
+	public delete(fileId:string, fileName:string, projectId:string): Observable<any> {
 
 		const deleteFileFromProject = this.firestore.doc(`projects/${projectId}`).get().pipe(
 			map( res => { 
@@ -121,7 +121,7 @@ export class FilesService {
 	}
 
 	// #region - File Update Functions	
-	public saveFileLink( area: IClickableArea ) {
+	public saveFileLink(area: IClickableArea) {
 		const areaCoordinates = {
 			x1: area.x1,
 			y1: area.y1,
@@ -138,7 +138,7 @@ export class FilesService {
 		return from(action);
 	}
 
-	public getFileLinks( fileId: string ): Observable<IClickableArea[]> {
+	public getFileLinks(fileId: string): Observable<IClickableArea[]> {
 		const linksCollection = this.firestore.collection(`files/${fileId}/links`);
 
 		const action = linksCollection.get().pipe(
@@ -160,7 +160,7 @@ export class FilesService {
 	// #endregion
 
 
-	private findReference( refs: firebase.firestore.DocumentReference[], refId: string): number {
+	private findReference(refs: firebase.firestore.DocumentReference[], refId: string): number {
 		let index: number = -1;
 		refs.forEach( (ref:firebase.firestore.DocumentReference, i:number) => {
 			if (ref.id === refId )
@@ -169,7 +169,7 @@ export class FilesService {
 		return index;
 	}
 
-	private storeFileInFireStorage( file:File, projectId:string, fileName:string ): Observable<IFile|any> {
+	private storeFileInFireStorage(file:File, projectId:string, fileName:string): Observable<IFile|any> {
 		// Reference to storage bucket
 		const storageRef = this.fireStorage.ref(`files/${projectId}/${fileName}`) || {} as AngularFireStorageReference;
 		
@@ -213,7 +213,7 @@ export class FilesService {
 		);
 	}
 
-	private storeFileInFirestore( fileData: IFile , projectId: string ) {
+	private storeFileInFirestore(fileData: IFile , projectId: string) {
 		const filesCollectionRef: AngularFirestoreCollection = this.firestore.collection('files');
 		const projectIdDocumentRef: AngularFirestoreDocument = this.firestore.doc(`projects/${projectId}`);
 

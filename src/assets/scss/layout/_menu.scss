@@ -3,7 +3,7 @@
 
 // Nav
 nav {
-    height: $nav-height;
+    height: calc(#{$nav-height} - 10px);
     padding: 5px 20px;
     background-color: $white;
     box-shadow: 0px 1px 7px 1px rgba(0,0,0,0.2);
@@ -60,24 +60,24 @@ nav {
 // Aside
 aside {
     position: absolute;
-    top: $nav-height;
+	height: calc((#{$nav-height} * 2) - 10px);
     bottom: 0;
-    // TODO: use a function and a variable to customize aside menu position to right or left
-    right: 0;
-    background-color: $gallery;
-    border-left: 1px $mercury;
-    transition: width 0.1s;
+	right: 0;
+	left: 0;
+	padding: 5px 20px;
+	background-color: $white;
+    box-shadow: 1px 0px 7px 1px rgba(0,0,0,0.2);
+	
+	.aside-menu {
+		display: flex;
+		justify-content: flex-start;
+		align-items: baseline;
 
-    &.aside-menu-collapse {
-        width: 50px;
-    }
-    &.aside-menu-expand {
-        width: 400px;
-    }
-    .aside-menu-expand-btn {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        margin: 10px;
-    }
+		.menu-item {
+			display: flex;
+			justify-content: center;
+			flex-direction: column;
+		}
+	}
+	
 }

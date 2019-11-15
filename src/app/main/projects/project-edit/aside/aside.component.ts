@@ -1,29 +1,18 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
 	selector: 'app-aside',
 	templateUrl: './aside.component.html'
 })
-export class AsideComponent implements OnInit {
-
+export class AsideComponent {
 	@Output('onShowLinks') onShowLinks: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-	public expandMenu: boolean;
 	public showLinksTrue: boolean = false;
 
 	constructor() { }
-
-	ngOnInit() {
-	}
-
-	public toggleAsideMenu() {
-		this.expandMenu = !this.expandMenu;
-	}
 
 	public showLinks() {
 		this.showLinksTrue = !this.showLinksTrue;
 		this.onShowLinks.emit(this.showLinksTrue);
 	}
-
 }
 

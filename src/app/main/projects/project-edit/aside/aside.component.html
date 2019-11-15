@@ -1,22 +1,8 @@
-
-
-<aside [ngClass]="{ 'aside-menu-expand' : expandMenu ,  'aside-menu-collapse' : !expandMenu  }">
-	
-
-	<label>Show all links</label>
-	<button (click)="showLinks()">toggle</button>
-
-	
-
-
-
-
-
-
-
-
-	<button class="icon-btn aside-menu-expand-btn" type="button" (click)="toggleAsideMenu()">
-		<i class="fa " [ngClass]="{ 'fa-angle-double-right' : expandMenu ,  'fa-angle-double-left' : !expandMenu  }"></i>
-	</button>
-
+<aside>
+	<ul class="aside-menu">
+		<li class="menu-item">
+			<label>Show all links</label>
+			<button (click)="showLinks()">toggle</button>
+		</li>
+	</ul>
 </aside>

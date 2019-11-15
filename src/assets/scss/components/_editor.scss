@@ -1,13 +1,35 @@
 
 
-.canvas-container {
-	position: relative;
-
-	.canvas-background {
+.editor-area {
+	position: absolute;
+	top: $nav-height;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	overflow: scroll;
+	padding: 20px;
+	
+	&::before {
+		content: '';
 		position: absolute;
 		top: 0;
 		left: 0;
-	
+		bottom: 0;
+		right: 0;
+		background: url('assets/img/pixil-frame-0.png') $gallery bottom left;
+		background-size: 30px;
+		background-repeat: repeat;
+		opacity: 0.1;
+	}
+}
+
+.canvas-container {
+	position: relative;
+	.canvas-background {
+		box-shadow: 1px 2px 9px -2px rgba(0, 0, 0, 0.3);
+		position: absolute;
+		top: 0;
+		left: 0;
 		pointer-events: none;
 	}
 
@@ -15,9 +37,7 @@
 		position: absolute;
 		top: 0;
 		left: 0;
-	
-
-		border: $border-width solid $mercury;
+		// border: $border-width solid $mercury;
 	}
 }
 

@@ -46,11 +46,11 @@ app:.
 |   |   |       
 |   |           
 |               
-+---logon
-|       logon-routing.module.ts
-|       logon.component.html
-|       logon.component.ts
-|       logon.module.ts
++---account
+|       account-routing.module.ts
+|       account.component.html
+|       account.component.ts
+|       account.module.ts
 |       
 \---shared
     |   shared.module.ts

@@ -15,7 +15,7 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
-import { LogonModule } from './logon/logon.module';
+import { AccountModule } from './account/account.module';
 import { MainModule } from './main/main.module';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -37,7 +37,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 		CoreModule,
 		SharedModule,
-		LogonModule,
+		AccountModule,
 
 		MainModule,
 		AppRoutingModule

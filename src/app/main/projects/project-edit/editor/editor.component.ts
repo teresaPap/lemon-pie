@@ -13,8 +13,10 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 	@Input() imgUrl: string;
 	@Output('onSaveArea') onSaveArea: EventEmitter<IClickableArea> = new EventEmitter<IClickableArea>();
 
-	@ViewChild('canvasBg', { static: false }) public canvasBg: ElementRef;
-	@ViewChild('canvas', { static: false }) public canvas: ElementRef;
+	@ViewChild('canvasBg', {static: false}) public canvasBg: ElementRef;
+	@ViewChild('canvas', {static: false}) public canvas: ElementRef;
+
+	@ViewChild('selectionMenu', {static: false}) public selectionMenu :ElementRef;
 
 	private cx: CanvasRenderingContext2D;
 	private editor: HTMLCanvasElement;
@@ -25,6 +27,8 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 	constructor( private canvasCtrl: CanvasService ) { }
 
 	ngAfterViewInit(): void {
+		this.selectionMenu.nativeElement.style.visibility = 'hidden';
+
 		// get the context
 		this.editor = this.canvas.nativeElement;
 		this.cx = this.editor.getContext('2d');
@@ -53,11 +57,26 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 		this.canvasCtrl.clearCanvas(this.cx, this.editor);
 		this.canvasSelection = null as IClickableArea;
 		this.showSelectionMenu = false;
+		this.selectionMenu.nativeElement.style.visibility = 'hidden';
 	}
 
-	private openSelectionMenu(): void {
-		this.showSelectionMenu = true
+	private openSelectionMenu(mouseX, mouseY): void {
+		this.showSelectionMenu = true;
+		console.log(mouseX, mouseY);
+		
+		this.selectionMenu.nativeElement.style.top = mouseY;
+		this.selectionMenu.nativeElement.style.left = mouseX;
+
+		this.selectionMenu.nativeElement.style.visibility = 'visible';
+
 	}
+
+	/* 
+		TODO: place selection menu where the mouse is pointing 
+		1. get mouseX, mouseY on mouse up - OK
+		2. 
+	
+	*/
 
 	// #endregion 
 
@@ -105,7 +124,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 				x2: finalPos.x,
 				y2: finalPos.y
 			};
-			this.openSelectionMenu();
+			this.openSelectionMenu(finalPos.x, finalPos.y);
 		})
 	}
 

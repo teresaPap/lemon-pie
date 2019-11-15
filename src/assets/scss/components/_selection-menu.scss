@@ -1,5 +1,10 @@
+
 .selection-menu-container {
-	max-width: 200px;	
+	position: absolute;
+}
+
+.selection-menu {
+	max-width: 200px;
 	border: $border-width solid $mercury;
 	background-color: $theme-background;
 	.form-group {

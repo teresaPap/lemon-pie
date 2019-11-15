@@ -1,7 +1,12 @@
-<br>
-<br>
 
-<app-editor [imgUrl]="file.downloadURL" (onSaveArea)="saveArea($event)"></app-editor>
-<app-linker *ngIf="showLinks" [imgUrl]="file.downloadURL" [clickableAreas]="links"></app-linker>
+<app-editor 
+	[imgUrl]="file.downloadURL" 
+	(onSaveArea)="saveArea($event)">
+</app-editor>
+
+<app-linker *ngIf="showLinks" 
+	[imgUrl]="file.downloadURL" 
+	[clickableAreas]="links">
+</app-linker>
 
 <app-aside (onShowLinks)="onShowLinks($event)"></app-aside>

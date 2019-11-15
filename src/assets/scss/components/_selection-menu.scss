@@ -1,7 +1,7 @@
 .selection-menu-container {
 	max-width: 200px;	
 	border: $border-width solid $mercury;
-
+	background-color: $theme-background;
 	.form-group {
 		* {
 			max-width: 100%;

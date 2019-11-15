@@ -5,9 +5,12 @@ import { IClickableArea } from '../../../../shared/interfaces/IFile';
 import { CanvasService } from '../../../../shared/services/canvas.service';
 
 // COMPONENT DESCRIPTION: 
-// LinkerComponent is an Identical Canvas with the Editor component which will be displayed on top of the editor canvas whenever the show links toggle button is on. 
-// On LinkerComponent canvas element ther will be drawn all the link components that have been previously drawn using the editor component. 
-// Whenever LinkerComponent is visible the EditorComponent is inavtive - the user cannot click on it or create new clickable areas
+// LinkerComponent is an Identical Canvas with the Editor component which will be displayed 
+// on top of the editor canvas whenever the show links toggle button is on. 
+// On LinkerComponent canvas element there will be drawn all the link components that have 
+// been previously drawn using the editor component. 
+// Whenever LinkerComponent is visible the EditorComponent is inactive, 
+// the user cannot click on it or create new clickable areas
 
 // LinkerComponent will have modes: display and play. 
 // In display mode the links will only be visible.

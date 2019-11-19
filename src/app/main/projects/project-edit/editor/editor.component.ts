@@ -62,21 +62,10 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 
 	private openSelectionMenu(mouseX, mouseY): void {
 		this.showSelectionMenu = true;
-		console.log(mouseX, mouseY);
-		
-		this.selectionMenu.nativeElement.style.top = mouseY;
-		this.selectionMenu.nativeElement.style.left = mouseX;
-
+		this.selectionMenu.nativeElement.style.top = `${mouseY-10}px`;
+		this.selectionMenu.nativeElement.style.left =`${mouseX-10}px`;
 		this.selectionMenu.nativeElement.style.visibility = 'visible';
-
 	}
-
-	/* 
-		TODO: place selection menu where the mouse is pointing 
-		1. get mouseX, mouseY on mouse up - OK
-		2. 
-	
-	*/
 
 	// #endregion 
 

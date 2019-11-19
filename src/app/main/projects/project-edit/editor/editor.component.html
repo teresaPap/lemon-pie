@@ -1,14 +1,12 @@
-
-
 <div class="editor-area">
 
-		<div #selectionMenu class="selection-menu-container">
-				<app-selection-menu (onSaveLink)="saveLink($event)" (onClose)="closeSelectionMenu()"></app-selection-menu>
-			</div>
+	<div #selectionMenu class="selection-menu-container">
+		<app-selection-menu (onSaveLink)="saveLink($event)" (onClose)="closeSelectionMenu()"></app-selection-menu>
+	</div>
 
-			
 	<div class="canvas-container">
 		<img class="canvas-background" #canvasBg>
 		<canvas #canvas></canvas>
 	</div>
+	
 </div>

@@ -101,6 +101,13 @@ export class ProjectDetailComponent implements OnInit {
 
 	public uploadFiles(files) {
 		console.warn('TODO: Upload files from Project Detail Component instead of Upload Task Component');
+	
+
+		// TODO: display dropes files in list while they are beeing uploaded 
+		// for (let i = 0; i < files.length; i++) {
+		// 	this.files.push(files.item(i));
+		// }
+
 	}
 
 	public startUpload() {

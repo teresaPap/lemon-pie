@@ -1,52 +1,28 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 // COMPONENT DESCRIPTION: 
 // FileUploaderComponent is used wherever the user needs to drag and drop files to be uploaded.
 // it listens for files that are droped in dropzone directive
-// for each file dropped in dropzone, it calls UploadTaskComponent to upload the file to some uploadPath.
-// this uploadPath is given as an input to FileUploaderComponent from its parent component (for reusability reasons)
-// (?) maybe in the future the file type to be uploaded can be given as an input as well (for consistency reasons)
-// After a file upload is completed successfully, FileUploaderComponent is notified by UploadTaskComponent
-// with a string image preview of the syccessfully uploaded file.
-// User has the chance to delete a newly uploaded file by clicking a button on the preview
-// For file delete, fileCtrl.delete(fileId) is called. 
-// On delete end/success the deleted file's preview hides
+// User can to upload as many files as they want. 
 
-// User has the chance to upload as many files as they want. 
-// User clicks a dedicated button to exit/close the file uploader.
-
-// TODO: convert this component to a modal 
 
 @Component({
 	selector: 'app-file-uploader',
 	templateUrl: './file-uploader.component.html'
 })
-export class FileUploaderComponent implements OnInit {
-	
-	@Input() uploadPath: string;
+export class FileUploaderComponent {
+
 	@Output('onFilesDrop') onFilesDrop: EventEmitter<FileList> = new EventEmitter<FileList>();
-
 	public isHovering: boolean;
-
-	public files: File[] = [];
 
 	constructor() { }
 
-	ngOnInit(): void { 
-		// console.log('uploadpath: '+this.uploadPath);
-	}
-
-	public toggleHover(isHovering: boolean) {
+	public toggleHover(isHovering: boolean): void {
 		this.isHovering = isHovering;
 	}
 
-	public onDrop(files: FileList) {
+	public onDrop(files: FileList): void {
 		this.onFilesDrop.emit(files);
-		
-		// TODO: Upload files from Project Detail Component instead of Upload Task Component
-		for (let i = 0; i < files.length; i++) {
-			this.files.push(files.item(i));
-		}
 	}
 	
 }

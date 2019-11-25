@@ -1,12 +1,5 @@
 <div class="file-uploader-container">
-	<div class="dropzone" dropzone (hovered)="toggleHover($event)" (dropped)="onDrop($event)"
-		[class.hovering]="isHovering">
-
+	<div dropzone class="dropzone" (hovered)="toggleHover($event)" (dropped)="onDrop($event)" [class.hovering]="isHovering">
 		<h4>Drop files here</h4>
 	</div>
-
-	<div *ngFor="let file of files">
-		<!-- <app-upload-task [file]="file" [uploadPath]="uploadPath" (onStartUpload)=""></app-upload-task> -->
-	</div>
-
 </div>

@@ -90,10 +90,7 @@ export class FilesService {
 					return [ ...res.data.files.slice(res.data.files.lenght, res.index), ...res.data.files.slice(res.index+1, res.data.files.lenght) ]
 				else throw 'ERROR: File reference does not exist in project!';
 			}),
-			switchMap( files => {
-				console.log('updated files: ', files);
-				return from( this.firestore.doc(`projects/${projectId}`).update({files:files}) )
-			}),
+			switchMap( files =>  from( this.firestore.doc(`projects/${projectId}`).update({files:files}) )),
 			catchError( () => {
 				throw 'ERROR in delete_File_From_Project';
 			})
@@ -112,9 +109,9 @@ export class FilesService {
 		);
 
 		return forkJoin( deleteFileFromFilesCollection, deleteFileFromProject, deleteFileFromFireStorage ).pipe(
-			map( () => console.log('END DELETE') ),
+			// map( () => console.log('END DELETE') ),
 			catchError( error => { 
-				console.log('ERROR!: ', error);
+				// console.log('ERROR!: ', error);
 				return of(error);
 			}),
 		);
@@ -182,21 +179,14 @@ export class FilesService {
 		const onUploadTaskEnded$: Observable<any> = from( uploadTask );
 		
 		return uploadTask.snapshotChanges().pipe(
-			tap( res => {
-				console.log('HEREEEE', res, 'storage ref' , storageRef) ;
-			}),
 			switchMap( () => onUploadTaskEnded$ ),
 			switchMap( () => storageRef.getDownloadURL() ),
 			map( downloadUrl => {
-				console.log('downloadUrl' , typeof downloadUrl );
 				return {
 					name: fileName,
 					path: `files/${projectId}/${fileName}`,
 					downloadURL: downloadUrl 
 				};
-			}),
-			tap( (filedata:IFile | any) => {
-				console.log( 'FIRE_STORAGE COMPLETED 1', filedata );
 			}),
 			catchError( error => {
 				console.warn('ERROR IN 104 \n\n' ,  error);
@@ -206,10 +196,7 @@ export class FilesService {
 					console.log('ERROR CODE: ', error.code );
 					return of([]);
 				}
-			}),
-			tap( (filedata:IFile) => {
-				if (filedata.downloadURL) console.log( 'FIRE_STORAGE COMPLETED 2', filedata );
-			}),
+			})
 		);
 	}
 
@@ -224,7 +211,7 @@ export class FilesService {
 						{ "files": firebase.firestore.FieldValue.arrayUnion(documentRef) }
 				))
 			),
-			tap( res => console.log( 'FIRE_STORE COMPLETED', res ) ),
+			// tap( res => console.log( 'FIRE_STORE COMPLETED', res ) ),
 			catchError(error => {
 				console.warn( 'ERROR IN 147' , error);	
 				return of(error);	

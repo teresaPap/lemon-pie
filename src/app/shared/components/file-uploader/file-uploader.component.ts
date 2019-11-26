@@ -21,8 +21,8 @@ export class FileUploaderComponent {
 		this.isHovering = isHovering;
 	}
 
-	public onDrop(files: FileList): void {
-		this.onFilesDrop.emit(files);
+	public onDrop(fileList: FileList): void {
+		this.onFilesDrop.emit(fileList);
 	}
 	
 }

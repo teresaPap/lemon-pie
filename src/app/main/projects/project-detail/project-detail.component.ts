@@ -22,15 +22,15 @@ export class ProjectDetailComponent implements OnInit {
 
 	public project: IProject = {} as IProject;
 	public files: IFile[] = [];
+	public filesToUpload: File[] = [];
 
 	public projectDetailForm: FormGroup;
-
 
 	private deleteAction: Subscription = new Subscription;
 
 	constructor(
 		public storage: StorageService,
-		public router: Router, 
+		public router: Router,
 		private route: ActivatedRoute,
 		private fileCtrl: FilesService,
 		private projectCtrl: ProjectsService,
@@ -38,27 +38,26 @@ export class ProjectDetailComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-
 		this.projectDetailForm = this.fb.group({
-			name: [ '', Validators.required],
+			name: ['', Validators.required],
 			description: ''
 		});
 
 		this.route.params.pipe(
-			switchMap( params => {
-				let dataToGet: [ Observable<any>, Observable<IFile[]>? ] = [ this.projectCtrl.readSingle(params.id)];
-				if ( params.id!='0' ) {
+			switchMap(params => {
+				let dataToGet: [Observable<any>, Observable<IFile[]>?] = [this.projectCtrl.readSingle(params.id)];
+				if (params.id != '0') {
 					this.project.id = params.id;
-					dataToGet.push( this.readFiles(params.id) );
+					dataToGet.push(this.readFiles(params.id));
 				}
 				else {
 					this.project.id = '';
 				}
 				return forkJoin(dataToGet);
 			}),
-			tap( res => {
-				this.project = { ...this.project , ...res[0].data() };
-				this.initializeForm(this.project.name , this.project.description);
+			tap(res => {
+				this.project = { ...this.project, ...res[0].data() };
+				this.initializeForm(this.project.name, this.project.description);
 				if (res[1]) {
 					this.files = res[1];
 					this.project.files = this.files;
@@ -78,9 +77,9 @@ export class ProjectDetailComponent implements OnInit {
 	}
 
 	public navToEdit(file: IFile) {
-		this.storage.store( 'activeFile' , file);
+		this.storage.store('activeFile', file);
 		// TODO: maybe use relativeTo: this.route attribute
-		this.router.navigate( [`editor/${this.project.id}/edit`], { queryParams: {id: file.id} } );
+		this.router.navigate([`editor/${this.project.id}/edit`], { queryParams: { id: file.id } });
 	}
 
 	public delete(file: IFile) {
@@ -88,41 +87,48 @@ export class ProjectDetailComponent implements OnInit {
 		// TODO: Is this a good practice? 
 		this.deleteAction.unsubscribe();
 
-		this.deleteAction = this.fileCtrl.delete(file.id, file.name, this.project.id ).subscribe( 
+		this.deleteAction = this.fileCtrl.delete(file.id, file.name, this.project.id).subscribe(
 			res => {
 				console.log('DELETE SUCCESS: ', res)
-			}, 
+			},
 			err => {
-				console.warn('DELETE FAILED: ' , err )
+				console.warn('DELETE FAILED: ', err)
 			}
 		);
 		// TODO: return event successfull delete or delete failed. 
 	}
 
-	public uploadFiles(files) {
-		console.warn('TODO: Upload files from Project Detail Component instead of Upload Task Component');
-	
+	public uploadFiles(fileList: FileList) {
+		console.log('files to upload', fileList, fileList.length , fileList.item(1) );
 
-		// TODO: display dropes files in list while they are beeing uploaded 
-		// for (let i = 0; i < files.length; i++) {
-		// 	this.files.push(files.item(i));
-		// }
+		// TODO: display dropped files in list while they are beeing uploaded 
 
+		for (let i=0 ; i<fileList.length; i++ ) {
+			this.filesToUpload.push(fileList.item(i));
+
+			console.log(fileList.item(i));
+
+			this.fileCtrl.create( fileList.item(i), this.project.id  ).subscribe(
+				null,
+				err => console.log(err) ,
+				() => {
+					console.log('FILE CREATE COMPLETED');
+					this.filesToUpload.pop();
+				}
+			);
+		}
 	}
 
-	public startUpload() {
-
-	}
 
 	public saveFile(file: IFile) {
 		console.log('TODO: implement save');
 	}
-	
+
 	private readFiles(projectId: string) {
 		return this.fileCtrl.read(projectId);
 	}
 
-	private initializeForm( name: string, description: string ): void {
+	private initializeForm(name: string, description: string): void {
 		this.projectDetailForm.controls['name'].setValue(name);
 		this.projectDetailForm.controls['description'].setValue(description);
 	}

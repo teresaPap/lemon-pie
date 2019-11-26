@@ -6,7 +6,6 @@ import { CoreModule } from '../core/core.module';
 import { NavComponent } from './components/nav/nav.component';
 import { DropzoneDirective } from './directives/dropzone.directive';
 import { FileUploaderComponent } from './components/file-uploader/file-uploader.component';
-import { UploadTaskComponent } from './components/upload-task/upload-task.component';
 import { ProjectsService } from './data-services/projects.service';
 import { AddProjectComponent } from './components/add-project/add-project.component';
 import { FilesService } from './data-services/files.service';
@@ -19,7 +18,6 @@ import { ButtonToggleComponent } from './components/button-toggle/button-toggle.
 		NavComponent, 
 		DropzoneDirective, 
 		FileUploaderComponent, 
-		UploadTaskComponent, 
 		AddProjectComponent, 
 		ButtonToggleComponent, 
     ],
@@ -36,7 +34,6 @@ import { ButtonToggleComponent } from './components/button-toggle/button-toggle.
         
 		NavComponent,
 		FileUploaderComponent,
-		UploadTaskComponent, 
 		AddProjectComponent,
 		ButtonToggleComponent
     ],

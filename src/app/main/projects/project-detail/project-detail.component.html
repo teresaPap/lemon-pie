@@ -30,7 +30,7 @@
 		</form>
 
 		<h4>Upload more files</h4>
-		<app-file-uploader (onFilesDrop)="uploadFiles(files)" ></app-file-uploader>
+		<app-file-uploader (onFilesDrop)="uploadFiles($event)" ></app-file-uploader>
 </div>
 
 <div class="project-files-container">
@@ -41,12 +41,15 @@
 			<i>No files have been uploaded yet</i>
 		</li>
 		
-		<li> 
-			<app-upload-task [file]="file" [uploadPath]="uploadPath" (onStartUpload)="startUpload()"></app-upload-task>
+		<li *ngFor="let newfile of filesToUpload"> 
+			File {{newfile.name}} is being uploaded ... 
 		</li>
 		
 		<li *ngFor="let file of files">
-			<app-file-list-item [file]="file" (onSave)="saveFile(file)" (onDelete)="delete(file)"
+			<app-file-list-item 
+				[file]="file" 
+				(onSave)="saveFile(file)" 
+				(onDelete)="delete(file)"
 				(onEdit)="navToEdit(file)">
 			</app-file-list-item>
 		</li>

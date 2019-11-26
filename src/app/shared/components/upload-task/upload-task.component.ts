@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Observable } from 'rxjs';
 import { FilesService } from '../../data-services/files.service';
 
 // COMPONENT DESCRIPTION: 
@@ -12,17 +12,19 @@ import { FilesService } from '../../data-services/files.service';
 // - πρέπει να ειδοποιήσω τον parent component με ενα string που περιέχει το file preview.
 
 
+// TODO: delete all of the above description. 
+// καλύτερα να παιρει σαν input μονο το snapshot changes και να το κανει display. 
+// Μόλις 100% να καταστρέφεται - με κάποιον τρόπο. 
+
 @Component({
 	selector: 'app-upload-task',
 	templateUrl: './upload-task.component.html'
 })
-export class UploadTaskComponent implements OnInit, OnDestroy {
+export class UploadTaskComponent implements OnInit {
 
 	@Input() file: File;
 	@Input() uploadPath: string;
-	@Output('onStartUpload') public onStartUpload: EventEmitter<any> = new EventEmitter<any>();
-
-	private uploadingNewFile: Subscription = new Subscription;
+	@Output('onStartUpload') public onStartUpload: EventEmitter<File> = new EventEmitter<File>();
 
 	percentage: Observable<number>;
 	snapshot: Observable<any>;
@@ -33,14 +35,10 @@ export class UploadTaskComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		console.log(this.file)
 		if (this.file) {
-			this.startUpload();
+			this.onStartUpload.emit(this.file);
 		}
-	}
-
-	ngOnDestroy() {
-		this.uploadingNewFile.unsubscribe();
-		console.log('UploadTaskComponent ON DESTROY');
 	}
 
 	public isActive(snapshot) {
@@ -48,14 +46,5 @@ export class UploadTaskComponent implements OnInit, OnDestroy {
 		return snapshot.state === 'running' && snapshot.bytesTransferred < snapshot.totalBytes;
 	}
 
-	private startUpload(): void {
-		this.onStartUpload.emit();
-		
-		this.uploadingNewFile = this.fileCtrl.create( this.file, this.uploadPath ).subscribe(
-			res => console.log('FILE CREATE SUCCESS: ', res), 
-			err => console.log('FILE CREATE FAILED: ', err),
-			() => console.log('FILE CREATE COMPLETED')
-		);
-	}
 
 }

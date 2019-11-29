@@ -70,6 +70,7 @@ export class ProjectDetailComponent implements OnInit {
 	ngOnDestroy() {
 		this.deleteAction.unsubscribe();
 	}
+
 	public savePojectDetailForm() {
 		if (this.projectDetailForm.valid) {
 			console.log("TODO: save Poject Detail Form", this.projectDetailForm.value);
@@ -90,12 +91,12 @@ export class ProjectDetailComponent implements OnInit {
 		this.deleteAction = this.fileCtrl.delete(file.id, file.name, this.project.id).subscribe(
 			res => {
 				console.log('DELETE SUCCESS: ', res)
+				this.files = this.files.filter(elem => elem.id !== file.id);
 			},
 			err => {
 				console.warn('DELETE FAILED: ', err)
 			}
 		);
-		// TODO: return event successfull delete or delete failed. 
 	}
 
 	public uploadFiles(fileList: FileList) {

@@ -1,0 +1,207 @@
+// NOTIFIER: COMBINED STYLES
+// all styles from https://www.npmjs.com/package/angular-notifier package
+
+
+// NOTIFIER: DEFAULT TYPE STYLES
+
+$notifier-default-background-color: #444 !default;
+$notifier-default-font-color: #FFF !default;
+$notifier-default-icon-color: #FFF !default;
+
+.notifier__notification--default {
+	background-color: $notifier-default-background-color;
+	color: $notifier-default-font-color;
+
+	.notifier__notification-button-icon { // 16x16 fixed size
+		fill: $notifier-default-icon-color;
+	}
+}
+
+
+// NOTIFIER: MATERIAL THEME
+//
+// This material theme tries its best to look as material-design'ish as possible - round edges, shadows, and small animations.
+// And, of course, thanks to #Google for creating and sharing such an awesome design language!
+// I highly encourage everyone to read into the Material Design specs: <https://material.google.com/>
+
+$notifier-shadow-color: rgba(0, 0, 0, .2) !default;
+
+.notifier__notification--material {
+	border-radius: 3px;
+	box-shadow: 0 1px 3px $notifier-shadow-color;
+	cursor: default; // Default cursor, even when hovering over text
+	padding: {
+		top: 11px;
+		right: 26px;
+		bottom: 10px;
+		left: 26px;
+	}
+
+	.notifier__notification {
+
+		&-message {
+			display: inline-block;
+			margin: { // Reset paragraph default styles
+				top: 0;
+				bottom: 0;
+			}
+			vertical-align: top;
+			line-height: 32px;
+			font-size: 15px;
+		}
+
+		&-button {
+			display: inline-block;
+			transition: opacity .2s ease;
+			opacity: .5;
+			margin: {
+				right: -10px;
+				left: 10px;
+			};
+			outline: none;
+			border: none;
+			background: none;
+			cursor: pointer; // Make it obvious that the "button" (or, more honestly, icon) is clickable (#UX)
+			padding: 6px;
+			width: 32px;
+			height: 32px;
+			vertical-align: top;
+
+			&:hover,
+			&:focus {
+				opacity: 1; // Make me "feel" the clickability with a transparency change (#UX)
+			}
+
+			&:active {
+				transform: scale(.82); // Make me "feel" the click by a push back (#UX)
+				opacity: 1;
+			}
+		}
+	}
+}
+
+
+// NOTIFIER: DEFAULT TYPE STYLES
+
+$notifier-default-background-color: #444 !default;
+$notifier-default-font-color: #FFF !default;
+$notifier-default-icon-color: #FFF !default;
+
+.notifier__notification--default {
+	background-color: $notifier-default-background-color;
+	color: $notifier-default-font-color;
+
+	.notifier__notification-button-icon { // 16x16 fixed size
+		fill: $notifier-default-icon-color;
+	}
+}
+
+
+// NOTIFIER: MATERIAL THEME
+//
+// This material theme tries its best to look as material-design'ish as possible - round edges, shadows, and small animations.
+// And, of course, thanks to #Google for creating and sharing such an awesome design language!
+// I highly encourage everyone to read into the Material Design specs: <https://material.google.com/>
+
+$notifier-shadow-color: rgba(0, 0, 0, .2) !default;
+
+.notifier__notification--material {
+	border-radius: 3px;
+	box-shadow: 0 1px 3px $notifier-shadow-color;
+	cursor: default; // Default cursor, even when hovering over text
+	padding: {
+		top: 11px;
+		right: 26px;
+		bottom: 10px;
+		left: 26px;
+	}
+
+	.notifier__notification {
+
+		&-message {
+			display: inline-block;
+			margin: { // Reset paragraph default styles
+				top: 0;
+				bottom: 0;
+			}
+			vertical-align: top;
+			line-height: 32px;
+			font-size: 15px;
+		}
+
+		&-button {
+			display: inline-block;
+			transition: opacity .2s ease;
+			opacity: .5;
+			margin: {
+				right: -10px;
+				left: 10px;
+			};
+			outline: none;
+			border: none;
+			background: none;
+			cursor: pointer; // Make it obvious that the "button" (or, more honestly, icon) is clickable (#UX)
+			padding: 6px;
+			width: 32px;
+			height: 32px;
+			vertical-align: top;
+
+			&:hover,
+			&:focus {
+				opacity: 1; // Make me "feel" the clickability with a transparency change (#UX)
+			}
+
+			&:active {
+				transform: scale(.82); // Make me "feel" the click by a push back (#UX)
+				opacity: 1;
+			}
+		}
+	}
+}
+
+
+// NOTIFIER: INFO TYPE STYLES
+
+$notifier-info-background-color: #5BC0DE !default;
+$notifier-info-font-color: #FFF !default;
+$notifier-info-icon-color: #FFF !default;
+
+.notifier__notification--info {
+	background-color: $notifier-info-background-color;
+	color: $notifier-info-font-color;
+
+	.notifier__notification-button-icon { // 16x16 fixed size
+		fill: $notifier-info-icon-color;
+	}
+}
+
+
+// NOTIFIER: SUCCESS TYPE STYLES
+
+$notifier-success-background-color: #5CB85C !default;
+$notifier-success-font-color: #FFF !default;
+$notifier-success-icon-color: #FFF !default;
+
+.notifier__notification--success {
+	background-color: $notifier-success-background-color;
+	color: $notifier-success-font-color;
+
+	.notifier__notification-button-icon { // 16x16 fixed size
+		fill: $notifier-success-icon-color;
+	}
+}
+
+// NOTIFIER: WARNING TYPE STYLES
+
+$notifier-warning-background-color: #F0AD4E !default;
+$notifier-warning-font-color: #FFF !default;
+$notifier-warning-icon-color: #FFF !default;
+
+.notifier__notification--warning {
+	background-color: $notifier-warning-background-color;
+	color: $notifier-warning-font-color;
+
+	.notifier__notification-button-icon { // 16x16 fixed size
+		fill: $notifier-warning-icon-color;
+	}
+}

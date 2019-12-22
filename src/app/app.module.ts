@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
+import { NotifierModule } from 'angular-notifier';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -28,6 +28,7 @@ import { AppRoutingModule } from './app-routing.module';
 		ReactiveFormsModule,
 		CommonModule, 
 		HttpClientModule,
+		NotifierModule,
 
 		// Firebase 
 		AngularFireModule.initializeApp(environment.firebase), // initialize app

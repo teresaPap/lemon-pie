@@ -8,7 +8,7 @@
 @import './assets/scss/abstracts/_animations'; 
 
 // Vendors
-@import './assets/scss/vendors/example-library';
+@import './assets/scss/vendors/_angular-notifier';
 
 // Base
 @import './assets/scss/base/_base'; 
@@ -35,7 +35,7 @@
 @import './assets/scss/components/_modal';
 
 // Vendors Extensions
-@import './assets/scss/vendors-extensions/_example-library';
+
 
 // Pages
 @import './assets/scss/pages/_home';
@@ -47,3 +47,4 @@
 // Themes
 @import './assets/scss/themes/_admin';
 @import './assets/scss/themes/_authenticated';
+

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
 import { FilesService } from '../../../shared/data-services/files.service';
 import { IProject } from '../../../shared/interfaces/IProject';
 import { ProjectsService } from '../../../shared/data-services/projects.service';
@@ -34,7 +35,8 @@ export class ProjectDetailComponent implements OnInit {
 		private route: ActivatedRoute,
 		private fileCtrl: FilesService,
 		private projectCtrl: ProjectsService,
-		private fb: FormBuilder
+		private fb: FormBuilder,
+		private notifier: NotifierService
 	) { }
 
 	ngOnInit() {
@@ -90,10 +92,11 @@ export class ProjectDetailComponent implements OnInit {
 
 		this.deleteAction = this.fileCtrl.delete(file.id, file.name, this.project.id).subscribe(
 			res => {
-				console.log('DELETE SUCCESS: ', res)
+				this.notifier.notify('success', `File "${file.name}" was deleted successfully`);
 				this.files = this.files.filter(elem => elem.id !== file.id);
 			},
 			err => {
+				this.notifier.notify('error', `An error occured while deleting file "${file.name}"`);
 				console.warn('DELETE FAILED: ', err)
 			}
 		);
@@ -114,6 +117,7 @@ export class ProjectDetailComponent implements OnInit {
 				err => console.log(err) ,
 				() => {
 					console.log('FILE CREATE COMPLETED');
+					this.notifier.notify('success', `File was uploaded successfully`);
 					this.filesToUpload.pop();
 				}
 			);

@@ -28,7 +28,11 @@ import { AppRoutingModule } from './app-routing.module';
 		ReactiveFormsModule,
 		CommonModule, 
 		HttpClientModule,
-		NotifierModule,
+		NotifierModule.withConfig({
+			behaviour: {
+				autoHide: false
+			}
+        }),
 
 		// Firebase 
 		AngularFireModule.initializeApp(environment.firebase), // initialize app

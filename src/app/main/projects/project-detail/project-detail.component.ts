@@ -80,13 +80,12 @@ export class ProjectDetailComponent implements OnInit {
 	}
 
 	public navToEdit(file: IFile) {
-		this.storage.store('activeFile', file);
-		// TODO: maybe use relativeTo: this.route attribute
-		this.router.navigate([`editor/${this.project.id}/edit`], { queryParams: { id: file.id } });
+		this.storage.store('activeFileUrl', file.downloadURL);
+		this.router.navigate([`projects/${this.project.id}/edit/${file.id}`]);
 	}
 
-	public navToPlay() {
-		this.router.navigate(['present']);
+	public navToPresent() {
+		this.router.navigate([`projects/${this.project.id}/present`]);
 		this.notifier.notify('info', 'TODO: nav to play');
 	}
 

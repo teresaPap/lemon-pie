@@ -10,10 +10,10 @@ import { ProjectPresentComponent } from './projects/project-present/project-pres
 
 
 const routes : Routes = [
-    { path: 'editor', component : ProjectListComponent, canActivate: [AuthGuard] },
-    { path: 'editor/:id', component : ProjectDetailComponent, canActivate: [AuthGuard] },
-	{ path: 'editor/:id/edit', component : ProjectEditComponent, canActivate: [AuthGuard] },
-	{ path: 'present', component : ProjectPresentComponent, canActivate: [AuthGuard] },
+    { path: 'projects', component : ProjectListComponent, canActivate: [AuthGuard] },
+    { path: 'projects/:id', component : ProjectDetailComponent, canActivate: [AuthGuard] },
+	{ path: 'projects/:id/edit/:fileId', component : ProjectEditComponent, canActivate: [AuthGuard] },
+	{ path: 'projects/:id/present', component : ProjectPresentComponent, canActivate: [AuthGuard] },
 	{ path: 'profile', component : ProfileComponent, canActivate: [AuthGuard] },
 	{ path: 'home', component : HomeComponent },
 	{ path: '', component : HomeComponent }

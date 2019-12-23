@@ -1,11 +1,11 @@
 
 <app-editor 
-	[imgUrl]="file.downloadURL" 
+	[imgUrl]="fileUrl" 
 	(onSaveArea)="saveArea($event)">
 </app-editor>
 
 <app-linker *ngIf="showLinks" 
-	[imgUrl]="file.downloadURL" 
+	[imgUrl]="fileUrl" 
 	[clickableAreas]="links">
 </app-linker>
 

@@ -1,36 +1,40 @@
 <!-- <h2 class="page-header">page header</h2> -->
-
 <div class="project-data-container">
-		<h3>Project details</h3>
+	<h3>Project details</h3>
 
-		<form [formGroup]="projectDetailForm" (ngSubmit)="savePojectDetailForm()" class="form detail-form">
-			<div class="form-group form-group-editable">
-				<label class="form-group-label">
-					Name
-				</label>
-				<div class="form-input">
-					<input formControlName="name" placeholder="Enter project name">
-					<button class="form-group-button">
-						<i class="fa fa-save" (click)="onSaveClicked(file)"></i>
-					</button>
-				</div>
+
+	<form [formGroup]="projectDetailForm" (ngSubmit)="savePojectDetailForm()" class="form detail-form">
+		<div class="form-group form-group-editable">
+			<label class="form-group-label">
+				Name
+			</label>
+			<div class="form-input">
+				<input formControlName="name" placeholder="Enter project name">
+				<button class="form-group-button">
+					<i class="fa fa-save" (click)="onSaveClicked(file)"></i>
+				</button>
 			</div>
+		</div>
 
-			<div class="form-group form-group-editable">
-				<label class="form-group-label">
-					Description
-				</label>
-				<div class="form-input">
-					<textarea formControlName="description" placeholder="Enter project description"></textarea>
-					<button class="form-group-button">
-						<i class="fa fa-save" (click)="onSaveClicked(file)"></i>
-					</button>
-				</div>
+		<div class="form-group form-group-editable">
+			<label class="form-group-label">
+				Description
+			</label>
+			<div class="form-input">
+				<textarea formControlName="description" placeholder="Enter project description"></textarea>
+				<button class="form-group-button">
+					<i class="fa fa-save" (click)="onSaveClicked(file)"></i>
+				</button>
 			</div>
-		</form>
+		</div>
+	</form>
 
-		<h4>Upload more files</h4>
-		<app-file-uploader (onFilesDrop)="uploadFiles($event)" ></app-file-uploader>
+	<h4>Upload more files</h4>
+	<app-file-uploader (onFilesDrop)="uploadFiles($event)"></app-file-uploader>
+
+	<hr>
+	<button type="button" class="form-btn" (click)="navToPlay()">Play</button>
+
 </div>
 
 <div class="project-files-container">
@@ -40,16 +44,13 @@
 		<li *ngIf="!files.length" class="file-list-item">
 			<i>No files have been uploaded yet</i>
 		</li>
-		
-		<li *ngFor="let newfile of filesToUpload"> 
-			File {{newfile.name}} is being uploaded ... 
+
+		<li *ngFor="let newfile of filesToUpload">
+			File {{newfile.name}} is being uploaded ...
 		</li>
-		
+
 		<li *ngFor="let file of files">
-			<app-file-list-item 
-				[file]="file" 
-				(onSave)="saveFile(file)" 
-				(onDelete)="delete(file)"
+			<app-file-list-item [file]="file" (onSave)="saveFile(file)" (onDelete)="delete(file)"
 				(onEdit)="navToEdit(file)">
 			</app-file-list-item>
 		</li>

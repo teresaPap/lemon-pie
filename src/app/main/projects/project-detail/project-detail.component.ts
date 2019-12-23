@@ -85,6 +85,11 @@ export class ProjectDetailComponent implements OnInit {
 		this.router.navigate([`editor/${this.project.id}/edit`], { queryParams: { id: file.id } });
 	}
 
+	public navToPlay() {
+		this.router.navigate(['present']);
+		this.notifier.notify('info', 'TODO: nav to play');
+	}
+
 	public delete(file: IFile) {
 		// always unsubscribe at start 
 		// TODO: Is this a good practice? 

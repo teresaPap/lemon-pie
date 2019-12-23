@@ -29,9 +29,7 @@ import { AppRoutingModule } from './app-routing.module';
 		CommonModule, 
 		HttpClientModule,
 		NotifierModule.withConfig({
-			behaviour: {
-				autoHide: false
-			}
+			// add custom config here
         }),
 
 		// Firebase 

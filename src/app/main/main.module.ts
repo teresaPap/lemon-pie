@@ -11,6 +11,7 @@ import { EditorComponent } from './projects/project-edit/editor/editor.component
 import { SelectionMenuComponent } from './projects/project-edit/selection-menu/selection-menu.component';
 import { LinkerComponent } from './projects/project-edit/linker/linker.component';
 import { FileListItemComponent } from './projects/project-detail/file-list-item/file-list-item.component';
+import { ProjectPresentComponent } from './projects/project-present/project-present.component';
 
 @NgModule({
     declarations: [
@@ -25,6 +26,7 @@ import { FileListItemComponent } from './projects/project-detail/file-list-item/
 		EditorComponent, 
 		SelectionMenuComponent, 
 		LinkerComponent, 
+		ProjectPresentComponent, 
     ],
     imports: [
 		SharedModule,

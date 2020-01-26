@@ -14,8 +14,8 @@ import { FileListItemComponent } from './projects/project-detail/file-list-item/
 import { ProjectPresentComponent } from './projects/project-present/project-present.component';
 
 @NgModule({
-    declarations: [
-        HomeComponent,
+	declarations: [
+		HomeComponent,
 		ProfileComponent,
 		AsideComponent,
 		ProjectListComponent,
@@ -23,14 +23,14 @@ import { ProjectPresentComponent } from './projects/project-present/project-pres
 		ProjectEditComponent,
 		FileListItemComponent,
 
-		EditorComponent, 
-		SelectionMenuComponent, 
-		LinkerComponent, 
-		ProjectPresentComponent, 
-    ],
-    imports: [
+		EditorComponent,
+		SelectionMenuComponent,
+		LinkerComponent,
+		ProjectPresentComponent,
+	],
+	imports: [
 		SharedModule,
 		MainRoutingModule
-    ]
+	]
 })
 export class MainModule { }

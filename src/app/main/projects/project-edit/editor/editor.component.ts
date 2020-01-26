@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { fromEvent, Subscription, forkJoin, of } from 'rxjs';
 import { switchMap, takeUntil, tap, map } from 'rxjs/operators';
 import { IClickableArea } from '../../../../shared/interfaces/IFile';
@@ -16,7 +16,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 	@ViewChild('canvasBg', {static: false}) public canvasBg: ElementRef;
 	@ViewChild('canvas', {static: false}) public canvas: ElementRef;
 
-	@ViewChild('selectionMenu', {static: false}) public selectionMenu :ElementRef;
+	@ViewChild('selectionMenu', {static: false}) public selectionMenu: ElementRef;
 
 	private cx: CanvasRenderingContext2D;
 	private editor: HTMLCanvasElement;
@@ -33,7 +33,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 		this.editor = this.canvas.nativeElement;
 		this.cx = this.editor.getContext('2d');
 
-		// set up the canvas 
+		// set up the canvas
 		this.setBackground(this.imgUrl);
 
 		// Start watching for canvas events
@@ -62,15 +62,15 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 
 	private openSelectionMenu(mouseX, mouseY): void {
 		this.showSelectionMenu = true;
-		this.selectionMenu.nativeElement.style.top = `${mouseY-10}px`;
-		this.selectionMenu.nativeElement.style.left =`${mouseX-10}px`;
+		this.selectionMenu.nativeElement.style.top = `${mouseY - 10}px`;
+		this.selectionMenu.nativeElement.style.left = `${mouseX - 10}px`;
 		this.selectionMenu.nativeElement.style.visibility = 'visible';
 	}
 
-	// #endregion 
+	// #endregion
 
-
-	// #region - Canvas events handling - see also https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
+	// #region - Canvas events handling
+	// see also https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
 
 	private watchCanvasEvents() {
 		// TODO: onMouseDown$ instead of onMouseDown :P
@@ -114,12 +114,12 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 				y2: finalPos.y
 			};
 			this.openSelectionMenu(finalPos.x, finalPos.y);
-		})
+		});
 	}
 
 	private setBackground(url): Subscription {
-		
-		const img = this.canvasBg.nativeElement; 
+
+		const img = this.canvasBg.nativeElement;
 		img.src = url;
 
 		return this.canvasCtrl.getSizeFromImage(img).subscribe(
@@ -127,10 +127,8 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 				this.editor.height = dimentions.height;
 				this.editor.width = dimentions.width;
 			}
-		)
+		);
 	}
 
 	// #endregion
-
-
 }

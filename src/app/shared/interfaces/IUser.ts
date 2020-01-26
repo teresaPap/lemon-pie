@@ -1,5 +1,3 @@
-
-
 // This is a temporary interface collection containing interfaces returned by firebase db
 // TODO: separate properly the following interfaces according to what the project needs
 
@@ -7,7 +5,7 @@
 export interface IUser {
 	uid: string;
 	email: string;
-	
+
 	// To be added later on - maybe
 	refreshToken: string;
 	displayName?: string;
@@ -15,7 +13,7 @@ export interface IUser {
 	isAnonymous: boolean;
 	phoneNumber?: string;
 	photoURL?: string;
-	
+
 	// Generated data
 	projects?: Array<firebase.firestore.DocumentReference>;
 }

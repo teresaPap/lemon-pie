@@ -9,9 +9,9 @@ import { ProjectEditComponent } from './projects/project-edit/project-edit.compo
 import { ProjectPresentComponent } from './projects/project-present/project-present.component';
 
 
-const routes : Routes = [
-    { path: 'projects', component : ProjectListComponent, canActivate: [AuthGuard] },
-    { path: 'projects/:id', component : ProjectDetailComponent, canActivate: [AuthGuard] },
+const routes: Routes = [
+	{ path: 'projects', component : ProjectListComponent, canActivate: [AuthGuard] },
+	{ path: 'projects/:id', component : ProjectDetailComponent, canActivate: [AuthGuard] },
 	{ path: 'projects/:id/edit/:fileId', component : ProjectEditComponent, canActivate: [AuthGuard] },
 	{ path: 'projects/:id/present', component : ProjectPresentComponent, canActivate: [AuthGuard] },
 	{ path: 'profile', component : ProfileComponent, canActivate: [AuthGuard] },
@@ -20,8 +20,8 @@ const routes : Routes = [
 ];
 
 @NgModule({
-    imports: [
-        RouterModule.forChild(routes)
-    ]
+	imports: [
+		RouterModule.forChild(routes)
+	]
 })
 export class MainRoutingModule { }

@@ -1,9 +1,9 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 
-// COMPONENT DESCRIPTION: 
+// COMPONENT DESCRIPTION:
 // FileUploaderComponent is used wherever the user needs to drag and drop files to be uploaded.
 // it listens for files that are droped in dropzone directive
-// User can to upload as many files as they want. 
+// User can to upload as many files as they want.
 
 
 @Component({
@@ -24,5 +24,5 @@ export class FileUploaderComponent {
 	public onDrop(fileList: FileList): void {
 		this.onFilesDrop.emit(fileList);
 	}
-	
+
 }

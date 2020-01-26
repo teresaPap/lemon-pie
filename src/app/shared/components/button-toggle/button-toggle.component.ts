@@ -8,7 +8,7 @@ export class ButtonToggleComponent {
 
 	@Output('onClick') onClick: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-	public isToggleOn: boolean = false;
+	public isToggleOn = false;
 
 	constructor() { }
 

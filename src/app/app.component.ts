@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { IUser } from './shared/interfaces/IUser';
-import { AuthService } from './core/services/auth.service';
 
 @Component({
 	selector: 'app-root',

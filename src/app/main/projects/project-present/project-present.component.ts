@@ -8,7 +8,6 @@ export class ProjectPresentComponent implements OnInit {
 
 	constructor() { }
 
-	ngOnInit() {
-	}
+	ngOnInit() { }
 
 }

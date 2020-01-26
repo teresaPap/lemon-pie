@@ -14,16 +14,16 @@ export class AddProjectComponent implements OnInit {
 	@Output() onClose: EventEmitter<any> = new EventEmitter();
 	public addProjectForm: FormGroup;
 
-	constructor( 
+	constructor(
 		private fb: FormBuilder,
-		private projectCtlr: ProjectsService ) { 
+		private projectCtlr: ProjectsService ) {
 	}
 
 	ngOnInit() {
 		this.addProjectForm = this.fb.group({
 			name: ['', Validators.required],
 			description: ['']
-		})
+		});
 	}
 
 	public close(): void {
@@ -39,7 +39,5 @@ export class AddProjectComponent implements OnInit {
 			res => console.log('\nCreated a new project with id: '+ res )
 		);
 	}
-
-
 
 }

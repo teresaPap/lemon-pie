@@ -5,7 +5,7 @@ import { IFile } from '../../../../shared/interfaces/IFile';
 	selector: 'app-file-list-item',
 	templateUrl: './file-list-item.component.html'
 })
-export class FileListItemComponent implements OnInit {
+export class FileListItemComponent {
 
 	@Input() public file: IFile;
 
@@ -15,20 +15,15 @@ export class FileListItemComponent implements OnInit {
 
 	constructor() { }
 
-	ngOnInit() {
-
-	}
-
-	public onSaveClicked(file:IFile) {
+	public onSaveClicked(file: IFile) {
 		this.onSave.emit(file);
 	}
-	public onDeleteClicked(file:IFile) {
+	public onDeleteClicked(file: IFile) {
 		this.onDelete.emit(file);
 	}
-	public onEditClicked(file:IFile) {
+	public onEditClicked(file: IFile) {
 		console.log('onEditClicked', file.id);
 		this.onEdit.emit(file);
 	}
-	
 
 }

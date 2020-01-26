@@ -14,33 +14,33 @@ import { ButtonToggleComponent } from './components/button-toggle/button-toggle.
 
 
 @NgModule({
-    declarations: [ 
-		NavComponent, 
-		DropzoneDirective, 
-		FileUploaderComponent, 
-		AddProjectComponent, 
-		ButtonToggleComponent, 
-    ],
-    imports: [ 
-        RouterModule,
-        CommonModule,
-        ReactiveFormsModule,
-        CoreModule
-    ],
-    exports: [
-        RouterModule,
-        CommonModule,
-        ReactiveFormsModule, 
-        
+	declarations: [
+		NavComponent,
+		DropzoneDirective,
+		FileUploaderComponent,
+		AddProjectComponent,
+		ButtonToggleComponent,
+	],
+	imports: [
+		RouterModule,
+		CommonModule,
+		ReactiveFormsModule,
+		CoreModule
+	],
+	exports: [
+		RouterModule,
+		CommonModule,
+		ReactiveFormsModule,
+
 		NavComponent,
 		FileUploaderComponent,
 		AddProjectComponent,
 		ButtonToggleComponent
-    ],
-    providers: [ 
+	],
+	providers: [
 		ProjectsService,
 		FilesService,
 		StorageService
-    ]
+	]
 })
 export class SharedModule { }

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { Observable, forkJoin, from, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
@@ -9,34 +8,31 @@ import { IProject } from '../interfaces/IProject';
 
 @Injectable()
 export class ProjectsService {
-
-    public uid: string = this.authService.getCurrentUserId();
+	public uid: string = this.authService.getCurrentUserId();
 
 	constructor(
 		public firestore: AngularFirestore,
-		private authService: AuthService 
-	) { }
-
+		private authService: AuthService) {
+	}
 
 	public create(project: IProject): Observable<void> {
 		console.log('About to create a new project', project);
-
-
 
 		const projectsCollectionRef: AngularFirestoreCollection = this.firestore.collection('projects');
 		const userIdDocumentRef: AngularFirestoreDocument = this.firestore.doc(`users/${this.uid}`);
 
 		const action = projectsCollectionRef.add({
-				name: project.name,
-				description: project.description,
-				createdOn: new Date(Date.now())
-			}).then((documentRef: firebase.firestore.DocumentReference) => {
-				userIdDocumentRef.update({
-					"projects": firebase.firestore.FieldValue.arrayUnion(documentRef) 
-				})
-			}).catch( error => {
-				throw console.warn(error); //TODO: Handle error				
+			name: project.name,
+			description: project.description,
+			createdOn: new Date(Date.now())
+		}).then((documentRef: firebase.firestore.DocumentReference) => {
+			userIdDocumentRef.update({
+				'projects': firebase.firestore.FieldValue.arrayUnion(documentRef)
 			});
+		}).catch(error => {
+			throw console.warn(error);
+			// TODO: Handle error
+		});
 
 		return from(action);
 	}
@@ -50,42 +46,38 @@ export class ProjectsService {
 			switchMap((projects: firebase.firestore.DocumentReference[]) => {
 				const referencesToGet = [];
 				projects.forEach((documentRef: firebase.firestore.DocumentReference) => {
-					referencesToGet.push(this.firestore.doc( documentRef.path ).get())
+					referencesToGet.push(this.firestore.doc(documentRef.path).get())
 				});
 				return forkJoin(referencesToGet);
 			}),
 			// Map the DocumentData to the actual json data and return them to the component
-			map( (projects: firebase.firestore.DocumentData) => {
+			map((projects: firebase.firestore.DocumentData) => {
 				const projectData = [];
-				projects.forEach( documentSnapsot =>
-					projectData.push({ id: documentSnapsot.id, ...documentSnapsot.data() })
+				projects.forEach(documentSnapsot =>
+					projectData.push({id: documentSnapsot.id, ...documentSnapsot.data()})
 				);
 				return projectData;
-			}), 
-			map( (projectData: IProject[]) => {
-				projectData.forEach( elem => {
-					if (elem.files && elem.files.length ) 
-						elem.preview = this.getFile( elem.files[0] )
-				})
+			}),
+			map((projectData: IProject[]) => {
+				projectData.forEach(elem => {
+					if (elem.files && elem.files.length) {
+						elem.preview = this.getFile(elem.files[0]);
+					}
+				});
 				return projectData;
-			})	
-		)
-
+			})
+		);
 		return action;
 	}
 
-	
-	public readSingle(projectId:string): Observable<firebase.firestore.DocumentSnapshot> {
-		const action = this.firestore.doc(`projects/${projectId}`).get();
-		return action;
-
+	public readSingle(projectId: string): Observable<firebase.firestore.DocumentSnapshot> {
+		return this.firestore.doc(`projects/${projectId}`).get();
 	}
 
-	private getFile( ref ) {
-		return this.firestore.doc( ref ).get().pipe(
-			map( file => file.data() )
+	private getFile(ref) {
+		return this.firestore.doc(ref).get().pipe(
+			map(file => file.data())
 		);
 	}
-
 
 }

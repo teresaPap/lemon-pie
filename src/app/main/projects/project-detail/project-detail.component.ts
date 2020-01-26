@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { FilesService } from '../../../shared/data-services/files.service';
@@ -10,16 +10,16 @@ import { IFile } from '../../../shared/interfaces/IFile';
 import { StorageService } from '../../../shared/services/storage.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-// PAGE DESCRIPTION: 
+// PAGE DESCRIPTION:
 // In this view the user can add files to the current project
 // and inspect project status (name, description etc)
-// if the current project is not yet created (  -> projectId == 0 ), here the user can create a new project. 
+// if the current project is not yet created (  -> projectId == 0 ), here the user can create a new project.
 
 @Component({
 	selector: 'app-project-detail',
 	templateUrl: './project-detail.component.html'
 })
-export class ProjectDetailComponent implements OnInit {
+export class ProjectDetailComponent implements OnInit, OnDestroy {
 
 	public project: IProject = {} as IProject;
 	public files: IFile[] = [];
@@ -47,12 +47,11 @@ export class ProjectDetailComponent implements OnInit {
 
 		this.route.params.pipe(
 			switchMap(params => {
-				let dataToGet: [Observable<any>, Observable<IFile[]>?] = [this.projectCtrl.readSingle(params.id)];
+				const dataToGet: [Observable<any>, Observable<IFile[]>?] = [this.projectCtrl.readSingle(params.id)];
 				if (params.id != '0') {
 					this.project.id = params.id;
 					dataToGet.push(this.readFiles(params.id));
-				}
-				else {
+				} else {
 					this.project.id = '';
 				}
 				return forkJoin(dataToGet);
@@ -64,7 +63,7 @@ export class ProjectDetailComponent implements OnInit {
 					this.files = res[1];
 					this.project.files = this.files;
 					this.storage.store('activeProject', this.project);
-				};
+				}
 			})
 		).subscribe();
 	}
@@ -75,7 +74,7 @@ export class ProjectDetailComponent implements OnInit {
 
 	public savePojectDetailForm() {
 		if (this.projectDetailForm.valid) {
-			console.log("TODO: save Poject Detail Form", this.projectDetailForm.value);
+			console.log('TODO: save Poject Detail Form', this.projectDetailForm.value);
 		}
 	}
 
@@ -90,8 +89,8 @@ export class ProjectDetailComponent implements OnInit {
 	}
 
 	public delete(file: IFile) {
-		// always unsubscribe at start 
-		// TODO: Is this a good practice? 
+		// always unsubscribe at start
+		// TODO: Is this a good practice?
 		this.deleteAction.unsubscribe();
 
 		this.deleteAction = this.fileCtrl.delete(file.id, file.name, this.project.id).subscribe(
@@ -107,16 +106,16 @@ export class ProjectDetailComponent implements OnInit {
 	}
 
 	public uploadFiles(fileList: FileList) {
-		console.log('files to upload', fileList, fileList.length , fileList.item(1) );
+		console.log('files to upload', fileList, fileList.length, fileList.item(1) );
 
-		// TODO: display dropped files in list while they are beeing uploaded 
+		// TODO: display dropped files in list while they are beeing uploaded
 
-		for (let i=0 ; i<fileList.length; i++ ) {
+		for (let i = 0 ; i < fileList.length ; i++ ) {
 			this.filesToUpload.push(fileList.item(i));
 
 			console.log(fileList.item(i));
 
-			this.fileCtrl.create( fileList.item(i), this.project.id  ).subscribe(
+			this.fileCtrl.create( fileList.item(i), this.project.id ).subscribe(
 				null,
 				err => console.log(err) ,
 				() => {
@@ -143,4 +142,3 @@ export class ProjectDetailComponent implements OnInit {
 	}
 
 }
-

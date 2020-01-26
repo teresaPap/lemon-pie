@@ -10,10 +10,10 @@ import { AuthService } from '../../core/services/auth.service';
 })
 export class RegisterComponent implements OnInit {
 
-	public registerForm: FormGroup; 
+	public registerForm: FormGroup;
 
-	constructor( 
-		private fb : FormBuilder,
+	constructor(
+		private fb: FormBuilder,
 		private authService: AuthService ) { }
 
 	ngOnInit() {

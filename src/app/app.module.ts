@@ -26,13 +26,13 @@ import { AppRoutingModule } from './app-routing.module';
 	imports: [
 		BrowserModule,
 		ReactiveFormsModule,
-		CommonModule, 
+		CommonModule,
 		HttpClientModule,
 		NotifierModule.withConfig({
 			// add custom config here
-        }),
+		}),
 
-		// Firebase 
+		// Firebase
 		AngularFireModule.initializeApp(environment.firebase), // initialize app
 		AngularFirestoreModule, // firestore - imports firebase/firestore, only needed for database features
 		AngularFireAuthModule, // auth - imports firebase/auth, only needed for auth features

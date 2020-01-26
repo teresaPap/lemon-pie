@@ -17,28 +17,29 @@ export class FilesService {
 		private fireStorage: AngularFireStorage
 	) { }
 
-	
-	public create(file:File, projectId:string): Observable<void> {
 
-		// NOTE: takes a File and 
-		// saves it in firestorage, files collection, projects collection project/files array as a collection ref 
+	public create(file: File, projectId: string): Observable<void> {
+
+		// NOTE: takes a File and
+		// saves it in firestorage, files collection, projects collection project/files array as a collection ref
 		// returns;
 
-		const fileName = `${file.lastModified}_${file.name}`; 
+		const fileName = `${file.lastModified}_${file.name}`;
 
 		// Create file document in firestore and this file document ref to projectId
 		return this.storeFileInFireStorage( file, projectId, fileName ).pipe(
 			switchMap( filedata => {
-				if (filedata.downloadURL) 
-					return this.storeFileInFirestore( filedata, projectId ) 
-				else 
-					return of('blah')
+				if (filedata.downloadURL) {
+					return this.storeFileInFirestore( filedata, projectId );
+				} else {
+					return of('blah');
+				}
 			}),
 			catchError( error => {
 				console.warn('ERROR IN 79 \n' ,  error);
-				if (error.code !== 'storage/object-not-found') 
+				if (error.code !== 'storage/object-not-found') {
 					return of(error.code);
-				else {
+				} else {
 					console.log('ERROR CODE: ', error.code );
 					return of([]);
 				}
@@ -46,23 +47,24 @@ export class FilesService {
 		);
 	}
 
-	public read(projectId:string): Observable<IFile[]> {
-		// NOTE: Reads Files[] (containing file references) from a given ProjectId and 
+	public read(projectId: string): Observable<IFile[]> {
+		// NOTE: Reads Files[] (containing file references) from a given ProjectId and
 		// returns an observable of an array with the actual files
-		
+
 		return this.firestore.doc(`projects/${projectId}`).get().pipe(
 			map((project: firebase.firestore.DocumentData) => {
-				if ( project.data().files ) 
+				if ( project.data().files ) {
 					return project.data().files;
-				else 
+				} else {
 					// TODO: handle no projects error! Escape pipe and return empty []
-					throw 'no files for this project!';
+					throw new Error('no files for this project!');
+				}
 			}),
 			// For each of the files referenced by this project, get the actual document
 			switchMap((files: firebase.firestore.DocumentReference[]) => {
 				const referencesToGet = [];
 				files.forEach( (fileDocRef: firebase.firestore.DocumentReference) => {
-					referencesToGet.push( this.firestore.doc( fileDocRef.path ).get() )
+					referencesToGet.push( this.firestore.doc( fileDocRef.path ).get() );
 				});
 				return forkJoin(referencesToGet);
 			}),
@@ -77,47 +79,48 @@ export class FilesService {
 		);
 	}
 
-	public delete(fileId:string, fileName:string, projectId:string): Observable<any> {
+	public delete(fileId: string, fileName: string, projectId: string): Observable<any> {
 
 		const deleteFileFromProject = this.firestore.doc(`projects/${projectId}`).get().pipe(
-			map( res => { 
+			map( res => {
 				const data = res.data();
 				const index = this.findReference(data.files, fileId);
 				return { data: data, index: index };
 			}),
 			map( res => {
-				if (res.index !== -1) 
-					return [ ...res.data.files.slice(res.data.files.lenght, res.index), ...res.data.files.slice(res.index+1, res.data.files.lenght) ]
-				else throw 'ERROR: File reference does not exist in project!';
+				if (res.index !== -1) {
+					return [ ...res.data.files.slice(res.data.files.lenght, res.index), ...res.data.files.slice(res.index + 1, res.data.files.lenght) ];
+				}
+				else { throw new Error('ERROR: File reference does not exist in project!'); }
 			}),
-			switchMap( files =>  from( this.firestore.doc(`projects/${projectId}`).update({files:files}) )),
+			switchMap( files =>  from( this.firestore.doc(`projects/${projectId}`).update({files: files}) )),
 			catchError( () => {
-				throw 'ERROR in delete_File_From_Project';
+				throw new Error('ERROR in delete_File_From_Project');
 			})
 		);
 
 		const deleteFileFromFilesCollection = from( this.firestore.doc(`files/${fileId}`).delete() ).pipe(
 			catchError( () => {
-				throw 'ERROR in delete_File_From_Files_Collection';
+				throw new Error('ERROR in delete_File_From_Files_Collection');
 			})
 		);
 
 		const deleteFileFromFireStorage = this.fireStorage.ref(`files/${projectId}/${fileName}`).delete().pipe(
 			catchError( () => {
-				throw 'ERROR in delete_File_From_Fire_Storage';
+				throw new Error('ERROR in delete_File_From_Fire_Storage');
 			})
 		);
 
 		return forkJoin( deleteFileFromFilesCollection, deleteFileFromProject, deleteFileFromFireStorage ).pipe(
 			// map( () => console.log('END DELETE') ),
-			catchError( error => { 
+			catchError( error => {
 				// console.log('ERROR!: ', error);
 				return of(error);
 			}),
 		);
 	}
 
-	// #region - File Update Functions	
+	// #region - File Update Functions
 	public saveFileLink(area: IClickableArea) {
 		const areaCoordinates = {
 			x1: area.x1,
@@ -126,11 +129,11 @@ export class FilesService {
 			y2: area.y2
 		};
 		const activeFile = this.storage.load('activeFile');
-		
+
 		const action = this.firestore.collection(`files/${activeFile.id}/links`).doc(area.linkedFileId).set(areaCoordinates)
 			.then( () => console.log('Link Created Successfully') )
 			// TODO: handle errors
-			.catch( error => console.log('An error occured: ', error ))
+			.catch( error => console.log('An error occured: ', error ));
 
 		return from(action);
 	}
@@ -138,41 +141,42 @@ export class FilesService {
 	public getFileLinks(fileId: string): Observable<IClickableArea[]> {
 		const linksCollection = this.firestore.collection(`files/${fileId}/links`);
 
-		const getLinksData = (linkSnapshots: firebase.firestore.DocumentSnapshot[]) => 
+		const getLinksData = (linkSnapshots: firebase.firestore.DocumentSnapshot[]) =>
 			linkSnapshots.map(snapshot => ({...snapshot.data(), linkedFileId: snapshot.id}));
 
 		const action = linksCollection.get().pipe(
-			mergeMap(links => 
-				iif(() => (links.docs.length>0) , of(getLinksData(links.docs)) , of(null))
+			mergeMap(links =>
+				iif(() => (links.docs.length > 0) , of(getLinksData(links.docs)) , of(null))
 			)
 		);
-		
+
 		return from(action);
 	}
 	// #endregion
 
 
 	private findReference(refs: firebase.firestore.DocumentReference[], refId: string): number {
-		let index: number = -1;
-		refs.forEach( (ref:firebase.firestore.DocumentReference, i:number) => {
-			if (ref.id === refId )
+		let index = -1;
+		refs.forEach( (ref: firebase.firestore.DocumentReference, i: number) => {
+			if (ref.id === refId ) {
 			index = i;
+			}
 		});
 		return index;
 	}
 
-	private storeFileInFireStorage(file:File, projectId:string, fileName:string): Observable<IFile|any> {
+	private storeFileInFireStorage(file: File, projectId: string, fileName: string): Observable<IFile|any> {
 		// Reference to storage bucket
 		const storageRef = this.fireStorage.ref(`files/${projectId}/${fileName}`) || {} as AngularFireStorageReference;
-		
+
 		// Main task
 		const uploadTask = this.fireStorage.upload( `files/${projectId}/${fileName}`, file );
 
-		// Progress monitoring 
+		// Progress monitoring
 		// const percentage = uploadTask.percentageChanges();
 
 		const onUploadTaskEnded$: Observable<any> = from( uploadTask );
-		
+
 		return uploadTask.snapshotChanges().pipe(
 			switchMap( () => onUploadTaskEnded$ ),
 			switchMap( () => storageRef.getDownloadURL() ),
@@ -180,13 +184,14 @@ export class FilesService {
 				return {
 					name: fileName,
 					path: `files/${projectId}/${fileName}`,
-					downloadURL: downloadUrl 
+					downloadURL: downloadUrl
 				};
 			}),
 			catchError( error => {
 				console.warn('ERROR IN 104 \n\n' ,  error);
-				if (error.code !== 'storage/object-not-found') 
+				if (error.code !== 'storage/object-not-found') {
 					return error.code;
+				}
 				else {
 					console.log('ERROR CODE: ', error.code );
 					return of([]);
@@ -201,15 +206,15 @@ export class FilesService {
 
 		const action = from( filesCollectionRef.add(fileData) ).pipe(
 			switchMap( documentRef =>
-				from( 
+				from(
 					projectIdDocumentRef.update(
-						{ "files": firebase.firestore.FieldValue.arrayUnion(documentRef) }
+						{ 'files': firebase.firestore.FieldValue.arrayUnion(documentRef) }
 				))
 			),
 			// tap( res => console.log( 'FIRE_STORE COMPLETED', res ) ),
 			catchError(error => {
-				console.warn( 'ERROR IN 147' , error);	
-				return of(error);	
+				console.warn( 'ERROR IN 147' , error);
+				return of(error);
 			})
 		);
 		return action;

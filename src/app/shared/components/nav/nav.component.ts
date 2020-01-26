@@ -13,8 +13,8 @@ export class NavComponent implements OnInit {
 	public currentUser: IUser ;
 	public showBubbleMenu: boolean;
 
-	constructor( 
-		public router: Router, 
+	constructor(
+		public router: Router,
 		private authService: AuthService ) { }
 
 	ngOnInit() {
@@ -33,18 +33,19 @@ export class NavComponent implements OnInit {
 		);
 		this.toggleBubbleMenu();
 	}
-	
+
 	public toggleBubbleMenu(): void {
 		this.showBubbleMenu = !this.showBubbleMenu;
 	}
 
 	public logCurrentUser() {
 		// NOTE: this is a test function
-		let user = this.authService.getCurrentUserId();
+		const user = this.authService.getCurrentUserId();
 		console.log(user);
-		// this.authService.getAuthState().subscribe( 
+		// this.authService.getAuthState().subscribe(
 		// 	res => console.log("dfsd", res),
 		// 	err => console.log("errr", err)
 		// );
 	}
+
 }

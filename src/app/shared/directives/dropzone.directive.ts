@@ -1,4 +1,3 @@
-
 import { Directive, HostListener, Output, EventEmitter } from '@angular/core';
 
 // Code from here: https://fireship.io/lessons/angular-firebase-storage-uploads-multi/

@@ -79,12 +79,13 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 	}
 
 	public navToEdit(file: IFile) {
-		this.storage.store('activeFileUrl', file.downloadURL);
-		this.router.navigate([`projects/${this.project.id}/edit/${file.id}`]);
+		this.storage.store('activeFile', file);
+		// TODO: maybe use relativeTo: this.route attribute
+		this.router.navigate([`editor/${this.project.id}/edit`], { queryParams: { id: file.id } });
 	}
 
-	public navToPresent() {
-		this.router.navigate([`projects/${this.project.id}/present`]);
+	public navToPlay() {
+		this.router.navigate(['present']);
 		this.notifier.notify('info', 'TODO: nav to play');
 	}
 

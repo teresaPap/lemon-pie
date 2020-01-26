@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { StorageService } from '../../../shared/services/storage.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { IFile } from '../../../shared/interfaces/IFile';
 import { FilesService } from '../../../shared/data-services/files.service';
-import { map, switchMap, tap } from 'rxjs/operators';
 
 
 // PAGE DESCRIPTION:
@@ -15,24 +15,23 @@ import { map, switchMap, tap } from 'rxjs/operators';
 })
 export class ProjectEditComponent implements OnInit {
 
-	public fileUrl: string;
+	public file: IFile;
+
 	public links = [];
 	public showLinks = false;
 
 	constructor(
 		public storage: StorageService,
 		public router: Router,
-		private route: ActivatedRoute,
 		public filesCtrl: FilesService
 	) { }
 
 	ngOnInit() {
-		this.fileUrl = this.storage.load('activeFileUrl');
+		this.file = this.storage.load('activeFile');
+		console.log('Editing file: ', this.file);
 
-		this.route.params.pipe(
-			map( params => params['id'] ),
-			switchMap( fileId => this.filesCtrl.getFileLinks(fileId) ),
-			tap( res => this.links = res )
+		this.filesCtrl.getFileLinks(this.file.id).subscribe(
+			res => this.links = res
 		);
 	}
 

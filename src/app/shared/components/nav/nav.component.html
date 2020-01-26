@@ -16,7 +16,7 @@
 			<a>Login</a>
 		</li>
 		<li *ngIf="currentUser" class="nav-item">
-			<a [routerLink]="['/projects']">Projects</a>
+			<a [routerLink]="['/editor']">Projects</a>
 		</li>
 		<li *ngIf="currentUser" (click)="toggleBubbleMenu()" class="nav-item">
 			<a>{{currentUser.email}}</a>

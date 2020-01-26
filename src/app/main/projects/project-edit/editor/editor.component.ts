@@ -54,7 +54,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 	}
 
 	public closeSelectionMenu(): void {
-		this.canvasCtrl.clearCanvas(this.cx, this.editor);
+		CanvasService.clearCanvas(this.cx, this.editor);
 		this.canvasSelection = null as IClickableArea;
 		this.showSelectionMenu = false;
 		this.selectionMenu.nativeElement.style.visibility = 'hidden';
@@ -83,14 +83,14 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 			// Initialize for security
 			tap(() => this.canvasSelection = null as IClickableArea),
 			// Watch while mouse is down
-			map((mouseDown: MouseEvent) => this.canvasCtrl.getPositionOnCanvas(mouseDown, this.editor)),
+			map((mouseDown: MouseEvent) => CanvasService.getPositionOnCanvas(mouseDown, this.editor)),
 			switchMap((startingPos: ICanvasPosition) => {
 				const selectionStoped$ = onMouseMove$.pipe(
 					// While mouse is moving, get the current position and draw a selection
-					map((mouseMoved: MouseEvent) => this.canvasCtrl.getPositionOnCanvas(mouseMoved, this.editor)),
+					map((mouseMoved: MouseEvent) => CanvasService.getPositionOnCanvas(mouseMoved, this.editor)),
 					tap(currentPos => {
-						this.canvasCtrl.clearCanvas(this.cx, this.editor);
-						this.canvasCtrl.drawSelection(startingPos, currentPos, this.cx);
+						CanvasService.clearCanvas(this.cx, this.editor);
+						CanvasService.drawSelection(startingPos, currentPos, this.cx);
 					}),
 					// Until mouse is up or leaves
 					takeUntil(onMouseUp$),
@@ -103,9 +103,9 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 			const startingPos = res[0];
 			const finalPos = res[1];
 
-			this.canvasCtrl.setStrokeStyle( this.cx, '#ff812d' );
+			CanvasService.setStrokeStyle( this.cx, '#ff812d' );
 			// Draw selection and show selection menu
-			this.canvasCtrl.drawRectangle(startingPos, finalPos, this.cx);
+			CanvasService.drawRectangle(startingPos, finalPos, this.cx);
 			this.canvasSelection = {
 				... this.canvasSelection,
 				x1: startingPos.x,

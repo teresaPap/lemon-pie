@@ -1,6 +1,5 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import {Subscription, of, from } from 'rxjs';
 import { IClickableArea } from '../../../../shared/interfaces/IFile';
 import { CanvasService } from '../../../../shared/services/canvas.service';
 
@@ -37,38 +36,40 @@ export class LinkerComponent implements AfterViewInit {
 		this.cx = this.linker.getContext('2d');
 
 		// set up the canvas
-		this.setSize(this.imgUrl).subscribe(
-			() => {
-				if (this.clickableAreas.length) {
-					this.draw();
-				}
-			}
-		);
-
+		this.setSize(this.imgUrl).add(this.drawSavedAreas());
 	}
 
-	private draw() {
-		this.canvasCtrl.setStrokeStyle(this.cx, '#b3d4fc' );
-		this.clickableAreas.forEach(area => {
+	private drawSavedAreas(): Subscription {
+		CanvasService.setStrokeStyle(this.cx, '#b3d4fc' );
+		console.log(`Clickable Areas found: ${this.clickableAreas.length}`);
+
+		const rectanglesFromClickableAreas = this.clickableAreas.map(area => {
 			console.log(`draw: (${area.x1}, ${ area.y1}) (${area.x2}, ${area.y2})`);
 
 			const startingPos = { x: area.x1, y: area.y1 };
 			const finalPos = { x: area.x2, y: area.y2 };
 
-			this.canvasCtrl.drawRectangle(startingPos, finalPos, this.cx);
+			return from( CanvasService.drawRectangle(startingPos, finalPos, this.cx) );
 		});
+
+		console.log(rectanglesFromClickableAreas);
+
+		// TODO: this return works properly, most probably.
+		// before trying to solve the return problem, make sure there is no problem in linker canvas
+		// I thing that trying to draw a hardcoded
+		// rectangle in linker canvas does not work as well as by using the link data from firebase.
+		return of(rectanglesFromClickableAreas).subscribe();
+
 	}
 
-	private setSize(url): Observable<void> {
+	private setSize(url): Subscription {
 		const img = new Image;
 		img.src = url;
-		return this.canvasCtrl.getSizeFromImage(img).pipe(
-			tap( dimentions => {
-				console.log(dimentions);
-				this.linker.height = dimentions.height;
-				this.linker.width = dimentions.width;
-			})
-		);
+		return this.canvasCtrl.getSizeFromImage(img).subscribe(
+			dimensions => {
+				this.linker.height = dimensions.height;
+				this.linker.width = dimensions.width;
+			});
 	}
 
 }

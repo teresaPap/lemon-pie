@@ -4,6 +4,7 @@ import { ILoginData } from '../../shared/interfaces/ILoginData';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Subject, Observable, from } from 'rxjs';
 import { IUser } from '../../shared/interfaces/IUser';
+import {NotifierService} from 'angular-notifier';
 
 
 @Injectable()
@@ -12,15 +13,18 @@ export class AuthService {
 	private authStateSubject: Subject<IUser> = new Subject;
 	private currentUser: IUser;
 
-	constructor( public afAuth: AngularFireAuth ) { 
+	constructor(
+		public afAuth: AngularFireAuth,
+		private notifier: NotifierService
+	) {
 		// detect auth state changes and push them in the subject
-		afAuth.authState.subscribe( 
+		afAuth.authState.subscribe(
 			change => {
 				// console.log("authState.change!", change)
 				this.currentUser = this.parseUser(change);
 				this.authStateSubject.next( this.currentUser )
 			}
-		)
+		);
 	}
 
 	public getAuthState(): Observable<IUser> { return this.authStateSubject.asObservable(); }
@@ -36,7 +40,8 @@ export class AuthService {
 					localStorage.setItem('uid', res.user.uid);
 					resolve(res);
 				},
-				err => reject(err))
+				err => reject(err)
+			);
 		});
 	}
 
@@ -47,17 +52,21 @@ export class AuthService {
 					localStorage.setItem('uid', res.user.uid);
 					resolve(res);
 				},
-				err => reject(err))
+				err => reject(err)
+			);
 		});
 	}
 
 	public logout():  Observable<void> {
-		console.log('Logging user out...')
+		console.log('Logging user out...');
 		const action = this.afAuth.auth.signOut().then(
-			() => console.log( 'User is now logged out !')
+			() => {
+				console.log( 'Logout successful!');
+				this.notifier.notify('success', `Logout successful!`);
+			}
 		).catch( error => {
-			// TODO: Handle error
-			throw console.warn('logging out error: ', error )
+			this.notifier.notify('error', `${error.message}`);
+			throw console.warn('logging out error: ', error );
 		});
 
 		return from(action);
@@ -69,10 +78,11 @@ export class AuthService {
 	}
 
 	private parseUser( fbUserdata ): IUser {
-		if (!fbUserdata) return;
+		if (!fbUserdata) {
+			return;
+		}
 		const { email, uid, refreshToken, emailVerified, isAnonymous } = fbUserdata;
-		const user = { email, uid, refreshToken, emailVerified, isAnonymous };
-		return user;
+		return { email, uid, refreshToken, emailVerified, isAnonymous };
 	}
 
 }

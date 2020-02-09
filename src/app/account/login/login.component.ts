@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
 	selector: 'app-login',
@@ -15,7 +16,9 @@ export class LoginComponent implements OnInit {
 	constructor(
 		private fb: FormBuilder,
 		private authService: AuthService,
-		private router: Router) { }
+		private router: Router,
+		private notifier: NotifierService
+	) { }
 
 	ngOnInit() {
 		this.loginForm = this.fb.group({
@@ -31,10 +34,14 @@ export class LoginComponent implements OnInit {
 	public firebaseLogin() {
 		this.authService.login(this.loginForm.value).then(
 			res => {
-				console.log('Login success!', res);
+				console.log('Login successful!', res);
+				this.notifier.notify('success', `Login successful!`);
 				this.router.navigate(['/home']);
 			},
-			err => console.log('An error has occured', err)
+			err => {
+				this.notifier.notify('error', `${err.message}`);
+				console.log('An error has occured', err);
+			}
 		);
 	}
 }

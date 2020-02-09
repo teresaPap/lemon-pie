@@ -6,7 +6,7 @@
 }
 
 .form-btn {
-    background-color: $btn-submit;
+    background-color: $theme-focus;
     min-width: 200px;
     border: none;
     color: $white;
@@ -22,7 +22,7 @@
 	height: 40px;
 	width: 40px;
 	border-radius: 50%;
-	border: 2px $gallery solid; 
+	border: 2px $gallery solid;
 	text-align: center;
 	i {
 		color: $theme-text;

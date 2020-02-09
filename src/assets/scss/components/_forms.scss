@@ -64,8 +64,16 @@
             &:focus {
                 border-bottom: 2px solid $input-focus;
             }
+			&::placeholder {
+				font-family: $font-handwritten;
+				font-style: italic;
+				font-size: 0.8em;
+			}
         }
     }
+	.required-badge {
+		color: $input-focus;
+	}
     button {
         text-transform: uppercase;
         letter-spacing: 0.25em;

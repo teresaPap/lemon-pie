@@ -2,22 +2,6 @@
 // all styles from https://www.npmjs.com/package/angular-notifier package
 
 
-// NOTIFIER: DEFAULT TYPE STYLES
-
-$notifier-default-background-color: #444 !default;
-$notifier-default-font-color: #FFF !default;
-$notifier-default-icon-color: #FFF !default;
-
-.notifier__notification--default {
-	background-color: $notifier-default-background-color;
-	color: $notifier-default-font-color;
-
-	.notifier__notification-button-icon { // 16x16 fixed size
-		fill: $notifier-default-icon-color;
-	}
-}
-
-
 // NOTIFIER: MATERIAL THEME
 //
 // This material theme tries its best to look as material-design'ish as possible - round edges, shadows, and small animations.
@@ -50,6 +34,7 @@ $notifier-shadow-color: rgba(0, 0, 0, .2) !default;
 			vertical-align: top;
 			line-height: 32px;
 			font-size: 15px;
+			font-weight: bold;
 		}
 
 		&-button {
@@ -85,9 +70,9 @@ $notifier-shadow-color: rgba(0, 0, 0, .2) !default;
 
 // NOTIFIER: DEFAULT TYPE STYLES
 
-$notifier-default-background-color: #444 !default;
-$notifier-default-font-color: #FFF !default;
-$notifier-default-icon-color: #FFF !default;
+$notifier-default-background-color: $theme-background !default;
+$notifier-default-font-color: $theme-text !default;
+$notifier-default-icon-color: $theme-text !default;
 
 .notifier__notification--default {
 	background-color: $notifier-default-background-color;
@@ -129,6 +114,7 @@ $notifier-shadow-color: rgba(0, 0, 0, .2) !default;
 			vertical-align: top;
 			line-height: 32px;
 			font-size: 15px;
+			font-weight: bold;
 		}
 
 		&-button {
@@ -164,9 +150,9 @@ $notifier-shadow-color: rgba(0, 0, 0, .2) !default;
 
 // NOTIFIER: INFO TYPE STYLES
 
-$notifier-info-background-color: #5BC0DE !default;
-$notifier-info-font-color: #FFF !default;
-$notifier-info-icon-color: #FFF !default;
+$notifier-info-background-color: $theme-accent !default;
+$notifier-info-font-color: $theme-background !default;
+$notifier-info-icon-color: $theme-background !default;
 
 .notifier__notification--info {
 	background-color: $notifier-info-background-color;
@@ -180,9 +166,9 @@ $notifier-info-icon-color: #FFF !default;
 
 // NOTIFIER: SUCCESS TYPE STYLES
 
-$notifier-success-background-color: #5CB85C !default;
-$notifier-success-font-color: #FFF !default;
-$notifier-success-icon-color: #FFF !default;
+$notifier-success-background-color: $theme-focus !default;
+$notifier-success-font-color: $theme-background !default;
+$notifier-success-icon-color: $theme-background !default;
 
 .notifier__notification--success {
 	background-color: $notifier-success-background-color;
@@ -193,17 +179,17 @@ $notifier-success-icon-color: #FFF !default;
 	}
 }
 
-// NOTIFIER: WARNING TYPE STYLES
+// NOTIFIER: ERROR TYPE STYLES
 
-$notifier-warning-background-color: #F0AD4E !default;
-$notifier-warning-font-color: #FFF !default;
-$notifier-warning-icon-color: #FFF !default;
+$notifier-error-background-color: $theme-error !default;
+$notifier-error-font-color: $theme-background !default;
+$notifier-error-icon-color: $theme-background !default;
 
-.notifier__notification--warning {
-	background-color: $notifier-warning-background-color;
-	color: $notifier-warning-font-color;
+.notifier__notification--error {
+	background-color: $notifier-error-background-color;
+	color: $notifier-error-font-color;
 
 	.notifier__notification-button-icon { // 16x16 fixed size
-		fill: $notifier-warning-icon-color;
+		fill: $notifier-error-icon-color;
 	}
 }

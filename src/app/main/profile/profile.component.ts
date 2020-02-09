@@ -13,6 +13,7 @@ export class ProfileComponent implements OnInit {
 	public currentUser: IUserData;
 	public userDetailForm: FormGroup;
 	public changePasswordForm: FormGroup;
+	public deleteAccountForm: FormGroup;
 
 
 	constructor(
@@ -27,11 +28,17 @@ export class ProfileComponent implements OnInit {
 			role: {value: '', disabled: true},
 			projectsCount: {value: 0, disabled: true},
 		});
+
 		this.changePasswordForm = this.fb.group({
 			oldPassword: ['', Validators.required],
 			password: ['', Validators.required],
 			confirmPassword: ['']
 		},  { validator: CustomValidators.comparePasswords });
+
+		this.deleteAccountForm = this.fb.group({
+			confirmDelete: ['', Validators.pattern('I want to delete my account')]
+		});
+
 
 		this.userCtrl.readCurrentUser().subscribe(
 			(currentUser: IUser) => {
@@ -57,6 +64,10 @@ export class ProfileComponent implements OnInit {
 	}
 
 	public saveChangePasswordForm() {
+		return;
+	}
+
+	public submitDeleteAccountForm() {
 		return;
 	}
 

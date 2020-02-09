@@ -1,1 +1,11 @@
 // Style for the footer
+
+footer {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	padding: 20px;
+}

@@ -1,37 +1,5 @@
 // Forms and form inputs styling
 
-// .form {
-// 	display: flex;
-// 	flex-direction: column;
-// 	color: $theme-text;
-
-// 	.form-group {
-// 		label {
-
-// 		}
-// 		input,
-// 		select {
-// 			display: block;
-// 			margin-bottom: 0.3em;
-// 			padding: 10px;
-// 			margin-bottom: 0.3em;
-// 			line-height: 1.2em;
-// 		}
-// 		.select {
-// 			border-radius: 0 !important;
-// 			border: 1px solid $mercury;
-// 		}
-
-// 	}
-
-// 	button[type="submit"] {
-// 	   background-color: $btn-submit;
-// 	   color: $theme-background;
-// 	   margin-top: 0.4em;
-//     }
-
-// }
-
 .form-title {
 	display: flex;
 	margin: 0px 5px 10px 5px;
@@ -72,7 +40,7 @@
         }
     }
     button {
-        text-transform: uppercase;
+        text-transform: lowercase;
         letter-spacing: 0.25em;
     }
 }

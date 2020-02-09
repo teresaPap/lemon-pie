@@ -1,4 +1,5 @@
 <form [formGroup]="loginForm" (ngSubmit)="firebaseLogin()" class="login-form">
+	<h2 class="form-title">Login</h2>
 	<div class="form-group">
 		<label>Email</label>
 		<input type="text" formControlName="email">
@@ -7,5 +8,7 @@
 		<label>Password</label>
 		<input type="password" formControlName="password">
 	</div>
-	<button type="submit" class="form-btn">Login</button>
+	<button type="submit" class="form-btn">Submit</button>
+	<br><br>
+	<a [routerLink]="['/register']">or create a new account</a>
 </form>

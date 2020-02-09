@@ -14,7 +14,8 @@ nav {
     .nav-brand {
 		.logo {
 			transform: scale(0.4);
-			display: inline-flex;     
+			display: inline-flex;
+			font-family: $font-handwritten;
 		}
     }
     .nav-menu {
@@ -32,18 +33,16 @@ nav {
     right: 30px;
     border: 1px solid $gallery;
 	background-color: $theme-background;
-    
     opacity: 0;
 	pointer-events: none;
-	
 	li {
 		margin: 10px;
 		padding: 0.3em 1.1em;
-		
+
 		a {
 			color: $theme-text;
 			display: block;
-			
+
 			&:hover{
 				color: $theme-accent;
 			}
@@ -67,7 +66,7 @@ aside {
 	padding: 5px 20px;
 	background-color: $white;
     box-shadow: 1px 0px 7px 1px rgba(0,0,0,0.2);
-	
+
 	.aside-menu {
 		display: flex;
 		justify-content: flex-start;
@@ -79,5 +78,5 @@ aside {
 			flex-direction: column;
 		}
 	}
-	
+
 }

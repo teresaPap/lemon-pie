@@ -27,7 +27,7 @@ $lemonLogoSize: 100px;// pixels
         border-radius: 50%;
     }
 }
-.lemon-petal { 
+.lemon-petal {
     background-color: $outter;
     width: 4px;
     height: $lemonLogoSize;
@@ -47,4 +47,7 @@ $lemonLogoSize: 100px;// pixels
     &:nth-child(6) {
         transform: rotate(225deg);
     }
+}
+.logo-text {
+	font-family: $font-handwritten;
 }

@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -11,7 +11,8 @@ import { AddProjectComponent } from './components/add-project/add-project.compon
 import { FilesService } from './data-services/files.service';
 import { StorageService } from './services/storage.service';
 import { ButtonToggleComponent } from './components/button-toggle/button-toggle.component';
-
+import { StarBadgeComponent } from './components/star-badge/star-badge.component';
+import { LemonPieLogoComponent } from './components/lemon-pie-logo/lemon-pie-logo.component';
 
 @NgModule({
 	declarations: [
@@ -20,6 +21,8 @@ import { ButtonToggleComponent } from './components/button-toggle/button-toggle.
 		FileUploaderComponent,
 		AddProjectComponent,
 		ButtonToggleComponent,
+		StarBadgeComponent,
+		LemonPieLogoComponent,
 	],
 	imports: [
 		RouterModule,
@@ -35,7 +38,9 @@ import { ButtonToggleComponent } from './components/button-toggle/button-toggle.
 		NavComponent,
 		FileUploaderComponent,
 		AddProjectComponent,
-		ButtonToggleComponent
+		ButtonToggleComponent,
+		StarBadgeComponent,
+		LemonPieLogoComponent
 	],
 	providers: [
 		ProjectsService,

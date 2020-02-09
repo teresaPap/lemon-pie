@@ -13,7 +13,7 @@
 			<a [routerLink]="['/editor']">Projects</a>
 		</li>
 		<li *ngIf="currentUser" (click)="toggleBubbleMenu()" class="nav-item">
-			<a>{{currentUser.email}}</a>
+			<a>{{currentUser.username}}</a>
 		</li>
 	</ul>
 	<div class="bubble-menu" [ngClass]="{'visible':showBubbleMenu}">

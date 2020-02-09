@@ -13,6 +13,14 @@ export class AuthService {
 	private authStateSubject: Subject<IUser> = new Subject;
 	private currentUser: IUser;
 
+	private static parseUser( fbUserdata ): IUser {
+		if (!fbUserdata) {
+			return;
+		}
+		const { email, uid, refreshToken, emailVerified, isAnonymous } = fbUserdata;
+		return { email, uid, refreshToken, emailVerified, isAnonymous };
+	}
+
 	constructor(
 		public afAuth: AngularFireAuth,
 		private notifier: NotifierService
@@ -21,8 +29,8 @@ export class AuthService {
 		afAuth.authState.subscribe(
 			change => {
 				// console.log("authState.change!", change)
-				this.currentUser = this.parseUser(change);
-				this.authStateSubject.next( this.currentUser )
+				this.currentUser = AuthService.parseUser(change);
+				this.authStateSubject.next( this.currentUser );
 			}
 		);
 	}
@@ -77,12 +85,5 @@ export class AuthService {
 		return user.uid;
 	}
 
-	private parseUser( fbUserdata ): IUser {
-		if (!fbUserdata) {
-			return;
-		}
-		const { email, uid, refreshToken, emailVerified, isAnonymous } = fbUserdata;
-		return { email, uid, refreshToken, emailVerified, isAnonymous };
-	}
 
 }

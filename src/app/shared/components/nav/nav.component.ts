@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AuthService } from '../../../core/services/auth.service';
-import { IUser } from '../../interfaces/IUser';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
+import { IUserData} from '../../interfaces/IUser';
 
 @Component({
 	selector: 'app-nav',
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class NavComponent implements OnInit {
 
-	public currentUser: IUser ;
+	public currentUser: IUserData ;
 	public showBubbleMenu: boolean;
 
 	constructor(
@@ -18,10 +18,10 @@ export class NavComponent implements OnInit {
 		private authService: AuthService ) { }
 
 	ngOnInit() {
-		// console.log("Now listening to auth state changes");
 		this.authService.getAuthState().subscribe(
-			(currentUser: IUser) => {
+			(currentUser: IUserData) => {
 				this.currentUser = currentUser;
+				this.currentUser.username = currentUser.username ? currentUser.username : currentUser.email;
 			}
 		);
 

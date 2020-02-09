@@ -13,6 +13,11 @@ export interface IUser {
 	isAnonymous: boolean;
 	phoneNumber?: string;
 	photoURL?: string;
+}
+
+export interface IUserData extends IUser {
+	username?: string;
+	role?: string;
 
 	// Generated data
 	projects?: Array<firebase.firestore.DocumentReference>;

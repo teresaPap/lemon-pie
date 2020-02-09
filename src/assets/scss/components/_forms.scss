@@ -73,6 +73,12 @@
 }
 
 .form {
+
+	.form-title,
+	.form-btn {
+		align-self: flex-end;
+		margin-top: 10px;
+	}
 	.form-group {
 		display: flex;
 		margin: 0px 5px 5px 5px;
@@ -88,6 +94,8 @@
 			border: 2px solid $mercury;
 			border-radius: 4px;
 			display: flex;
+			padding: 10px;
+
 			input, textarea {
 				flex-grow: 3;
 				border: none;

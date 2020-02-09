@@ -1,6 +1,5 @@
 // Color Variables | Named with this: http://chir.ag/projects/name-that-color
 
-
 // Grayscale colors
 $white:    #fff;
 $gallery:  #F0F0F0;
@@ -9,33 +8,29 @@ $paleSlate: #bdbabb;
 $scorpion: #646060;
 $black:    #000;
 
+
 // Theme colors
-$crusta: #ff812d;
+$tiaMaria: #c64a0c;
+$seaGreen: #319960;
 $viking: #60ddcc;
 
 
 // Theming
 $theme: $paleSlate;
-$theme-accent: $paleSlate;
+$theme-accent: $viking;
 
 $theme-background: $white;
 $theme-text: $scorpion;
-$theme-button: $mercury;
-
-$theme-focus: $viking;
-$theme-error: $mercury;
+$theme-focus: $seaGreen;
+$theme-error: $tiaMaria;
 $theme-muted: $mercury;
 
+$theme-button: $theme;
 
 
 // Form colors
-$input-default: $theme-accent;
-$input-focus: $theme-focus;
+$input-default: $theme;
 $input-valid: $theme-text;
+$input-focus: $theme-focus;
 $input-invalid: $theme-error;
 $input-disabled: $theme-muted;
-
-// Button colors
-$btn-submit: $theme-accent;
-
-

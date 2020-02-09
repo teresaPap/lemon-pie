@@ -1,14 +1,30 @@
 import { Component, OnInit } from '@angular/core';
+import { UsersService } from '../../shared/data-services/users.service';
+import { IUser, IUserData } from '../../shared/interfaces/IUser';
 
 @Component({
 	selector: 'app-profile',
 	templateUrl: './profile.component.html',
-	styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-	constructor() {
-	}
+
+	public currentUser: IUserData;
+
+	constructor( private userCtrl: UsersService ) { }
 
 	ngOnInit() {
+		this.userCtrl.readCurrentUser().subscribe(
+			(currentUser: IUser) => {
+				this.currentUser = currentUser;
+				console.log('currentUser:', currentUser);
+			}
+		);
+
+		this.userCtrl.read().subscribe(
+			(currentUser: IUserData) => {
+				this.currentUser = currentUser;
+				console.log('currentUser:', currentUser);
+			}
+		);
 	}
 }

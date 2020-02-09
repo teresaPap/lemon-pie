@@ -28,7 +28,6 @@ export class AuthService {
 		// detect auth state changes and push them in the subject
 		afAuth.authState.subscribe(
 			change => {
-				// console.log("authState.change!", change)
 				this.currentUser = AuthService.parseUser(change);
 				this.authStateSubject.next( this.currentUser );
 			}
@@ -82,7 +81,10 @@ export class AuthService {
 
 	public getCurrentUserId(): string {
 		const user = this.afAuth.auth.currentUser;
-		return user.uid;
+		if (user) {
+			return user.uid;
+		}
+		return '';
 	}
 
 

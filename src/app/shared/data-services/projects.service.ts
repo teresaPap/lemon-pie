@@ -12,7 +12,7 @@ export class ProjectsService {
 
 	constructor(
 		public firestore: AngularFirestore,
-		private authService: AuthService) {
+		private authService: AuthService ) {
 	}
 
 	public create(project: IProject): Observable<void> {

@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
-import { IUserData} from '../../interfaces/IUser';
+import { IUser } from '../../interfaces/IUser';
+import { Router } from '@angular/router';
+import {UsersService} from '../../data-services/users.service';
+import {connectableObservableDescriptor} from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
 	selector: 'app-nav',
@@ -10,21 +12,20 @@ import { IUserData} from '../../interfaces/IUser';
 })
 export class NavComponent implements OnInit {
 
-	public currentUser: IUserData ;
+	public currentUser: IUser ;
 	public showBubbleMenu: boolean;
 
 	constructor(
 		public router: Router,
-		private authService: AuthService ) { }
+		private authService: AuthService,
+		private userCtrl: UsersService) { }
 
 	ngOnInit() {
 		this.authService.getAuthState().subscribe(
-			(currentUser: IUserData) => {
+			(currentUser: IUser) => {
 				this.currentUser = currentUser;
-				this.currentUser.username = currentUser.username ? currentUser.username : currentUser.email;
 			}
 		);
-
 	}
 
 	public logout(): void {

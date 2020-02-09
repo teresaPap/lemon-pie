@@ -1,3 +1,5 @@
-<h3>Account information: </h3>
+<h3 *ngIf="currentUser">
+	Hello {{currentUser.username ? currentUser.username : currentUser.email }}
+</h3>
 
 <h3>Active projects: </h3>

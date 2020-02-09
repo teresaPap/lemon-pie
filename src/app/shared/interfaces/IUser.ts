@@ -15,9 +15,10 @@ export interface IUser {
 	photoURL?: string;
 }
 
-export interface IUserData extends IUser {
-	username?: string;
+export interface IUserData {
+	email: string;
 	role?: string;
+	username?: string;
 
 	// Generated data
 	projects?: Array<firebase.firestore.DocumentReference>;

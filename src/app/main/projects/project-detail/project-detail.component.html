@@ -1,10 +1,9 @@
-<!-- <h2 class="page-header">page header</h2> -->
-<script src="file-list-item/file-list-item.component.ts"></script><h2 class="page-header">Project Name Here</h2>
+<h2 *ngIf="project" class="page-header">{{project.name}}</h2>
 
 <div class="project-data-container">
 
 	<form [formGroup]="projectDetailForm" (ngSubmit)="savePojectDetailForm()" class="form detail-form">
-		<h3 class="form-title">Project details</h3>
+		<h3 class="form-title">Details</h3>
 		<div class="form-group">
 			<label class="form-group-label">Project name</label>
 			<input class="form-input" type="text" formControlName="name">
@@ -20,7 +19,7 @@
 
 
 	<div class="form detail-form">
-		<h3 class="form-title">Project files</h3>
+		<h3 class="form-title">Files</h3>
 		<ul class="file-list">
 			<li *ngIf="!files.length" class="file-list-item">
 				<i>No files have been uploaded yet</i>
@@ -49,7 +48,7 @@
 
 	<br><br>
 
-<button type="button" class="btn form-btn small-btn" (click)="navToPlay()">Play</button>
+<button type="button" class="btn info-btn small-btn" (click)="navToPlay()">Preview Mode</button>
 
 
 </div>

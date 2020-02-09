@@ -72,7 +72,8 @@
 	flex-direction: column;
 }
 
-.form {
+.form,
+.detail-form {
 
 	.form-title,
 	.form-btn {
@@ -89,35 +90,28 @@
 			text-align: right;
 			padding: 12px 10px;
 		}
-		.form-input {
+		input,
+		textarea {
 			flex-grow: 3;
 			border: 2px solid $mercury;
 			border-radius: 4px;
 			display: flex;
 			padding: 10px;
-
-			input, textarea {
-				flex-grow: 3;
-				border: none;
-				padding: 10px;
-				&::placeholder {
-					font-style: italic;
-				}
-			}
-			.form-group-button {
-				border-radius: 0;
-				padding: 10px;
+			&::placeholder {
+				font-family: $font-handwritten;
+				font-style: italic;
+				font-size: 0.8em;
 			}
 		}
 		.form-group-button {
-			padding: 12px;
-			border:none;
-			border-radius: 4px;
-			background-color: $mercury;
-			color: $white;
-			i {
-				color: $white;
-			}
+			//padding: 12px;
+			//border:none;
+			//border-radius: 4px;
+			//background-color: $mercury;
+			//color: $white;
+			//i {
+			//	color: $white;
+			//}
 		}
 
 	}

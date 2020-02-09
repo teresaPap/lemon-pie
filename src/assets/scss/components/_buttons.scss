@@ -5,13 +5,13 @@
     background: transparent;
 }
 
-.form-btn {
-    background-color: $theme-focus;
-    min-width: 200px;
+.btn {
     border: none;
     color: $white;
 	padding: 12px;
 	border-radius: 4px;
+	min-width: 200px;
+	margin-top: 10px;
 }
 
 .small-btn {
@@ -61,4 +61,16 @@
 			right: -3px;
 		}
 	}
+}
+
+.form-btn {
+	background-color: $theme-focus;
+}
+
+.info-btn {
+	background-color: $theme-accent;
+}
+
+.danger-btn {
+	background-color: $theme-error;
 }

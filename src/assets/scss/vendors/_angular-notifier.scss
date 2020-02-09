@@ -70,9 +70,9 @@ $notifier-shadow-color: rgba(0, 0, 0, .2) !default;
 
 // NOTIFIER: DEFAULT TYPE STYLES
 
-$notifier-default-background-color: $theme-background !default;
-$notifier-default-font-color: $theme-text !default;
-$notifier-default-icon-color: $theme-text !default;
+$notifier-default-background-color: $theme !default;
+$notifier-default-font-color: $theme-background !default;
+$notifier-default-icon-color: $theme-background !default;
 
 .notifier__notification--default {
 	background-color: $notifier-default-background-color;

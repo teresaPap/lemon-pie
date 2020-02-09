@@ -2,39 +2,22 @@
 
 	<div class="page-preview" [ngStyle]="{'background-image': 'url(' +file.downloadURL+ ')' }"></div>
 
-	<div class="item-description form">
+	<form [formGroup]="fileItemForm" (ngSubmit)="savefileItemForm()">
 		<div class="form-group">
-			<label class="form-group-label">
-				Page name
-			</label>
-			
-			<div class="form-input">
-				<input placeholder="Enter the name of this page to link it to another page">
-				<button class="form-group-button">
-					<i class="fa fa-save" (click)="onSaveClicked(file)"></i>
-				</button>
-			</div>
+			<label class="form-group-label">Page name</label>
+			<input class="form-input" type="text" formControlName="name" placeholder="A short declarative name would help...">
 		</div>
-
-	</div>
-
-
-	<div class="form">
-	
-		<div class="form-group">
-			<button type="button" class="form-group-button" (click)="onEditClicked(file)">
-				<i class="fa fa-edit"></i>
-				Open Flow Editor
+		<div class="flex-col-container item-actions">
+			<button type="submit" class="btn form-btn small-btn">
+				Update page name
 			</button>
-			</div>
-
-		<div class="form-group">
-			<button type="button" class="form-group-button" (click)="onDeleteClicked(file)">
-				<i class="fa fa-trash"></i>				
+			<button type="button" class="btn info-btn small-btn" (click)="onEditClicked(file)">
+				Open page in Editor
+			</button>
+			<button type="button" class="btn danger-btn small-btn" (click)="onDeleteClicked(file)">
 				Delete page
 			</button>
 		</div>
-		
-	</div>
+	</form>
 
 </li>

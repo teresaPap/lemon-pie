@@ -96,7 +96,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
 		this.deleteAction = this.fileCtrl.delete(file.id, file.name, this.project.id).subscribe(
 			res => {
-				this.notifier.notify('success', `File "${file.name}" was deleted successfully`);
+				this.notifier.notify('default', `File "${file.name}" was deleted successfully`);
 				this.files = this.files.filter(elem => elem.id !== file.id);
 			},
 			err => {

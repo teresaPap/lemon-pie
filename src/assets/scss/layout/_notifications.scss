@@ -1,0 +1,15 @@
+
+// Classes from angular notifier plugin
+
+.notifier__container {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+
+	.notifier__container-list {
+		display: flex;
+		flex-shrink: 1;
+		justify-content: flex-end;
+		margin-top: -45px;
+	}
+}

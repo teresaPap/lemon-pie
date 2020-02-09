@@ -5,14 +5,14 @@
 @import './assets/scss/abstracts/_mixins';
 @import './assets/scss/abstracts/_placeholders';
 @import './assets/scss/abstracts/_classes';
-@import './assets/scss/abstracts/_animations'; 
+@import './assets/scss/abstracts/_animations';
 
 // Vendors
 @import './assets/scss/vendors/_angular-notifier';
 
 // Base
-@import './assets/scss/base/_base'; 
-@import './assets/scss/base/_reset'; 
+@import './assets/scss/base/_base';
+@import './assets/scss/base/_reset';
 @import './assets/scss/base/_typography';
 
 // Layout
@@ -21,6 +21,7 @@
 @import './assets/scss/layout/_footer';
 @import './assets/scss/layout/_item-gallery';
 @import './assets/scss/layout/_menu';
+@import './assets/scss/layout/_notifications';
 @import './assets/scss/layout/_tables';
 @import './assets/scss/layout/_zindex';
 

@@ -29,7 +29,7 @@ import { AppRoutingModule } from './app-routing.module';
 		CommonModule,
 		HttpClientModule,
 		NotifierModule.withConfig({
-			// add custom config here
+			// add custom config
 		}),
 
 		// Firebase

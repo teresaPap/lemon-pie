@@ -69,7 +69,7 @@ export class AuthService {
 		const action = this.afAuth.auth.signOut().then(
 			() => {
 				console.log( 'Logout successful!');
-				this.notifier.notify('success', `Logout successful!`);
+				this.notifier.notify('default', `Logout successful!`);
 			}
 		).catch( error => {
 			this.notifier.notify('error', `${error.message}`);

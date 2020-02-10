@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { StorageService } from '../../../shared/services/storage.service';
 import { Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
+import { StorageService } from '../../../shared/services/storage.service';
 import { IFile } from '../../../shared/interfaces/IFile';
 import { FilesService } from '../../../shared/data-services/files.service';
 
@@ -23,7 +24,8 @@ export class ProjectEditComponent implements OnInit {
 	constructor(
 		public storage: StorageService,
 		public router: Router,
-		public filesCtrl: FilesService
+		public filesCtrl: FilesService,
+		private notifier: NotifierService
 	) { }
 
 	ngOnInit() {
@@ -37,8 +39,14 @@ export class ProjectEditComponent implements OnInit {
 
 	public saveArea(event): void {
 		this.filesCtrl.saveFileLink(event).subscribe(
-			() => console.log('TODO: show user friendly success message'),
-			err => console.log('TODO: show user friendly failure message')
+			() => {
+				console.log('TODO: show user friendly success message');
+				this.notifier.notify('success', 'Link was saved successfully!');
+			},
+			err => {
+				console.log('TODO: show user friendly failure message');
+				this.notifier.notify('error', `${err.message}`);
+			}
 		);
 	}
 

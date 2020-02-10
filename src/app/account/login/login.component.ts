@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
 		this.authService.login(this.loginForm.value).then(
 			res => {
 				console.log('Login successful!', res);
-				this.notifier.notify('success', `Login successful!`);
+				this.notifier.notify('default', `Login successful!`);
 				this.router.navigate(['/home']);
 			},
 			err => {

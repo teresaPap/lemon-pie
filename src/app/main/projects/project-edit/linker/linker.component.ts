@@ -40,7 +40,7 @@ export class LinkerComponent implements AfterViewInit {
 	}
 
 	private drawSavedAreas(): Subscription {
-		CanvasService.setStrokeStyle(this.cx, '#b3d4fc' );
+		CanvasService.setStrokeStyle(this.cx);
 		console.log(`Clickable Areas found: ${this.clickableAreas.length}`);
 
 		const rectanglesFromClickableAreas = this.clickableAreas.map(area => {

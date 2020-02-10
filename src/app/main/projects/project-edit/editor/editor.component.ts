@@ -103,7 +103,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 			const startingPos = res[0];
 			const finalPos = res[1];
 
-			CanvasService.setStrokeStyle( this.cx, '#ff812d' );
+			CanvasService.setStrokeStyle(this.cx);
 			// Draw selection and show selection menu
 			CanvasService.drawRectangle(startingPos, finalPos, this.cx);
 			this.canvasSelection = {
@@ -123,9 +123,9 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 		img.src = url;
 
 		return this.canvasCtrl.getSizeFromImage(img).subscribe(
-			dimentions => {
-				this.editor.height = dimentions.height;
-				this.editor.width = dimentions.width;
+			dimensions => {
+				this.editor.height = dimensions.height;
+				this.editor.width = dimensions.width;
 			}
 		);
 	}

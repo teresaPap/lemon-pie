@@ -3,6 +3,10 @@ import { ICanvasPosition } from '../interfaces/IEditor';
 import { fromEvent, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+const SELECTION_FILL_COLOR = 'rgba(96,221,204,0.31)';
+const SELECTION_STROKE_COLOR = '#60ddcc'; // $theme-accent
+
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -32,7 +36,7 @@ export class CanvasService {
 		const width: number = currentPos.x - startingPos.x;
 		const height: number = currentPos.y - startingPos.y;
 
-		cx.fillStyle = '#fe812d50';
+		cx.fillStyle = SELECTION_FILL_COLOR;
 		cx.fillRect(startingPos.x, startingPos.y, width, height);
 	}
 
@@ -50,15 +54,10 @@ export class CanvasService {
 		return position;
 	}
 
-	public static setStrokeStyle(cx: CanvasRenderingContext2D, color?: string ) {
-		// TODO: maybe create a panel for user to set the style
+	public static setStrokeStyle(cx: CanvasRenderingContext2D ) {
 		cx.lineWidth = 2;
 		cx.lineCap = 'round';
-		if (color) {
-			cx.strokeStyle = color;
-		} else {
-			cx.strokeStyle = '#ff812d' ;
-		}
+		cx.strokeStyle = SELECTION_STROKE_COLOR;
 	}
 
 	public getSizeFromImage(img): Observable<any> {

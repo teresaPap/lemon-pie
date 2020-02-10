@@ -1,21 +1,12 @@
 // Buttons
 
-.icon-btn {
-    border: none;
-    background: transparent;
-}
 
 .btn {
-    border: none;
-    color: $white;
+	border: 2px solid $theme-background;
 	padding: 12px;
 	border-radius: 4px;
-	min-width: 200px;
+	//min-width: 200px;
 	margin-top: 10px;
-}
-
-.small-btn {
-	max-width: 100px;
 }
 
 .x-btn {
@@ -43,13 +34,15 @@
 	width: 40px;
 	height: 20px;
 	border: none;
-	background-color: pink;
+	background-color: $theme-focus;
+	box-shadow: inset 0px 0px 13px 5px rgba(0,0,0,0.5);
+
 	position: relative;
 	&::after {
 		content: '';
 		height: 26px;
 		width: 26px;
-		background-color: plum;
+		background-color: $theme-focus;
 		position: absolute;
 		border-radius: 50%;
 		top: -3px;
@@ -63,14 +56,34 @@
 	}
 }
 
+.wide-btn {
+	width: 100%;
+}
+
 .form-btn {
+	min-width: 200px;
+}
+
+.success-btn {
 	background-color: $theme-focus;
+	border-color: $theme-focus;
+	color: $theme-background;
 }
 
 .info-btn {
 	background-color: $theme-accent;
+	border-color: $theme-accent;
+	color: $theme-background;
 }
 
 .danger-btn {
 	background-color: $theme-error;
+	border-color: $theme-error;
+	color: $theme-background;
+}
+
+.light-btn {
+	background-color: $theme-background;
+	border-color: $theme-text;
+	color: $theme-text;
 }

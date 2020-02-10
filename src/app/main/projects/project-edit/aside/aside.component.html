@@ -1,8 +1,11 @@
 <aside>
 	<ul class="aside-menu">
 		<li class="menu-item">
-			<label>Toggle saved links</label>
-			<app-button-toggle (onClick)="showLinks($event)"></app-button-toggle>
+			<button type="submit" class="btn light-btn wide-btn" (click)="navigateBack()">Back</button>
+		</li>
+		<li class="menu-item">
+			<label>Show Links</label>
+			<app-button-toggle (click)="showLinks($event)"></app-button-toggle>
 		</li>
 	</ul>
 </aside>

@@ -5,7 +5,7 @@
 nav {
     height: calc(#{$nav-height} - 10px);
     padding: 5px 20px;
-    background-color: $white;
+    background-color: $theme-background;
     box-shadow: 0px 1px 7px 1px rgba(0,0,0,0.2);
     display: flex;
     justify-content: space-between;
@@ -59,23 +59,28 @@ nav {
 // Aside
 aside {
     position: absolute;
-	height: calc((#{$nav-height} * 2) - 10px);
-    bottom: 0;
-	right: 0;
+	width: $aside-width;
+    top: calc(#{$nav-height} + 1px);
+	bottom: 0;
 	left: 0;
-	padding: 5px 20px;
-	background-color: $white;
-    box-shadow: 1px 0px 7px 1px rgba(0,0,0,0.2);
+	background-color: $theme-background;
+    box-shadow: 3px 7px 7px 1px rgba(0,0,0,0.2);
 
 	.aside-menu {
+		padding: 5px 20px;
+
 		display: flex;
 		justify-content: flex-start;
-		align-items: baseline;
+		flex-direction: column;
 
 		.menu-item {
+			margin-bottom: 30px;
+
 			display: flex;
-			justify-content: center;
-			flex-direction: column;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: baseline;
+			flex-grow: 1;
 		}
 	}
 

@@ -1,32 +1,35 @@
 
 
 .editor-area {
-	position: absolute;
-	top: $nav-height;
-	left: 0;
-	bottom: 0;
-	right: 0;
+
+	padding: 20px 0px 0px 20px;
+
+	background: url('assets/img/pixil-frame-0.png') repeat bottom left;
+	height: calc(100vh - #{$nav-height});
+	width: 100vw;
 	overflow: scroll;
-	padding: 20px;
-	
-	&::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		bottom: 0;
-		right: 0;
-		background: url('assets/img/pixil-frame-0.png') $gallery bottom left;
-		background-size: 30px;
-		background-repeat: repeat;
-		opacity: 0.1;
-	}
+
+	position: fixed;
+	left: $aside-width;
+
+	//&::before {
+	//	content: '';
+	//	position: absolute;
+	//	top: 0;
+	//	left: 0;
+	//	bottom: 0;
+	//	right: 0;
+	//	background: url('assets/img/pixil-frame-0.png') $gallery bottom left;
+	//	background-size: 30px;
+	//	background-repeat: repeat;
+	//	opacity: 0.1;
+	//}
 }
 
 .canvas-container {
 	position: relative;
 	.canvas-background {
-		box-shadow: 1px 2px 9px -2px rgba(0, 0, 0, 0.3);
+		box-shadow: 1px 1px 9px -2px rgba(0, 0, 0, 0.3);
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -37,7 +40,6 @@
 		position: absolute;
 		top: 0;
 		left: 0;
-		// border: $border-width solid $mercury;
 	}
 }
 

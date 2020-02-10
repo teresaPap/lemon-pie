@@ -3,10 +3,10 @@
 		<i class="fa fa-times"></i>
 	</button>
 
-	<form [formGroup]="linkToFileForm" (ngSubmit)="submitLinkToFileForm()" class="form">
+	<form [formGroup]="linkToFileForm" (ngSubmit)="submitLinkToFileForm()" class="form detail-form">
 		<div class="form-group">
-			<label>Link to:</label>
-			<select formControlName="fileId" class="select">
+			<label class="form-group-label">Link to:</label>
+			<select class="select" formControlName="fileId">
 				<ng-container *ngFor="let file of files">
 					<option *ngIf="file.name" [value]="file.id">{{file.name}}</option>
 				</ng-container>

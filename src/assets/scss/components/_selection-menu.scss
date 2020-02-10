@@ -4,12 +4,13 @@
 }
 
 .selection-menu {
-	// max-width: 200px;
+	max-width: 400px;
+
 	border: $border-width solid $mercury;
+	border-radius: 4px;
 	background-color: $theme-background;
-	.form-group {
-		* {
-			margin-bottom: 0.3em;
-		}
+
+	select {
+		max-width: 75%;
 	}
 }

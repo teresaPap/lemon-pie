@@ -15,15 +15,26 @@ $seaGreen: #319960;
 $viking: #60ddcc;
 
 
-// Theming
-$theme: $paleSlate;
-$theme-accent: $viking;
+// Theming demo
+$theme: #4C4F99;
+$theme-accent: #D0E567;
+$theme-background: #F9F8F8;
+$theme-text: #272838;
+$theme-focus: #AAC134;
+$theme-error: #EA7462;
+$theme-muted: #7E7F9A;
+$theme-light: #fff;
 
-$theme-background: $white;
-$theme-text: $scorpion;
-$theme-focus: $seaGreen;
-$theme-error: $tiaMaria;
-$theme-muted: $mercury;
+
+//// Theming
+//$theme: $paleSlate;
+//$theme-accent: $viking;
+//$theme-background: $white;
+//$theme-text: $scorpion;
+//$theme-focus: $seaGreen;
+//$theme-error: $tiaMaria;
+//$theme-muted: $mercury;
+//$theme-light: $white;
 
 
 // Form colors

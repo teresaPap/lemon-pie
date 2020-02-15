@@ -48,7 +48,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 		this.route.params.pipe(
 			switchMap(params => {
 				const dataToGet: [Observable<any>, Observable<IFile[]>?] = [this.projectCtrl.readSingle(params.id)];
-				if (params.id != '0') {
+				if (params.id !== '0') {
 					this.project.id = params.id;
 					dataToGet.push(this.readFiles(params.id));
 				} else {
@@ -101,7 +101,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 			},
 			err => {
 				this.notifier.notify('error', `An error occured while deleting file "${file.name}"`);
-				console.warn('DELETE FAILED: ', err)
+				console.warn('DELETE FAILED: ', err);
 			}
 		);
 	}

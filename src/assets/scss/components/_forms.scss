@@ -31,6 +31,7 @@
             border: none;
             border-bottom: 2px solid $input-default;
             line-height: 2.5em;
+			background-color: $theme-background;
             // TODO: make text vertical align: bottom
             // TODO: add color transition
             &:focus {
@@ -98,6 +99,7 @@
 			border-radius: 4px;
 			display: flex;
 			padding: 10px;
+			background-color: $theme-light;
 			&::placeholder {
 				font-family: $font-handwritten;
 				font-style: italic;

@@ -37,6 +37,6 @@ export class FileListItemComponent implements OnInit {
 
 	public savefileItemForm() {
 		console.log('TODO: add firebase call to update file name');
-		this.notifier.notify('info', 'File has been renamed');
+		this.notifier.notify('success', 'File has been renamed');
 	}
 }

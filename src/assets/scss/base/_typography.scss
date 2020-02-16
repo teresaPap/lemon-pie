@@ -3,38 +3,45 @@
 
 // Font declarations
 body {
-    font-family: $font-normal
+    font-family: $font-normal;
+	color: $theme-text;
 }
 
 h1 {
     font-size: 3em;
     line-height: 3em;
+	color: $theme-text;
 }
 h2 {
     font-size: 2em;
     line-height: 2em;
+	color: $theme-text;
 }
 h3 {
     font-size: 1.6em;
     line-height: 1.6em;
+	color: $theme-text;
 }
 h4 {
     font-size: 1.2em;
     line-height: 1.3em;
+	color: $theme-text;
 }
 h5 {
     font-size: 0.8em;
     line-height: 1.3em;
+	color: $theme-text;
 }
 h6 {
     font-size: 0.6em;
     line-height: 1.3em;
+	color: $theme-text;
 }
 p {
     font-size: 1em;
     line-height: 1.3em;
 }
-a {
+a, label, .fa {
 	color: $theme-text;
 }
 

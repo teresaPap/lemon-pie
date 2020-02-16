@@ -71,8 +71,8 @@ $notifier-shadow-color: rgba(0, 0, 0, .2) !default;
 // NOTIFIER: DEFAULT TYPE STYLES
 
 $notifier-default-background-color: $theme-text !default;
-$notifier-default-font-color: $theme-background !default;
-$notifier-default-icon-color: $theme-background !default;
+$notifier-default-font-color: $theme-light !default;
+$notifier-default-icon-color: $theme-light !default;
 
 .notifier__notification--default {
 	background-color: $notifier-default-background-color;
@@ -151,8 +151,8 @@ $notifier-shadow-color: rgba(0, 0, 0, .2) !default;
 // NOTIFIER: INFO TYPE STYLES
 
 $notifier-info-background-color: $theme-accent !default;
-$notifier-info-font-color: $theme-background !default;
-$notifier-info-icon-color: $theme-background !default;
+$notifier-info-font-color: $theme-light !default;
+$notifier-info-icon-color: $theme-light !default;
 
 .notifier__notification--info {
 	background-color: $notifier-info-background-color;
@@ -167,8 +167,8 @@ $notifier-info-icon-color: $theme-background !default;
 // NOTIFIER: SUCCESS TYPE STYLES
 
 $notifier-success-background-color: $theme-focus !default;
-$notifier-success-font-color: $theme-background !default;
-$notifier-success-icon-color: $theme-background !default;
+$notifier-success-font-color: $theme-light !default;
+$notifier-success-icon-color: $theme-light !default;
 
 .notifier__notification--success {
 	background-color: $notifier-success-background-color;
@@ -182,8 +182,8 @@ $notifier-success-icon-color: $theme-background !default;
 // NOTIFIER: ERROR TYPE STYLES
 
 $notifier-error-background-color: $theme-error !default;
-$notifier-error-font-color: $theme-background !default;
-$notifier-error-icon-color: $theme-background !default;
+$notifier-error-font-color: $theme-light !default;
+$notifier-error-icon-color: $theme-light !default;
 
 .notifier__notification--error {
 	background-color: $notifier-error-background-color;

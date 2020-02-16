@@ -3,8 +3,8 @@ import { ICanvasPosition } from '../interfaces/IEditor';
 import { fromEvent, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-const SELECTION_FILL_COLOR = 'rgba(96,221,204,0.31)';
-const SELECTION_STROKE_COLOR = '#60ddcc'; // $theme-accent
+const SELECTION_FILL_COLOR = 'rgba(212,209,24,0.53)';
+const SELECTION_STROKE_COLOR = '#c4b90b'; // $theme-accent
 
 
 @Injectable({

@@ -26,8 +26,10 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 	public filesToUpload: File[] = [];
 
 	public projectDetailForm: FormGroup;
+	public deleteProjectForm: FormGroup;
 
 	private deleteAction: Subscription = new Subscription;
+
 
 	constructor(
 		public storage: StorageService,
@@ -43,6 +45,10 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 		this.projectDetailForm = this.fb.group({
 			name: ['', Validators.required],
 			description: ''
+		});
+
+		this.deleteProjectForm = this.fb.group({
+			confirmDelete: ['', Validators.pattern('I want to delete my account')]
 		});
 
 		this.route.params.pipe(
@@ -131,6 +137,10 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
 	public saveFile(file: IFile) {
 		console.log('TODO: implement save');
+	}
+
+	public submitDeleteProjectForm() {
+		return;
 	}
 
 	private readFiles(projectId: string) {

@@ -56,7 +56,7 @@ export class FilesService {
 				if ( project.data().files ) {
 					return project.data().files;
 				} else {
-					// TODO: handle no projects error! Escape pipe and return empty []
+					// TODO: handle no-projects-error! Escape the pipe and return empty []
 					throw new Error('no files for this project!');
 				}
 			}),

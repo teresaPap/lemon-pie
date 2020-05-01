@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
 		});
 	}
 
-	// TODO-css: make responsive
+
 	public firebaseLogin() {
 		const loginCredentials = {
 			email: this.loginForm.get('email').value.trim(),
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
 			err => {
 				this.loginFormErrorMessage = err.message;
 				this.loginForm.reset();
-				console.log('An error has occured', err);
+				console.log('An error has occurred', err);
 			}
 		);
 	}

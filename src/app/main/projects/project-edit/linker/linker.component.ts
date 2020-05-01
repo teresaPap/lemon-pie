@@ -24,7 +24,7 @@ export class LinkerComponent implements AfterViewInit {
 	@Input() imgUrl: string;
 	@Input() clickableAreas?: IClickableArea[];
 
-	@ViewChild('canvas', { static: false }) public canvas: ElementRef;
+	@ViewChild('canvas') public canvas: ElementRef;
 	private cx: CanvasRenderingContext2D;
 	private linker: HTMLCanvasElement;
 

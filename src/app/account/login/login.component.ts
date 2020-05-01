@@ -12,6 +12,7 @@ import { NotifierService } from 'angular-notifier';
 export class LoginComponent implements OnInit {
 
 	public loginForm: FormGroup;
+	public loginFormErrorMessage: string;
 
 	constructor(
 		private fb: FormBuilder,
@@ -27,19 +28,21 @@ export class LoginComponent implements OnInit {
 		});
 	}
 
-
-	// TODO: trim email input
-	// TODO: display user friendly error messages
 	// TODO-css: make responsive
 	public firebaseLogin() {
-		this.authService.login(this.loginForm.value).then(
+		const loginCredentials = {
+			email: this.loginForm.get('email').value.trim(),
+			password: this.loginForm.get('password').value
+		}
+		this.authService.login(loginCredentials).then(
 			res => {
 				console.log('Login successful!', res);
 				this.notifier.notify('default', `Login successful!`);
 				this.router.navigate(['/home']);
 			},
 			err => {
-				this.notifier.notify('error', `${err.message}`);
+				this.loginFormErrorMessage = err.message;
+				this.loginForm.reset();
 				console.log('An error has occured', err);
 			}
 		);

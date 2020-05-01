@@ -13,10 +13,10 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 	@Input() imgUrl: string;
 	@Output('onSaveArea') onSaveArea: EventEmitter<IClickableArea> = new EventEmitter<IClickableArea>();
 
-	@ViewChild('canvasBg', {static: false}) public canvasBg: ElementRef;
-	@ViewChild('canvas', {static: false}) public canvas: ElementRef;
+	@ViewChild('canvasBg') public canvasBg: ElementRef;
+	@ViewChild('canvas') public canvas: ElementRef;
 
-	@ViewChild('selectionMenu', {static: false}) public selectionMenu: ElementRef;
+	@ViewChild('selectionMenu') public selectionMenu: ElementRef;
 
 	private cx: CanvasRenderingContext2D;
 	private editor: HTMLCanvasElement;

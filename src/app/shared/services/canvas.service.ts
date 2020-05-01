@@ -26,7 +26,7 @@ export class CanvasService {
 		return cx.stroke();
 
 		// BUG: offset when painting on canvas
-		// occures if the canvas is resided to fit the screen (this happends automatically)
+		// occurres if the canvas is resided to fit the screen (this happends automatically)
 		// TODO: use css to display image real size and add scroll bars horizontally and vertically
 		// Otherwise, for responsiveness,  give the canvas the size of the image as it appears on the screen
 		// (switch img.naturalHeight with sth ele, if applicable)

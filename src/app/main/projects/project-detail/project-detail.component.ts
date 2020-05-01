@@ -86,7 +86,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
 	public navToEdit(file: IFile) {
 		this.storage.store('activeFile', file);
-		// TODO: maybe use relativeTo: this.route attribute
 		this.router.navigate([`editor/${this.project.id}/edit`], { queryParams: { id: file.id } });
 	}
 
@@ -114,8 +113,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
 	public uploadFiles(fileList: FileList) {
 		console.log('files to upload', fileList, fileList.length, fileList.item(1) );
-
-		// TODO: display dropped files in list while they are beeing uploaded
 
 		for (let i = 0 ; i < fileList.length ; i++ ) {
 			this.filesToUpload.push(fileList.item(i));

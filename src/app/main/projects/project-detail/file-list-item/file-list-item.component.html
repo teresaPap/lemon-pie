@@ -2,10 +2,15 @@
 
 	<div class="page-preview" [ngStyle]="{'background-image': 'url(' +file.downloadURL+ ')' }"></div>
 
-	<form [formGroup]="fileItemForm" (ngSubmit)="savefileItemForm()">
+	<form [formGroup]="fileItemForm" (ngSubmit)="saveFileItemForm()">
 		<div class="form-group">
 			<label class="form-group-label">Page name</label>
-			<input class="form-input" type="text" formControlName="name" placeholder="A short declarative name would help...">
+			<input
+				class="form-input"
+				type="text"
+				formControlName="displayName"
+				placeholder="A short declarative name would help..."
+			>
 		</div>
 		<div class="flex-col-container item-actions">
 			<button type="submit" class="btn success-btn form-btn">

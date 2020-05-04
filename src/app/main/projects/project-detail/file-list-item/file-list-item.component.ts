@@ -1,7 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { NotifierService } from 'angular-notifier';
+import { FilesService } from '../../../../shared/data-services/files.service';
 import { IFile } from '../../../../shared/interfaces/IFile';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {NotifierService} from 'angular-notifier';
+
 
 @Component({
 	selector: 'app-file-list-item',
@@ -18,12 +21,13 @@ export class FileListItemComponent implements OnInit {
 
 	constructor(
 		private fb: FormBuilder,
-		private notifier: NotifierService
+		private notifier: NotifierService,
+		public filesCtrl: FilesService
 	) { }
 
 	ngOnInit(): void {
 		this.fileItemForm = this.fb.group({
-			name: ['', Validators.required]
+			displayName: [ this.file.displayName, Validators.required]
 		});
 	}
 
@@ -35,8 +39,16 @@ export class FileListItemComponent implements OnInit {
 		this.onEdit.emit(file);
 	}
 
-	public savefileItemForm() {
-		console.log('TODO: add firebase call to update file name');
-		this.notifier.notify('success', 'File has been renamed');
+	public saveFileItemForm() {
+		this.filesCtrl.update(this.file.id, this.fileItemForm.value).subscribe(
+			res => {
+				console.log(res);
+				this.notifier.notify('success', 'File has been renamed');
+			},
+			error => {
+				console.log(error);
+				this.notifier.notify('error', 'Something went wrong');
+			}
+		);
 	}
 }

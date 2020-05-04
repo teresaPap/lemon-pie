@@ -80,6 +80,10 @@ export class FilesService {
 		);
 	}
 
+	public update(fileId: string, updateData ): Observable<void> {
+		return from(this.firestore.doc(`files/${fileId}`).update(updateData));
+	}
+
 	public delete(fileId: string, fileName: string, projectId: string): Observable<any> {
 
 		const deleteFileFromProject = this.firestore.doc(`projects/${projectId}`).get().pipe(

@@ -34,10 +34,6 @@ export class FileListItemComponent implements OnInit {
 	public onDeleteClicked(file: IFile) {
 		this.onDelete.emit(file);
 	}
-	public onEditClicked(file: IFile) {
-		console.log('onEditClicked', file.id);
-		this.onEdit.emit(file);
-	}
 
 	public saveFileItemForm() {
 		this.filesCtrl.update(this.file.id, this.fileItemForm.value).subscribe(

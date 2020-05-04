@@ -31,12 +31,13 @@
 
 	<br><br>
 
+	<button type="button" class="btn info-btn" (click)="navToEdit()">Edit Mode</button>
 	<button type="button" class="btn info-btn" (click)="navToPlay()">Preview Mode</button>
 
 
 	<br><br>
 
-	<form [formGroup]="projectDetailForm" (ngSubmit)="savePojectDetailForm()" class="form detail-form">
+	<form [formGroup]="projectDetailForm" (ngSubmit)="saveProjectDetailForm()" class="form detail-form">
 		<h3 class="form-title">Details</h3>
 		<div class="form-group">
 			<label class="form-group-label">Project name</label>

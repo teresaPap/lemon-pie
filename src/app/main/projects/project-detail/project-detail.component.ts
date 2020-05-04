@@ -82,15 +82,17 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 		this.deleteAction.unsubscribe();
 	}
 
-	public savePojectDetailForm() {
+	public saveProjectDetailForm() {
 		if (this.projectDetailForm.valid) {
-			console.log('TODO: save Poject Detail Form', this.projectDetailForm.value);
+			console.log('TODO: save Project Detail Form', this.projectDetailForm.value);
 		}
 	}
 
-	public navToEdit(file: IFile) {
-		this.storage.store('activeFile', file);
-		this.router.navigate([`editor/${this.project.id}/edit`], { queryParams: { id: file.id } });
+	public navToEdit() {
+		const activeProject = this.storage.load('activeProject');
+		const activeFile = activeProject.files[0];
+		this.storage.store('activeFile', activeFile);
+		this.router.navigate([`editor/${this.project.id}/edit`], { queryParams: { id: activeFile.id } });
 	}
 
 	public navToPlay() {

@@ -17,6 +17,7 @@
 		flex-direction: row;
 
 		.page-preview {
+			max-width: 200px;
 			flex-grow: 2;
 			background-color: $gallery;
 			background-position: center;

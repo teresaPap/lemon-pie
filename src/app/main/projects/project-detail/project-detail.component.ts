@@ -1,14 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NotifierService } from 'angular-notifier';
-import { FilesService } from '../../../shared/data-services/files.service';
-import { IProject } from '../../../shared/interfaces/IProject';
-import { ProjectsService } from '../../../shared/data-services/projects.service';
-import { switchMap, tap } from 'rxjs/operators';
-import { forkJoin, Observable, Subscription } from 'rxjs';
-import { IFile } from '../../../shared/interfaces/IFile';
-import { StorageService } from '../../../shared/services/storage.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { forkJoin, Observable, Subscription } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
+
+import { NotifierService } from 'angular-notifier';
+
+import { StorageService } from '../../../shared/services/storage.service';
+import { ProjectsService } from '../../../shared/data-services/projects.service';
+import { FilesService } from '../../../shared/data-services/files.service';
+
+import { IProject } from '../../../shared/interfaces/IProject';
+import { IFile } from '../../../shared/interfaces/IFile';
 
 // PAGE DESCRIPTION:
 // In this view the user can add files to the current project

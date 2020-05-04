@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFirestore,AngularFirestoreDocument, AngularFirestoreCollection, DocumentSnapshot } from '@angular/fire/firestore';
-import { ITask } from '../../shared/interfaces/IFirebase';
 import { Observable, forkJoin } from 'rxjs';
 import { AuthService } from './auth.service';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -11,9 +10,9 @@ import { map, switchMap, tap } from 'rxjs/operators';
 @Injectable()
 export class ApiService {
 
-    public uid: string = this.authService.getCurrentUserId(); 
+    public uid: string = this.authService.getCurrentUserId();
 
-    constructor( 
+    constructor(
 		public firestore: AngularFirestore,
 		private authService: AuthService ) { }
 
@@ -36,7 +35,7 @@ export class ApiService {
 		// 	} else {
 		// 		console.log('doc does not exist');
 		// 	}
-		// })	
+		// })
 		// get test collection data
 		return this.getTestCollection().pipe(
 			map( collection => {
@@ -45,7 +44,7 @@ export class ApiService {
 					console.log(doc.data());
 				}
 			})
-		)	
+		)
 	}
 	private getTestDoc(): Observable<any> {
 		return this.firestore.collection('users').doc('VUBjSTUEhBTzg5C6PVtpIGqEM9i1').get();

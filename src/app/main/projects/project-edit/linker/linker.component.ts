@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 import {Subscription, of, from } from 'rxjs';
-import { IClickableArea } from '../../../../shared/interfaces/IFile';
 import { CanvasService } from '../../../../shared/services/canvas.service';
+import { IClickableArea } from "../../../../shared/interfaces/ILink";
 
 // COMPONENT DESCRIPTION:
 // LinkerComponent is an Identical Canvas with the Editor component which will be displayed

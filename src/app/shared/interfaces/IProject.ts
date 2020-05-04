@@ -1,3 +1,4 @@
+import * as firebase from 'firebase';
 import { Observable } from 'rxjs';
 import { IFile } from './IFile';
 

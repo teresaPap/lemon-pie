@@ -4,7 +4,8 @@ import * as firebase from 'firebase/app';
 import { Observable, forkJoin, from, of, iif } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireStorage, AngularFireStorageReference } from '@angular/fire/storage';
-import { IFile, IClickableArea } from '../interfaces/IFile';
+import { IFile } from '../interfaces/IFile';
+import { IClickableArea } from '../interfaces/ILink';
 import { StorageService } from '../services/storage.service';
 
 

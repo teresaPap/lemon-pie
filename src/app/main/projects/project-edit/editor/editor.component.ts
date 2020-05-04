@@ -1,15 +1,15 @@
-import { Component, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, ViewChild, AfterViewInit, OnChanges, SimpleChanges, ElementRef,	EventEmitter } from '@angular/core';
 import { fromEvent, Subscription, forkJoin, of } from 'rxjs';
 import { switchMap, takeUntil, tap, map } from 'rxjs/operators';
-import { IClickableArea } from '../../../../shared/interfaces/ILink';
 import { CanvasService } from '../../../../shared/services/canvas.service';
+import { IClickableArea } from '../../../../shared/interfaces/ILink';
 import { ICanvasPosition } from '../../../../shared/interfaces/IEditor';
 
 @Component({
 	selector: 'app-editor',
 	templateUrl: './editor.component.html'
 })
-export class EditorComponent implements AfterViewInit, OnDestroy {
+export class EditorComponent implements AfterViewInit, OnChanges {
 	@Input() imgUrl: string;
 	@Output('onSaveArea') onSaveArea: EventEmitter<IClickableArea> = new EventEmitter<IClickableArea>();
 
@@ -40,10 +40,11 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 		this.watchCanvasEvents();
 	}
 
-	ngOnDestroy(): void {
-		// TODO: unsubscribe ??
+	ngOnChanges(imgChange: SimpleChanges): void {
+		if (!imgChange.imgUrl.firstChange) {
+			this.setBackground(imgChange.imgUrl.currentValue);
+		}
 	}
-
 
 	// #region - selection menu (mini pop up)
 

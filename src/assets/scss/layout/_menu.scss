@@ -65,6 +65,7 @@ aside {
 	left: 0;
 	background-color: $theme-background;
     box-shadow: 3px 7px 7px 1px rgba(0,0,0,0.2);
+	overflow: scroll;
 
 	.aside-menu {
 		padding: 5px 20px;
@@ -81,6 +82,10 @@ aside {
 			justify-content: space-between;
 			align-items: baseline;
 			flex-grow: 1;
+		}
+
+		.menu-img-item {
+			max-width: 100%;
 		}
 	}
 

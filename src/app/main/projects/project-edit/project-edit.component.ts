@@ -29,12 +29,7 @@ export class ProjectEditComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-		this.file = this.storage.load('activeFile');
-		console.log('Editing file: ', this.file);
-
-		this.filesCtrl.getFileLinks(this.file.id).subscribe(
-			res => this.links = res
-		);
+		this.setActiveFile(this.storage.load('activeFile'));
 	}
 
 	public saveArea(event): void {
@@ -52,6 +47,17 @@ export class ProjectEditComponent implements OnInit {
 
 	public onShowLinks(event): void {
 		this.showLinks = event;
+	}
+
+	public onChangeActiveFile(file): void {
+		this.setActiveFile(file);
+	}
+
+	private setActiveFile(file: IFile) {
+		this.file = file;
+		this.filesCtrl.getFileLinks(this.file.id).subscribe(
+			res => this.links = res
+		);
 	}
 
 }

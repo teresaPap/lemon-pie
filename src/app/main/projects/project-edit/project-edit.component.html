@@ -9,5 +9,7 @@
 	[clickableAreas]="links">
 </app-linker>
 
-<app-aside (onShowLinks)="onShowLinks($event)">
+<app-aside
+	(onShowLinks)="onShowLinks($event)"
+	(onChangeActiveFile)="onChangeActiveFile($event)">
 </app-aside>

@@ -10,6 +10,7 @@ import { IProject } from '../../../../shared/interfaces/IProject';
 })
 export class AsideComponent {
 	@Output('onShowLinks') onShowLinks: EventEmitter<boolean> = new EventEmitter<boolean>();
+	@Output('onSaveAllChanges') onSaveAllChanges: EventEmitter<void> = new EventEmitter<void>();
 	@Output('onChangeActiveFile') onChangeActiveFile: EventEmitter<IFile> = new EventEmitter<IFile>();
 
 	public activeProject: IProject;
@@ -32,8 +33,8 @@ export class AsideComponent {
 		this.location.back();
 	}
 
-	public saveChanges(): void {
-		console.log('TODO: save changes. Update changed files');
+	public saveAllChanges(): void {
+		this.onSaveAllChanges.emit();
 	}
 
 	public selectFile(file: IFile): void {

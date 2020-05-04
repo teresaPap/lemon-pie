@@ -1,7 +1,7 @@
 
 <app-editor
 	[imgUrl]="file.downloadURL"
-	(onSaveArea)="saveArea($event)">
+	(onSaveArea)="saveSingleChangeLocally($event)">
 </app-editor>
 
 <app-linker *ngIf="showLinks"
@@ -11,5 +11,6 @@
 
 <app-aside
 	(onShowLinks)="onShowLinks($event)"
+	(onSaveAllChanges)="onSaveAllChanges()"
 	(onChangeActiveFile)="onChangeActiveFile($event)">
 </app-aside>

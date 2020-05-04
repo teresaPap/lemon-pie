@@ -8,7 +8,7 @@
 			<label class="form-group-label">Link to:</label>
 			<select class="select" formControlName="fileId">
 				<ng-container *ngFor="let file of files">
-					<option *ngIf="file.name" [value]="file.id">{{file.name}}</option>
+					<option *ngIf="file.displayName" [value]="file.id">{{file.displayName}}</option>
 				</ng-container>
 			</select>
 		</div>

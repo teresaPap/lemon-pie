@@ -46,7 +46,6 @@ Thumbs.db
 
 # files
 *.iml
-package-lock.json
 firebase-rules.md
 firebase-debug.log
 

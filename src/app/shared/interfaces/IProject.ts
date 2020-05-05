@@ -6,9 +6,11 @@ export interface IProject {
 	name: string;
 	description: string;
 	files?: Array<firebase.firestore.DocumentReference> | IFile[] ;
+	id?: string;
+}
 
+export interface IProjectPreview extends IProject {
 	// added afterwards
 	preview?: Observable<firebase.firestore.DocumentData>;
 	previewSrc?: string;
-	id?: string;
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProjectsService } from '../../../shared/data-services/projects.service';
-import { IProject } from '../../../shared/interfaces/IProject';
+import { StorageService } from '../../../shared/services/storage.service';
+import { IProject, IProjectPreview } from '../../../shared/interfaces/IProject';
 
 
 @Component({
@@ -9,14 +11,16 @@ import { IProject } from '../../../shared/interfaces/IProject';
 })
 export class ProjectListComponent implements OnInit {
 
-	public projects: IProject[];
+	public projects: IProjectPreview[];
 	public showCreateForm = false;
 
 	constructor(
+		public router: Router,
+		public storage: StorageService,
 		private projectCtlr: ProjectsService ) { }
 
 	ngOnInit() {
-		this.projectCtlr.read().subscribe( projects => {
+		this.projectCtlr.readAllProjectsForActiveUser().subscribe( projects => {
 			this.projects = projects;
 			for ( const p of projects ) {
 				if (p.preview) {
@@ -28,8 +32,20 @@ export class ProjectListComponent implements OnInit {
 		});
 	}
 
+	navToProjectDetails(project: IProject) {
+		console.log(project);
+		this.setActiveProject(project);
+		this.router.navigate([`editor/${project.id}`]);
+	}
+
 	public toggleCreateProjectForm(isVisible: boolean) {
 		this.showCreateForm = isVisible;
 	}
 
+	private setActiveProject(project) {
+		this.storage.store('activeProject', {
+			name: project.name,
+			id: project.id
+		});
+	}
 }

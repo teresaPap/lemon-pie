@@ -4,13 +4,16 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AuthService } from '../../core/services/auth.service';
 import * as firebase from 'firebase/app';
-import { IProject } from '../interfaces/IProject';
+import {IProject, IProjectPreview} from '../interfaces/IProject';
+import {IFile} from "../interfaces/IFile";
+import {FilesService} from "./files.service";
 
 @Injectable()
 export class ProjectsService {
 	public uid: string = this.authService.getCurrentUserId();
 
 	constructor(
+		public fileCtrl: FilesService,
 		public firestore: AngularFirestore,
 		private authService: AuthService ) {
 	}
@@ -37,8 +40,8 @@ export class ProjectsService {
 		return from(action);
 	}
 
-	public read(): Observable<IProject[]> {
-		const action = this.firestore.doc(`users/${this.uid}`).get().pipe(
+	public readAllProjectsForActiveUser(): Observable<IProjectPreview[]> {
+		return this.firestore.doc(`users/${this.uid}`).get().pipe(
 			// Read projects[] from given uid
 			map((user: firebase.firestore.DocumentData) => user.data().projects
 			),
@@ -58,7 +61,7 @@ export class ProjectsService {
 				);
 				return projectData;
 			}),
-			map((projectData: IProject[]) => {
+			map((projectData: IProjectPreview[]) => {
 				projectData.forEach(elem => {
 					if (elem.files && elem.files.length) {
 						elem.preview = this.getFile(elem.files[0]);
@@ -67,7 +70,6 @@ export class ProjectsService {
 				return projectData;
 			})
 		);
-		return action;
 	}
 
 	public readSingle(projectId: string): Observable<firebase.firestore.DocumentSnapshot> {

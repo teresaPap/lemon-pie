@@ -55,6 +55,9 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 			confirmDelete: ['', Validators.pattern('I want to delete my account')]
 		});
 
+		this.project = this.storage.load('activeProject');
+		console.log('active project', this.project);
+
 		this.route.params.pipe(
 			switchMap(params => {
 				const dataToGet: [Observable<any>, Observable<IFile[]>?] = [this.projectCtrl.readSingle(params.id)];
@@ -72,7 +75,16 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 				if (res[1]) {
 					this.files = res[1];
 					this.project.files = this.files;
-					this.storage.store('activeProject', this.project);
+
+					// WORKS - BUT WILL BE REFACTORED IN NEXT COMMIT
+					let toStore = [];
+					this.project.files.forEach( el => {
+						const { displayName, downloadURL, id, name, path } = el;
+						toStore.push( { displayName, downloadURL, id, name, path } );
+					})
+					console.log('toStore',  toStore);
+
+					this.storage.store('activeFiles', toStore);
 				}
 			})
 		).subscribe();

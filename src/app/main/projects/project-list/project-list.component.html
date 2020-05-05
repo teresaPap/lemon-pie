@@ -5,7 +5,7 @@
 		<div class="item-preview" [ngStyle]="{'background-image': project.previewSrc }">
 		</div>
 		<div class="item-actions">
-			<a href="#" class="transparent-btn" [routerLink]="[project.id]">View Project</a>
+			<button type="button" class="transparent-btn" (click)="navToProjectDetails(project)">View Project</button>
 		</div>
 		<div class="item-description">
 			<label>{{project.name}}</label>

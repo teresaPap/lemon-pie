@@ -20,16 +20,19 @@ export class ProjectListComponent implements OnInit {
 		private projectCtlr: ProjectsService ) { }
 
 	ngOnInit() {
-		this.projectCtlr.readAllProjectsForActiveUser().subscribe( projects => {
-			this.projects = projects;
-			for ( const p of projects ) {
-				if (p.preview) {
-					p.preview.subscribe( res => p.previewSrc = `url(${res.downloadURL})` );
-				} else {
-					p.previewSrc = 'url("https://www.jobbnorge.no/search/img/no-hits.png")';
+		this.projectCtlr.readAllProjectsForActiveUser().subscribe(
+			projects => {
+				this.projects = projects;
+				for ( const p of projects ) {
+					if (p.preview) {
+						p.preview.subscribe( res => p.previewSrc = `url(${res.downloadURL})` );
+					} else {
+						p.previewSrc = 'url("https://www.jobbnorge.no/search/img/no-hits.png")';
+					}
 				}
-			}
-		});
+			}, error => {
+				console.log(error);
+			});
 	}
 
 	navToProjectDetails(project: IProject) {

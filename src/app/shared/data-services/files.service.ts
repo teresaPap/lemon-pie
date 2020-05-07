@@ -5,8 +5,9 @@ import { Observable, forkJoin, from, of, iif } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireStorage, AngularFireStorageReference } from '@angular/fire/storage';
 import { IFile } from '../interfaces/IFile';
-import { IClickableArea } from '../interfaces/ILink';
+import {IClickableArea, ILink} from '../interfaces/ILink';
 import { StorageService } from '../services/storage.service';
+import {IProjectPreview} from "../interfaces/IProject";
 
 
 @Injectable()
@@ -144,18 +145,24 @@ export class FilesService {
 	}
 
 	public getFileLinks(fileId: string): Observable<IClickableArea[]> {
-		const linksCollection = this.firestore.collection(`files/${fileId}/links`);
-
-		const getLinksData = (linkSnapshots: firebase.firestore.DocumentSnapshot[]) =>
-			linkSnapshots.map(snapshot => ({...snapshot.data(), linkedFileId: snapshot.id}));
-
-		const action = linksCollection.get().pipe(
-			mergeMap(links =>
-				iif(() => (links.docs.length > 0) , of(getLinksData(links.docs)) , of(null))
-			)
+		return this.firestore.doc(`files/${fileId}`).get().pipe(
+			map( (file: firebase.firestore.DocumentData) => {
+				if ( !file.data().links ) throw 'No links for this file';
+				return file.data().links
+			}),
+			switchMap( (links: firebase.firestore.DocumentReference[]) => {
+				const referencesToGet = [];
+				links.forEach((documentRef: firebase.firestore.DocumentReference) => {
+					referencesToGet.push(this.firestore.doc(documentRef.path).get())
+				});
+				return forkJoin(referencesToGet);
+			}),
+			map( (links: firebase.firestore.DocumentData) => {
+				const linksData = [];
+				links.forEach(documentSnapshot => linksData.push({...documentSnapshot.data()}));
+				return linksData;
+			})
 		);
-
-		return from(action);
 	}
 	// #endregion
 

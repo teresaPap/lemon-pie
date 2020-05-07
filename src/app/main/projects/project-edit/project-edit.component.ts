@@ -61,8 +61,8 @@ export class ProjectEditComponent implements OnInit {
 
 		this.filesCtrl.getFileLinks(this.file.id).subscribe(
 			res => {
-				console.log('links' , this.links);
 				this.links = res;
+				console.log('links' , this.links);
 			},
 			error => console.log('links error' , error)
 		);

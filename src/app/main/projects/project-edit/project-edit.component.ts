@@ -4,6 +4,7 @@ import { NotifierService } from 'angular-notifier';
 import { StorageService } from '../../../shared/services/storage.service';
 import { FilesService } from '../../../shared/data-services/files.service';
 import { IFile } from '../../../shared/interfaces/IFile';
+import {ILink} from "../../../shared/interfaces/ILink";
 
 
 @Component({
@@ -29,7 +30,6 @@ export class ProjectEditComponent implements OnInit {
 	}
 
 	public saveSingleChangeLocally(event): void {
-
 		console.log(event);
 
 		// this.filesCtrl.saveFileLink(event).subscribe(
@@ -62,9 +62,13 @@ export class ProjectEditComponent implements OnInit {
 		this.filesCtrl.getFileLinks(this.file.id).subscribe(
 			res => {
 				this.links = res;
-				console.log('links' , this.links);
+				console.log('links on complete' , this.links);
 			},
-			error => console.log('links error' , error)
+			error => {
+				console.log('links error' , error)
+				this.links = [];
+				this.storage.store('activeLinks', this.links)
+			}
 		);
 	}
 

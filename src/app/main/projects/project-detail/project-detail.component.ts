@@ -76,15 +76,10 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 					this.files = res[1];
 					this.project.files = this.files;
 
-					// WORKS - BUT WILL BE REFACTORED IN NEXT COMMIT
-					let toStore = [];
-					this.project.files.forEach( el => {
+					this.storage.store('activeFiles' , this.project.files.map( el => {
 						const { displayName, downloadURL, id, name, path } = el;
-						toStore.push( { displayName, downloadURL, id, name, path } );
-					})
-					console.log('toStore',  toStore);
-
-					this.storage.store('activeFiles', toStore);
+						return { displayName, downloadURL, id, name, path };
+					}));
 				}
 			})
 		).subscribe();

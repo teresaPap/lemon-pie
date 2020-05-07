@@ -4,7 +4,7 @@ import { NotifierService } from 'angular-notifier';
 import { StorageService } from '../../../shared/services/storage.service';
 import { FilesService } from '../../../shared/data-services/files.service';
 import { IFile } from '../../../shared/interfaces/IFile';
-import {ILink} from "../../../shared/interfaces/ILink";
+import { ILink } from '../../../shared/interfaces/ILink';
 
 
 @Component({
@@ -15,7 +15,7 @@ export class ProjectEditComponent implements OnInit {
 
 	public file: IFile;
 
-	public links = [];
+	public links: ILink[] = [];
 	public showLinks = false;
 
 	constructor(
@@ -31,6 +31,19 @@ export class ProjectEditComponent implements OnInit {
 
 	public saveSingleChangeLocally(event): void {
 		console.log(event);
+
+		const activeLinks = this.storage.load('activeLinks');
+		activeLinks.push(event);
+		this.storage.store('activeLinks', activeLinks);
+		this.notifier.notify('success', 'Link added.');
+
+		// Σε αυτο το σημείο (χρονικα) ότι βρίσκεται μέσα στο storage.activeLinks πρέπει να σωθεί και στην firebase.
+		// Το save στη firebase θα γίνεται όταν πατήσω συγκεκριμ'ενο κουμπί.
+		// Τα data που θα γονονται save στη firebase θα βρίσκονται στο storage.
+		// Μετα το save τα data που σωθηκαν θα σβήνονται απο το storage.
+
+		// Αν ο χρήστης προσπαθήσει να αλλάξει active file χωρις να εχει κανει save τοτε πρέπει να παιρνει καποιο confirmation alert.
+
 
 		// this.filesCtrl.saveFileLink(event).subscribe(
 		// 	() => {
@@ -62,7 +75,7 @@ export class ProjectEditComponent implements OnInit {
 		this.filesCtrl.getFileLinks(this.file.id).subscribe(
 			res => {
 				this.links = res;
-				console.log('links on complete' , this.links);
+				this.storage.store('activeLinks', this.links)
 			},
 			error => {
 				console.log('links error' , error)

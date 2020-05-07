@@ -9,7 +9,7 @@ export interface IClickableArea {
 	x2: number;
 	y1: number;
 	y2: number;
-	linkedFileId: string;
-	// NOTE: linkedFileId property is the id of the file which will be linked to the current file through the selected area.
+	destinationFileId:string;
+	// NOTE: destinationFileId property is the id of the file which will be linked to the current file through the selected area.
 }
 

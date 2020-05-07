@@ -136,7 +136,7 @@ export class FilesService {
 		};
 		const activeFile = this.storage.load('activeFile');
 
-		const action = this.firestore.collection(`files/${activeFile.id}/links`).doc(area.linkedFileId).set(areaCoordinates)
+		const action = this.firestore.collection(`files/${activeFile.id}/links`).doc(area.destinationFileId).set(areaCoordinates)
 			.then( () => console.log('Link Created Successfully') )
 			// TODO: handle errors
 			.catch( error => console.log('An error occured: ', error ));

@@ -49,7 +49,7 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 	// #region - selection menu (mini pop up)
 
 	public saveLink(selectedFileId: string): void {
-		this.canvasSelection.linkedFileId = selectedFileId;
+		this.canvasSelection.destinationFileId = selectedFileId;
 		this.onSaveArea.emit(this.canvasSelection);
 		this.closeSelectionMenu();
 	}

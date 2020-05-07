@@ -2,7 +2,6 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common';
 import { StorageService } from '../../../../shared/services/storage.service';
 import { IFile } from '../../../../shared/interfaces/IFile';
-import { IProject } from '../../../../shared/interfaces/IProject';
 
 @Component({
 	selector: 'app-aside',
@@ -13,16 +12,13 @@ export class AsideComponent {
 	@Output('onSaveAllChanges') onSaveAllChanges: EventEmitter<void> = new EventEmitter<void>();
 	@Output('onChangeActiveFile') onChangeActiveFile: EventEmitter<IFile> = new EventEmitter<IFile>();
 
-	public activeProject: IProject;
 	public files: IFile[];
 
 	constructor(
 		public storage: StorageService,
 		private location: Location
 	) {
-		this.activeProject = storage.load('activeProject');
-		// @ts-ignore
-		this.files = this.activeProject.files;
+		this.files = storage.load('storedFiles');
 	}
 
 	public showLinks(event): void {

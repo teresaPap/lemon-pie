@@ -76,7 +76,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 					this.files = res[1];
 					this.project.files = this.files;
 
-					this.storage.store('activeFiles' , this.project.files.map( el => {
+					this.storage.store('storedFiles' , this.project.files.map( el => {
 						const { displayName, downloadURL, id, name, path } = el;
 						return { displayName, downloadURL, id, name, path };
 					}));
@@ -96,10 +96,9 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 	}
 
 	public navToEdit() {
-		const activeProject = this.storage.load('activeProject');
-		const activeFile = activeProject.files[0];
-		this.storage.store('activeFile', activeFile);
-		this.router.navigate([`editor/${this.project.id}/edit`], { queryParams: { id: activeFile.id } });
+		const storedFiles = this.storage.load('storedFiles');
+		this.storage.store('activeFile', storedFiles[0]);
+		this.router.navigate([`editor/${this.project.id}/edit`], { queryParams: { id: storedFiles[0].id } });
 	}
 
 	public navToPlay() {

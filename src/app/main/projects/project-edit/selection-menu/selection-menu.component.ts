@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Output, OnInit, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { IFile } from '../../../../shared/interfaces/IFile';
 import { StorageService } from '../../../../shared/services/storage.service';
@@ -25,8 +25,7 @@ export class SelectionMenuComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		const activeProject = this.storage.load('activeProject');
-		this.files = activeProject.files;
+		this.files = this.storage.load('storedFiles');
 	}
 
 	public submitLinkToFileForm() {

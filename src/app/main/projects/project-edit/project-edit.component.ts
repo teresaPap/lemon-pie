@@ -57,12 +57,14 @@ export class ProjectEditComponent implements OnInit {
 	}
 
 	private setActiveFile(file: IFile) {
-		console.log('hey');
 		this.file = file;
 
-
 		this.filesCtrl.getFileLinks(this.file.id).subscribe(
-			res => this.links = res
+			res => {
+				console.log('links' , this.links);
+				this.links = res;
+			},
+			error => console.log('links error' , error)
 		);
 	}
 

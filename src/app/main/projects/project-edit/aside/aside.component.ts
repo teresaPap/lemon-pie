@@ -8,7 +8,7 @@ import { IFile } from '../../../../shared/interfaces/IFile';
 	templateUrl: './aside.component.html'
 })
 export class AsideComponent {
-	@Output('onShowLinks') onShowLinks: EventEmitter<boolean> = new EventEmitter<boolean>();
+	@Output('onToggleLinks') onToggleLinks: EventEmitter<boolean> = new EventEmitter<boolean>();
 	@Output('onSaveAllChanges') onSaveAllChanges: EventEmitter<void> = new EventEmitter<void>();
 	@Output('onChangeActiveFile') onChangeActiveFile: EventEmitter<IFile> = new EventEmitter<IFile>();
 
@@ -21,8 +21,8 @@ export class AsideComponent {
 		this.files = storage.load('storedFiles');
 	}
 
-	public showLinks(event): void {
-		this.onShowLinks.emit(event);
+	public toggleLinks(event): void {
+		this.onToggleLinks.emit(event);
 	}
 
 	public navigateBack(): void {

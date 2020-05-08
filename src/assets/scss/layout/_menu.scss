@@ -65,7 +65,7 @@ aside {
 	left: 0;
 	background-color: $theme-background;
     box-shadow: 3px 7px 7px 1px rgba(0,0,0,0.2);
-	overflow: scroll;
+	overflow-y: scroll;
 
 	.aside-menu {
 		padding: 5px 20px;

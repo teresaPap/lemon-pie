@@ -11,19 +11,6 @@
 
 	position: fixed;
 	left: $aside-width;
-
-	//&::before {
-	//	content: '';
-	//	position: absolute;
-	//	top: 0;
-	//	left: 0;
-	//	bottom: 0;
-	//	right: 0;
-	//	background: url('assets/img/pixil-frame-0.png') $gallery bottom left;
-	//	background-size: 30px;
-	//	background-repeat: repeat;
-	//	opacity: 0.1;
-	//}
 }
 
 .canvas-container {
@@ -43,4 +30,6 @@
 	}
 }
 
-
+.linker {
+	background-color: red;
+}

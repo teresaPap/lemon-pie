@@ -6,13 +6,17 @@
 		<li class="menu-item">
 			<button type="button" class="btn light-btn wide-btn" (click)="saveAllChanges()">Save Changes</button>
 		</li>
-		<li class="menu-item">
-			<label>Show Links</label>
-			<app-button-toggle (click)="showLinks($event)"></app-button-toggle>
-		</li>
+<!--		<li class="menu-item">-->
+<!--			<label>Show Links</label>-->
+<!--			<app-button-toggle (click)="toggleLinks($event)"></app-button-toggle>-->
+<!--		</li>-->
 		<li class="menu-item">Uploaded Files</li>
 		<li class="menu-item" *ngFor="let file of files" (click)="selectFile(file)">
-			<img class="menu-img-item" [src]="file.downloadURL" [alt]="file.name">
+			<figure>
+				<img class="menu-img-item" [src]="file.downloadURL" [alt]="file.name">
+				<figcaption>{{file.displayName}}</figcaption>
+			</figure>
+
 		</li>
 	</ul>
 </aside>

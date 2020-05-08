@@ -82,6 +82,7 @@ export class ProjectEditComponent implements OnInit {
 
 	private setActiveFile(file: IFile) {
 		this.file = file;
+		this.storage.store('activeFile', file);
 
 		this.filesCtrl.getFileLinks(this.file.id).subscribe(
 			res => {

@@ -1,6 +1,6 @@
 
 export interface ILink extends IClickableArea {
-
+	id?: string;
 }
 
 

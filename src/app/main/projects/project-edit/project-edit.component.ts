@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import {forkJoin, Observable} from 'rxjs';
 import { NotifierService } from 'angular-notifier';
 import { StorageService } from '../../../shared/services/storage.service';
 import { FilesService } from '../../../shared/data-services/files.service';
@@ -39,21 +40,12 @@ export class ProjectEditComponent implements OnInit {
 
 		// Σε αυτο το σημείο (χρονικα) ότι βρίσκεται μέσα στο storage.activeLinks πρέπει να σωθεί και στην firebase.
 		// Το save στη firebase θα γίνεται όταν πατήσω συγκεκριμ'ενο κουμπί.
-		// Τα data που θα γονονται save στη firebase θα βρίσκονται στο storage.
-		// Μετα το save τα data που σωθηκαν θα σβήνονται απο το storage.
+		// Τα data που θα γινονται save στη firebase θα βρίσκονται στο storage.
+		// Μετα το save τα data που σωθηκαν θα σβήνονται απο το storage. - OK
 
-		// Αν ο χρήστης προσπαθήσει να αλλάξει active file χωρις να εχει κανει save τοτε πρέπει να παιρνει καποιο confirmation alert.
+		// Αν ο χρήστης προσπαθήσει να αλλάξει active file χωρις να εχει κανει save τοτε
+		// πρέπει να παιρνει καποιο confirmation alert. - NOT YET DONE
 
-
-		// this.filesCtrl.saveFileLink(event).subscribe(
-		// 	() => {
-		// 		this.notifier.notify('success', 'Link was saved successfully!');
-		// 	},
-		// 	err => {
-		// 		console.log('TODO: show user friendly failure message');
-		// 		this.notifier.notify('error', `${err.message}`);
-		// 	}
-		// );
 	}
 
 
@@ -61,8 +53,27 @@ export class ProjectEditComponent implements OnInit {
 		this.showLinks = event;
 	}
 
-	public onSaveAllChanges(): void {
-		// TODO: use firebase data services to update links, files and project according to the data stored in storage service.
+	public onSaveChanges(): void {
+		const activeLinks = this.storage.load('activeLinks');
+		const linksToSave: any[] = [];
+
+		activeLinks.forEach( link => {
+			if (link.id) {
+				return;
+			}
+			linksToSave.push( this.filesCtrl.saveFileLink(link) );
+		});
+
+		forkJoin(linksToSave).subscribe(
+			res => {
+				this.notifier.notify('success', 'File links were saved successfully!');
+			},
+			err => {
+				console.error('onSaveChanges error', err);
+				this.notifier.notify('error', `${err.message}`);
+			}
+		);
+
 	}
 
 	public onChangeActiveFile(file): void {

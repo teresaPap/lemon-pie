@@ -5,7 +5,7 @@ import { Observable, forkJoin, from, of, iif } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireStorage, AngularFireStorageReference } from '@angular/fire/storage';
 import { IFile } from '../interfaces/IFile';
-import {IClickableArea, ILink} from '../interfaces/ILink';
+import { IClickableArea, ILink } from '../interfaces/ILink';
 import { StorageService } from '../services/storage.service';
 import {IProjectPreview} from "../interfaces/IProject";
 
@@ -117,10 +117,8 @@ export class FilesService {
 			})
 		);
 
-		return forkJoin( deleteFileFromFilesCollection, deleteFileFromProject, deleteFileFromFireStorage ).pipe(
-			// map( () => console.log('END DELETE') ),
+		return forkJoin( [deleteFileFromFilesCollection, deleteFileFromProject, deleteFileFromFireStorage] ).pipe(
 			catchError( error => {
-				// console.log('ERROR!: ', error);
 				return of(error);
 			}),
 		);
@@ -128,20 +126,14 @@ export class FilesService {
 
 	// #region - File Update Functions
 	public saveFileLink(area: IClickableArea) {
-		const areaCoordinates = {
-			x1: area.x1,
-			y1: area.y1,
-			x2: area.x2,
-			y2: area.y2
-		};
-		const activeFile = this.storage.load('activeFile');
+		const activeFile: IFile = this.storage.load('activeFile');
+		const fileDocumentRef = this.firestore.doc(`files/${activeFile.id}`)
 
-		const action = this.firestore.collection(`files/${activeFile.id}/links`).doc(area.destinationFileId).set(areaCoordinates)
-			.then( () => console.log('Link Created Successfully') )
-			// TODO: handle errors
-			.catch( error => console.log('An error occured: ', error ));
-
-		return from(action);
+		return from(this.firestore.collection('links').add(area).then(
+			linkDocumentRef => fileDocumentRef.update({
+				'links': firebase.firestore.FieldValue.arrayUnion(linkDocumentRef)
+			})
+		));
 	}
 
 	public getFileLinks(fileId: string): Observable<IClickableArea[]> {
@@ -159,7 +151,7 @@ export class FilesService {
 			}),
 			map( (links: firebase.firestore.DocumentData) => {
 				const linksData = [];
-				links.forEach(documentSnapshot => linksData.push({...documentSnapshot.data()}));
+				links.forEach(documentSnapshot => linksData.push({id: documentSnapshot.id, ...documentSnapshot.data()}));
 				return linksData;
 			})
 		);

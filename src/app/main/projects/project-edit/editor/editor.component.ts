@@ -1,7 +1,8 @@
 import { Component, Input, Output, ViewChild, AfterViewInit, OnChanges, SimpleChanges, ElementRef,	EventEmitter } from '@angular/core';
-import { fromEvent, Subscription, forkJoin, of } from 'rxjs';
+import { fromEvent, Subscription, forkJoin, of, from } from 'rxjs';
 import { switchMap, takeUntil, tap, map } from 'rxjs/operators';
 import { CanvasService } from '../../../../shared/services/canvas.service';
+import { StorageService } from '../../../../shared/services/storage.service';
 import { IClickableArea } from '../../../../shared/interfaces/ILink';
 import { ICanvasPosition } from '../../../../shared/interfaces/IEditor';
 
@@ -12,21 +13,20 @@ import { ICanvasPosition } from '../../../../shared/interfaces/IEditor';
 export class EditorComponent implements AfterViewInit, OnChanges {
 	@Input() imgUrl: string;
 	@Input() showLinks: boolean;
-
 	@Output('onSaveArea') onSaveArea: EventEmitter<IClickableArea> = new EventEmitter<IClickableArea>();
-
 	@ViewChild('canvasBg') public canvasBg: ElementRef;
 	@ViewChild('canvas') public canvas: ElementRef;
-
 	@ViewChild('selectionMenu') public selectionMenu: ElementRef;
 
 	private cx: CanvasRenderingContext2D;
 	private editor: HTMLCanvasElement;
-
-	public showSelectionMenu: boolean;
 	private canvasSelection: IClickableArea;
+	public showSelectionMenu: boolean;
 
-	constructor( private canvasCtrl: CanvasService ) { }
+	constructor(
+		private canvasCtrl: CanvasService,
+		private storage: StorageService
+	) { }
 
 	ngAfterViewInit(): void {
 		this.selectionMenu.nativeElement.style.visibility = 'hidden';
@@ -43,12 +43,23 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		if (changes.showLinks) {
-			console.log(`${changes.showLinks.currentValue ? 'show' : 'hide'} links` );
-		}
+		console.log(changes);
 
-		if (changes.imgUrl && !changes.imgUrl.firstChange) {
-			this.setBackground(changes.imgUrl.currentValue);
+		if (changes.showLinks) {
+			if (!changes.showLinks.firstChange) {
+				if (changes.showLinks.currentValue) {
+					console.log('draw');
+					this.onLinksVisible();
+				} else {
+					console.log('clear');
+					CanvasService.clearCanvas(this.cx, this.editor);
+				}
+			}
+		}
+		if (changes.imgUrl) {
+			if (!changes.imgUrl.firstChange ) {
+				this.setBackground(changes.imgUrl.currentValue);
+			}
 		}
 	}
 
@@ -75,6 +86,11 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 	}
 
 	// #endregion
+
+	private onLinksVisible() {
+		const links = this.storage.load('activeLinks');
+		this.drawSavedAreas(links);
+	}
 
 	// #region - Canvas events handling
 	// see also https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
@@ -103,7 +119,7 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 					takeUntil(onMouseUp$),
 					takeUntil(onMouseLeave$),
 				);
-				return forkJoin(of(startingPos), selectionStoped$);
+				return forkJoin([of(startingPos), selectionStoped$]);
 			}),
 			// TODO: to unsubscribe use takeUntil( .. ) user saves the action. Then restart listening on user add new action
 		).subscribe(res => {
@@ -135,6 +151,17 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 				this.editor.width = dimensions.width;
 			}
 		);
+	}
+
+	private drawSavedAreas(clickableAreas): any {
+		console.log(`Clickable Areas to draw: ${clickableAreas.length}`);
+
+		CanvasService.setStrokeStyle(this.cx);
+		clickableAreas.map(area => {
+			const startingPos = { x: area.x1, y: area.y1 };
+			const finalPos = { x: area.x2, y: area.y2 };
+			return from( CanvasService.drawRectangle(startingPos, finalPos, this.cx) );
+		});
 	}
 
 	// #endregion

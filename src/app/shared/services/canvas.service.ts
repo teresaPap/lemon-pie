@@ -21,6 +21,9 @@ export class CanvasService {
 		const width: number = finalPos.x - startingPos.x;
 		const height: number = finalPos.y - startingPos.y;
 
+		cx.fillStyle = SELECTION_FILL_COLOR;
+		cx.fillRect(startingPos.x, startingPos.y, width, height);
+
 		await cx.rect(startingPos.x, startingPos.y, width, height);
 
 		return cx.stroke();

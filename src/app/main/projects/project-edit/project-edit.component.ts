@@ -49,8 +49,8 @@ export class ProjectEditComponent implements OnInit {
 	}
 
 
-	public onShowLinks(event): void {
-		this.showLinks = event;
+	public onToggleLinks(): void {
+		this.showLinks = !this.showLinks;
 	}
 
 	public onSaveChanges(): void {

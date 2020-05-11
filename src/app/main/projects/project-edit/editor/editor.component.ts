@@ -11,6 +11,8 @@ import { ICanvasPosition } from '../../../../shared/interfaces/IEditor';
 })
 export class EditorComponent implements AfterViewInit, OnChanges {
 	@Input() imgUrl: string;
+	@Input() showLinks: boolean;
+
 	@Output('onSaveArea') onSaveArea: EventEmitter<IClickableArea> = new EventEmitter<IClickableArea>();
 
 	@ViewChild('canvasBg') public canvasBg: ElementRef;
@@ -40,9 +42,13 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		this.watchCanvasEvents();
 	}
 
-	ngOnChanges(imgChange: SimpleChanges): void {
-		if (!imgChange.imgUrl.firstChange) {
-			this.setBackground(imgChange.imgUrl.currentValue);
+	ngOnChanges(changes: SimpleChanges): void {
+		if (changes.showLinks) {
+			console.log(`${changes.showLinks.currentValue ? 'show' : 'hide'} links` );
+		}
+
+		if (changes.imgUrl && !changes.imgUrl.firstChange) {
+			this.setBackground(changes.imgUrl.currentValue);
 		}
 	}
 

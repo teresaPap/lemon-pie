@@ -21,8 +21,8 @@ export class AsideComponent {
 		this.files = storage.load('storedFiles');
 	}
 
-	public toggleLinks(event): void {
-		this.onToggleLinks.emit(event);
+	public toggleLinks(): void {
+		this.onToggleLinks.emit();
 	}
 
 	public navigateBack(): void {

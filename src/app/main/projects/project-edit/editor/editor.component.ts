@@ -12,8 +12,9 @@ import { ICanvasPosition } from '../../../../shared/interfaces/IEditor';
 })
 export class EditorComponent implements AfterViewInit, OnChanges {
 	@Input() imgUrl: string;
-	@Input() showLinks: boolean;
-	@Output('onSaveArea') onSaveArea: EventEmitter<IClickableArea> = new EventEmitter<IClickableArea>();
+	@Input() showLinks?: boolean;
+	@Input() mode?: 'preview'|'edit' = 'edit';
+	@Output('onSaveArea') onSaveArea?: EventEmitter<IClickableArea> = new EventEmitter<IClickableArea>();
 	@ViewChild('canvasBg') public canvasBg: ElementRef;
 	@ViewChild('canvas') public canvas: ElementRef;
 	@ViewChild('selectionMenu') public selectionMenu: ElementRef;
@@ -39,6 +40,11 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		this.setBackground(this.imgUrl);
 
 		// Start watching for canvas events
+		if (this.mode === 'preview') {
+			console.log('preview mode on');
+			this.watchCanvasClicks();
+			return;
+		}
 		this.watchCanvasEvents();
 	}
 
@@ -96,19 +102,18 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 	// see also https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
 
 	private watchCanvasEvents() {
-		// TODO: onMouseDown$ instead of onMouseDown :P
-		const onMouseDown$ = fromEvent(this.editor, 'mousedown');
-		const onMouseUp$ = fromEvent(this.editor, 'mouseup');
-		const onMouseMove$ = fromEvent(this.editor, 'mousemove');
-		const onMouseLeave$ = fromEvent(this.editor, 'mouseleave');
+		const mouseDown$ = fromEvent(this.editor, 'mousedown');
+		const mouseUp$ = fromEvent(this.editor, 'mouseup');
+		const mouseMove$ = fromEvent(this.editor, 'mousemove');
+		const mouseLeave$ = fromEvent(this.editor, 'mouseleave');
 
-		onMouseDown$.pipe(
+		mouseDown$.pipe(
 			// Initialize for security
 			tap(() => this.canvasSelection = null as IClickableArea),
 			// Watch while mouse is down
 			map((mouseDown: MouseEvent) => CanvasService.getPositionOnCanvas(mouseDown, this.editor)),
 			switchMap((startingPos: ICanvasPosition) => {
-				const selectionStoped$ = onMouseMove$.pipe(
+				const selectionStoped$ = mouseMove$.pipe(
 					// While mouse is moving, get the current position and draw a selection
 					map((mouseMoved: MouseEvent) => CanvasService.getPositionOnCanvas(mouseMoved, this.editor)),
 					tap(currentPos => {
@@ -116,8 +121,8 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 						CanvasService.drawSelection(startingPos, currentPos, this.cx);
 					}),
 					// Until mouse is up or leaves
-					takeUntil(onMouseUp$),
-					takeUntil(onMouseLeave$),
+					takeUntil(mouseUp$),
+					takeUntil(mouseLeave$),
 				);
 				return forkJoin([of(startingPos), selectionStoped$]);
 			}),
@@ -137,6 +142,23 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 				y2: finalPos.y
 			};
 			this.openSelectionMenu(finalPos.x, finalPos.y);
+		});
+	}
+
+	private watchCanvasClicks() {
+		const mouseClick$ = fromEvent(this.editor, 'click');
+
+		mouseClick$.pipe(
+			// tap(res => console.log('click res', res) ),
+			map((mouseClick: MouseEvent) => {
+				const clickPosition: ICanvasPosition = {
+					x: mouseClick.clientX,
+					y: mouseClick.clientY
+				};
+				return clickPosition;
+			}),
+		).subscribe((clickPosition: ICanvasPosition) => {
+			console.log('TODO nav to link img', clickPosition);
 		});
 	}
 

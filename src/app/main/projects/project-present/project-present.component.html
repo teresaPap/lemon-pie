@@ -1,1 +1,11 @@
-<p>project-present works!</p>
+
+<app-editor
+	[imgUrl]="file.downloadURL"
+	[showLinks]="showLinks"
+	[mode]="'preview'">
+</app-editor>
+
+<app-aside
+	(onToggleLinks)="onToggleLinks()"
+	[mode]="'preview'">
+</app-aside>

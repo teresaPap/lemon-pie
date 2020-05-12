@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, Input, EventEmitter, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { StorageService } from '../../../../shared/services/storage.service';
 import { IFile } from '../../../../shared/interfaces/IFile';
@@ -7,18 +7,25 @@ import { IFile } from '../../../../shared/interfaces/IFile';
 	selector: 'app-aside',
 	templateUrl: './aside.component.html'
 })
-export class AsideComponent {
+export class AsideComponent implements OnInit {
+	@Input() mode?: 'preview'|'edit' = 'edit';
+
 	@Output('onToggleLinks') onToggleLinks: EventEmitter<boolean> = new EventEmitter<boolean>();
 	@Output('onSaveAllChanges') onSaveAllChanges: EventEmitter<void> = new EventEmitter<void>();
 	@Output('onChangeActiveFile') onChangeActiveFile: EventEmitter<IFile> = new EventEmitter<IFile>();
 
 	public files: IFile[];
+	public previewModeOn: boolean;
 
 	constructor(
 		public storage: StorageService,
 		private location: Location
 	) {
 		this.files = storage.load('storedFiles');
+	}
+
+	ngOnInit(): void {
+		this.previewModeOn = (this.mode === 'preview');
 	}
 
 	public toggleLinks(): void {

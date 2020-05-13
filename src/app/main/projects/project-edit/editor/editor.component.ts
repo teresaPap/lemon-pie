@@ -1,5 +1,5 @@
 import { Component, Input, Output, ViewChild, AfterViewInit, OnChanges, SimpleChanges, ElementRef,	EventEmitter } from '@angular/core';
-import { fromEvent, Subscription, forkJoin, of, from } from 'rxjs';
+import { fromEvent, Subscription, forkJoin, of, from, Observable } from 'rxjs';
 import { switchMap, takeUntil, tap, map } from 'rxjs/operators';
 import { CanvasService } from '../../../../shared/services/canvas.service';
 import { StorageService } from '../../../../shared/services/storage.service';
@@ -149,16 +149,13 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		const mouseClick$ = fromEvent(this.editor, 'click');
 
 		mouseClick$.pipe(
-			// tap(res => console.log('click res', res) ),
-			map((mouseClick: MouseEvent) => {
-				const clickPosition: ICanvasPosition = {
-					x: mouseClick.clientX,
-					y: mouseClick.clientY
-				};
-				return clickPosition;
-			}),
+			tap(res => console.log(res) ),
+			map((mouseClick: MouseEvent) => CanvasService.getPositionOnCanvas(mouseClick, this.editor)),
 		).subscribe((clickPosition: ICanvasPosition) => {
-			console.log('TODO nav to link img', clickPosition);
+			console.log('clickPosition: ', clickPosition);
+			this.getLinkDestinationFromPosition(clickPosition).subscribe(
+				dest => console.log('TODO nav to file id: ', dest)
+			);
 		});
 	}
 
@@ -184,6 +181,18 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 			const finalPos = { x: area.x2, y: area.y2 };
 			return from( CanvasService.drawRectangle(startingPos, finalPos, this.cx) );
 		});
+	}
+
+	private getLinkDestinationFromPosition(pos: ICanvasPosition): Observable<string> {
+		// TODO: refactor to be more readable
+		const links = this.storage.load('activeLinks');
+		const areasX = links.filter(area => ((area.x1 <= pos.x) && (pos.x <= area.x2)) );
+		if (!areasX.length) return of(null);
+
+		const areasY = areasX.filter(area => ((area.y1 <= pos.y) && (pos.y <= area.y2)) );
+		if (!areasY.length) return of(null);
+
+		return of(areasY[0].destinationFileId);
 	}
 
 	// #endregion

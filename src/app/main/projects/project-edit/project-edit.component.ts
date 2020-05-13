@@ -31,6 +31,9 @@ export class ProjectEditComponent implements OnInit {
 	}
 
 	public saveSingleChangeLocally(event): void {
+
+		// TODO: modify event.x1 event.y1 etc so that x1<x2 && y1<y2, to guarantee a uniform link storage
+
 		console.log(event);
 
 		const activeLinks = this.storage.load('activeLinks');

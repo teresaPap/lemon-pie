@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { StorageService } from '../../../shared/services/storage.service';
 import { IFile } from '../../../shared/interfaces/IFile';
 import { FilesService } from '../../../shared/data-services/files.service';
@@ -7,7 +7,7 @@ import { FilesService } from '../../../shared/data-services/files.service';
 	selector: 'app-project-present',
 	templateUrl: './project-present.component.html',
 })
-export class ProjectPresentComponent implements OnInit, OnChanges {
+export class ProjectPresentComponent implements OnInit {
 
 	public file: IFile;
 	public showLinks = false;
@@ -21,12 +21,12 @@ export class ProjectPresentComponent implements OnInit, OnChanges {
 		this.setActiveFile(this.storage.load('activeFile'));
 	}
 
-	ngOnChanges(changes: SimpleChanges): void {
-
-	}
 
 	public onLinkAreaClicked(destinationFileId: string) {
 		console.log('On link area clicked!', destinationFileId);
+		if (!destinationFileId) {
+			return;
+		}
 		const storedFiles = this.storage.load('storedFiles');
 		const selectedFile = storedFiles.find( file => file.id === destinationFileId);
 		this.setActiveFile(selectedFile);

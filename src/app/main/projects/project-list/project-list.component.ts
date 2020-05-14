@@ -36,7 +36,6 @@ export class ProjectListComponent implements OnInit {
 	}
 
 	navToProjectDetails(project: IProject) {
-		console.log(project);
 		this.setActiveProject(project);
 		this.router.navigate([`editor/${project.id}`]);
 	}

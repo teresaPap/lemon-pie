@@ -3,19 +3,22 @@
 		<li class="menu-item">
 			<button type="button" class="btn light-btn wide-btn" (click)="navigateBack()">Back</button>
 		</li>
-		<li class="menu-item">
+		<li class="menu-item" *ngIf="!previewModeOn">
 			<button type="button" class="btn light-btn wide-btn" (click)="saveAllChanges()">Save Changes</button>
 		</li>
 		<li class="menu-item">
 			<button type="button" class="btn light-btn wide-btn" (click)="toggleLinks()">Toggle Links</button>
 		</li>
-		<li class="menu-item">Uploaded Files</li>
-		<li class="menu-item" *ngFor="let file of files" (click)="selectFile(file)">
-			<figure>
-				<img class="menu-img-item" [src]="file.downloadURL" [alt]="file.name">
-				<figcaption>{{file.displayName}}</figcaption>
-			</figure>
-
-		</li>
+		<ng-container *ngIf="!previewModeOn">
+			<li class="menu-item">
+				Uploaded Files
+			</li>
+			<li class="menu-item" *ngFor="let file of files" (click)="selectFile(file)">
+				<figure>
+					<img class="menu-img-item" [src]="file.downloadURL" [alt]="file.name">
+					<figcaption>{{file.displayName}}</figcaption>
+				</figure>
+			</li>
+		</ng-container>
 	</ul>
 </aside>

@@ -1,1 +1,12 @@
-<p>project-present works!</p>
+
+<app-editor
+	[imgUrl]="file.downloadURL"
+	[showLinks]="showLinks"
+	[mode]="'preview'"
+	(onLinkAreaClicked)="onLinkAreaClicked($event)">
+</app-editor>
+
+<app-aside
+	(onToggleLinks)="onToggleLinks()"
+	[mode]="'preview'">
+</app-aside>

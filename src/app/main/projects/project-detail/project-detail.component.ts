@@ -56,7 +56,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 		});
 
 		this.project = this.storage.load('activeProject');
-		console.log('active project', this.project);
 
 		this.route.params.pipe(
 			switchMap(params => {

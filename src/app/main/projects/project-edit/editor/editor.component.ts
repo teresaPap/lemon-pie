@@ -15,6 +15,7 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 	@Input() showLinks?: boolean;
 	@Input() mode?: 'preview'|'edit' = 'edit';
 	@Output('onSaveArea') onSaveArea?: EventEmitter<IClickableArea> = new EventEmitter<IClickableArea>();
+	@Output('onLinkAreaClicked') onLinkAreaClicked?: EventEmitter<string> = new EventEmitter<string>(); // destination file id
 	@ViewChild('canvasBg') public canvasBg: ElementRef;
 	@ViewChild('canvas') public canvas: ElementRef;
 	@ViewChild('selectionMenu') public selectionMenu: ElementRef;
@@ -154,7 +155,9 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		).subscribe((clickPosition: ICanvasPosition) => {
 			console.log('clickPosition: ', clickPosition);
 			this.getLinkDestinationFromPosition(clickPosition).subscribe(
-				dest => console.log('TODO nav to file id: ', dest)
+				(destinationFileId: string) => {
+					this.onLinkAreaClicked.emit(destinationFileId);
+				}
 			);
 		});
 	}

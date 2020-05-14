@@ -2,7 +2,8 @@
 <app-editor
 	[imgUrl]="file.downloadURL"
 	[showLinks]="showLinks"
-	[mode]="'preview'">
+	[mode]="'preview'"
+	(onLinkAreaClicked)="onLinkAreaClicked($event)">
 </app-editor>
 
 <app-aside

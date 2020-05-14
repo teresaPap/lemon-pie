@@ -45,9 +45,7 @@ export class ProjectEditComponent implements OnInit {
 
 		// Αν ο χρήστης προσπαθήσει να αλλάξει active file χωρις να εχει κανει save τοτε
 		// πρέπει να παιρνει καποιο confirmation alert. - NOT YET DONE
-
 	}
-
 
 	public onToggleLinks(): void {
 		this.showLinks = !this.showLinks;

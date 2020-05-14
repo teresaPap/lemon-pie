@@ -42,7 +42,6 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 
 		// Start watching for canvas events
 		if (this.mode === 'preview') {
-			console.log('preview mode on');
 			this.watchCanvasClicks();
 			return;
 		}
@@ -50,15 +49,11 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		console.log(changes);
-
 		if (changes.showLinks) {
 			if (!changes.showLinks.firstChange) {
 				if (changes.showLinks.currentValue) {
-					console.log('draw');
-					this.onLinksVisible();
+					this.drawSavedLinks();
 				} else {
-					console.log('clear');
 					CanvasService.clearCanvas(this.cx, this.editor);
 				}
 			}
@@ -94,7 +89,7 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 
 	// #endregion
 
-	private onLinksVisible() {
+	private drawSavedLinks() {
 		const links = this.storage.load('activeLinks');
 		this.drawSavedAreas(links);
 	}
@@ -150,10 +145,8 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		const mouseClick$ = fromEvent(this.editor, 'click');
 
 		mouseClick$.pipe(
-			tap(res => console.log(res) ),
 			map((mouseClick: MouseEvent) => CanvasService.getPositionOnCanvas(mouseClick, this.editor)),
 		).subscribe((clickPosition: ICanvasPosition) => {
-			console.log('clickPosition: ', clickPosition);
 			this.getLinkDestinationFromPosition(clickPosition).subscribe(
 				(destinationFileId: string) => {
 					this.onLinkAreaClicked.emit(destinationFileId);
@@ -176,8 +169,6 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 	}
 
 	private drawSavedAreas(clickableAreas): any {
-		console.log(`Clickable Areas to draw: ${clickableAreas.length}`);
-
 		CanvasService.setStrokeStyle(this.cx);
 		clickableAreas.map(area => {
 			const startingPos = { x: area.x1, y: area.y1 };

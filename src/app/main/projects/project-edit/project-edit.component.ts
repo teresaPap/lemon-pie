@@ -30,14 +30,11 @@ export class ProjectEditComponent implements OnInit {
 		this.setActiveFile(this.storage.load('activeFile'));
 	}
 
-	public saveSingleChangeLocally(event): void {
-
-		// TODO: modify event.x1 event.y1 etc so that x1<x2 && y1<y2, to guarantee a uniform link storage
-
-		console.log(event);
+	public saveSingleChangeLocally(link): void {
+		console.log(link);
 
 		const activeLinks = this.storage.load('activeLinks');
-		activeLinks.push(event);
+		activeLinks.push(this.formatLink(link));
 		this.storage.store('activeLinks', activeLinks);
 		this.notifier.notify('success', 'Link added.');
 
@@ -98,6 +95,27 @@ export class ProjectEditComponent implements OnInit {
 				this.storage.store('activeLinks', this.links)
 			}
 		);
+	}
+
+	private formatLink(link:ILink): ILink {
+		let formattedLink: ILink = {} as ILink;
+		formattedLink.destinationFileId = link.destinationFileId;
+
+		if (link.x1>link.x2) {
+			formattedLink.x1 = link.x2;
+			formattedLink.x2 = link.x1;
+		} else {
+			formattedLink.x1 = link.x1;
+			formattedLink.x2 = link.x2;
+		}
+		if (link.y1>link.y2) {
+			formattedLink.y1 = link.y2;
+			formattedLink.y2 = link.y1;
+		} else {
+			formattedLink.y1 = link.y1;
+			formattedLink.y2 = link.y2;
+		}
+		return formattedLink;
 	}
 
 }

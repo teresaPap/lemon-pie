@@ -23,7 +23,6 @@ export class ProjectPresentComponent implements OnInit {
 
 
 	public onLinkAreaClicked(destinationFileId: string) {
-		console.log('On link area clicked!', destinationFileId);
 		if (!destinationFileId) {
 			return;
 		}

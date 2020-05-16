@@ -131,12 +131,13 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 			console.log(fileList.item(i));
 
 			this.fileCtrl.create( fileList.item(i), this.project.id ).subscribe(
-				null,
+				res => console.log(res),
 				err => console.log(err) ,
 				() => {
 					console.log('FILE CREATE COMPLETED');
 					this.notifier.notify('success', `File was uploaded successfully`);
 					this.filesToUpload.pop();
+
 				}
 			);
 		}

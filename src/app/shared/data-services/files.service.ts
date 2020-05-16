@@ -20,7 +20,7 @@ export class FilesService {
 	) { }
 
 
-	public create(file: File, projectId: string): Observable<void> {
+	public create(file: File, projectId: string): Observable<any> {
 
 		// NOTE: takes a File and
 		// saves it in firestorage, files collection, projects collection project/files array as a collection ref
@@ -208,7 +208,7 @@ export class FilesService {
 		const filesCollectionRef: AngularFirestoreCollection = this.firestore.collection('files');
 		const projectIdDocumentRef: AngularFirestoreDocument = this.firestore.doc(`projects/${projectId}`);
 
-		const action = from( filesCollectionRef.add(fileData) ).pipe(
+		return from( filesCollectionRef.add(fileData) ).pipe(
 			switchMap( documentRef =>
 				from(
 					projectIdDocumentRef.update(
@@ -221,7 +221,6 @@ export class FilesService {
 				return of(error);
 			})
 		);
-		return action;
 	}
 
 }

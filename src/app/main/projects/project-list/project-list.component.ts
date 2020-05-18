@@ -37,7 +37,7 @@ export class ProjectListComponent implements OnInit {
 
 	navToProjectDetails(project: IProject) {
 		this.setActiveProject(project);
-		this.router.navigate([`editor/${project.id}`]);
+		this.router.navigate([`projects/${project.id}`]);
 	}
 
 	public toggleCreateProjectForm(isVisible: boolean) {

@@ -97,7 +97,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 	public navToEdit() {
 		const storedFiles = this.storage.load('storedFiles');
 		this.storage.store('activeFile', storedFiles[0]);
-		this.router.navigate([`editor/${this.project.id}/edit`], { queryParams: { id: storedFiles[0].id } });
+		this.router.navigate([`projects/${this.project.id}/edit`], { queryParams: { id: storedFiles[0].id } });
 	}
 
 	public navToPlay() {

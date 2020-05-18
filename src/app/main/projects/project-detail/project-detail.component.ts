@@ -45,7 +45,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 		private notifier: NotifierService
 	) { }
 
-	ngOnInit() {
+	ngOnInit(): void {
 		this.projectDetailForm = this.fb.group({
 			name: ['', Validators.required],
 			description: ''
@@ -137,7 +137,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 					console.log('FILE CREATE COMPLETED');
 					this.notifier.notify('success', `File was uploaded successfully`);
 					this.filesToUpload.pop();
-
 				}
 			);
 		}

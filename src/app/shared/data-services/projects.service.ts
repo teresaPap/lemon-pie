@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Observable, forkJoin, from, of } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { AuthService } from '../../core/services/auth.service';
 import * as firebase from 'firebase/app';
-import {IProject, IProjectPreview} from '../interfaces/IProject';
-import {IFile} from "../interfaces/IFile";
-import {FilesService} from "./files.service";
+import { Observable, forkJoin, from, of } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { AuthService } from '../../core/services/auth.service';
+import { IProject, IProjectPreview } from '../interfaces/IProject';
+import { FilesService } from './files.service';
+
 
 @Injectable()
 export class ProjectsService {
@@ -18,26 +18,27 @@ export class ProjectsService {
 		private authService: AuthService ) {
 	}
 
-	public create(project: IProject): Observable<void> {
-		console.log('About to create a new project', project);
-
+	public create(project: IProject): Observable<IProject|any> {
 		const projectsCollectionRef: AngularFirestoreCollection = this.firestore.collection('projects');
 		const userIdDocumentRef: AngularFirestoreDocument = this.firestore.doc(`users/${this.uid}`);
 
-		const action = projectsCollectionRef.add({
-			name: project.name,
-			description: project.description,
-			createdOn: new Date(Date.now())
-		}).then((documentRef: firebase.firestore.DocumentReference) => {
-			userIdDocumentRef.update({
-				'projects': firebase.firestore.FieldValue.arrayUnion(documentRef)
-			});
-		}).catch(error => {
-			throw console.warn(error);
-			// TODO: Handle error
-		});
-
-		return from(action);
+		return from(
+			projectsCollectionRef.add({
+				name: project.name,
+				description: project.description,
+				createdOn: new Date(Date.now())
+			})
+		).pipe(
+			tap(documentRef => {
+				console.log(documentRef);
+				userIdDocumentRef.update({
+					'projects': firebase.firestore.FieldValue.arrayUnion(documentRef)
+				})
+			}),
+			switchMap((documentRef: firebase.firestore.DocumentReference) => documentRef.get() ),
+			map((documentData: firebase.firestore.DocumentData) => documentData.data() ),
+			catchError( err => err )
+		);
 	}
 
 	public readAllProjectsForActiveUser(): Observable<IProjectPreview[]> {

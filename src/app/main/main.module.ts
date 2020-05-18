@@ -11,6 +11,7 @@ import { EditorComponent } from './projects/project-edit/editor/editor.component
 import { SelectionMenuComponent } from './projects/project-edit/selection-menu/selection-menu.component';
 import { FileListItemComponent } from './projects/project-detail/file-list-item/file-list-item.component';
 import { ProjectPresentComponent } from './projects/project-present/project-present.component';
+import { ProjectCreateComponent } from './projects/project-create/project-create.component';
 
 @NgModule({
 	declarations: [
@@ -25,6 +26,7 @@ import { ProjectPresentComponent } from './projects/project-present/project-pres
 		EditorComponent,
 		SelectionMenuComponent,
 		ProjectPresentComponent,
+		ProjectCreateComponent,
 	],
 	imports: [
 		SharedModule,

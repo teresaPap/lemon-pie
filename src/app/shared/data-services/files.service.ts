@@ -7,7 +7,8 @@ import { AngularFireStorage, AngularFireStorageReference } from '@angular/fire/s
 import { IFile } from '../interfaces/IFile';
 import { IClickableArea, ILink } from '../interfaces/ILink';
 import { StorageService } from '../services/storage.service';
-import {IProjectPreview} from "../interfaces/IProject";
+import { IProjectPreview } from '../interfaces/IProject';
+import { FirebaseApiService } from '../../core/services/firebase-api.service';
 
 
 @Injectable()
@@ -16,7 +17,8 @@ export class FilesService {
 	constructor(
 		public storage: StorageService,
 		private firestore: AngularFirestore,
-		private fireStorage: AngularFireStorage
+		private fireStorage: AngularFireStorage,
+		private apiService: FirebaseApiService
 	) { }
 
 
@@ -127,20 +129,14 @@ export class FilesService {
 	// #region - File Update Functions
 	public saveFileLink(area: IClickableArea) {
 		const activeFile: IFile = this.storage.load('activeFile');
-		const fileDocumentRef = this.firestore.doc(`files/${activeFile.id}`)
-
-		return from(this.firestore.collection('links').add(area).then(
-			linkDocumentRef => fileDocumentRef.update({
-				'links': firebase.firestore.FieldValue.arrayUnion(linkDocumentRef)
-			})
-		));
+		return this.apiService.createDocument(area,'links',`files/${activeFile.id}` )
 	}
 
 	public getFileLinks(fileId: string): Observable<IClickableArea[]> {
 		return this.firestore.doc(`files/${fileId}`).get().pipe(
 			map( (file: firebase.firestore.DocumentData) => {
-				if ( !file.data().links ) throw 'No links for this file';
-				return file.data().links
+				if ( !file.data().references ) throw 'No links for this file';
+				return file.data().references
 			}),
 			switchMap( (links: firebase.firestore.DocumentReference[]) => {
 				const referencesToGet = [];

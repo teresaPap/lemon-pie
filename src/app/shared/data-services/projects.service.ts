@@ -6,6 +6,7 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../../core/services/auth.service';
 import { IProject, IProjectPreview } from '../interfaces/IProject';
 import { FilesService } from './files.service';
+import { FirebaseApiService } from '../../core/services/firebase-api.service';
 
 
 @Injectable()
@@ -15,36 +16,18 @@ export class ProjectsService {
 	constructor(
 		public fileCtrl: FilesService,
 		public firestore: AngularFirestore,
-		private authService: AuthService ) {
+		private authService: AuthService,
+		private apiService: FirebaseApiService ) {
 	}
 
 	public create(project: IProject): Observable<IProject|any> {
-		const projectsCollectionRef: AngularFirestoreCollection = this.firestore.collection('projects');
-		const userIdDocumentRef: AngularFirestoreDocument = this.firestore.doc(`users/${this.uid}`);
-
-		return from(
-			projectsCollectionRef.add({
-				name: project.name,
-				description: project.description,
-				createdOn: new Date(Date.now())
-			})
-		).pipe(
-			tap(documentRef => {
-				console.log(documentRef);
-				userIdDocumentRef.update({
-					'projects': firebase.firestore.FieldValue.arrayUnion(documentRef)
-				})
-			}),
-			switchMap((documentRef: firebase.firestore.DocumentReference) => documentRef.get() ),
-			map((documentData: firebase.firestore.DocumentData) => documentData.data() ),
-			catchError( err => err )
-		);
+		return this.apiService.createDocument(project,'projects',`users/${this.uid}`);
 	}
 
 	public readAllProjectsForActiveUser(): Observable<IProjectPreview[]> {
 		return this.firestore.doc(`users/${this.uid}`).get().pipe(
 			// Read projects[] from given uid
-			map((user: firebase.firestore.DocumentData) => user.data().projects
+			map((user: firebase.firestore.DocumentData) => user.data().references
 			),
 			// For each of the projects referenced by this user, get the actual document
 			switchMap((projects: firebase.firestore.DocumentReference[]) => {

@@ -7,6 +7,7 @@ import { ProjectListComponent } from './projects/project-list/project-list.compo
 import { ProjectDetailComponent } from './projects/project-detail/project-detail.component';
 import { ProjectEditComponent } from './projects/project-edit/project-edit.component';
 import { ProjectCreateComponent } from './projects/project-create/project-create.component';
+import { ProjectPresentComponent } from './projects/project-present/project-present.component';
 
 
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
 	{ path: 'projects/new', component : ProjectCreateComponent, canActivate: [AuthGuard] },
 	{ path: 'projects/:id', component : ProjectDetailComponent, canActivate: [AuthGuard] },
 	{ path: 'projects/:id/edit', component : ProjectEditComponent, canActivate: [AuthGuard] },
+	{ path: 'projects/:id/present', component : ProjectPresentComponent, canActivate: [AuthGuard] },
 	{ path: 'profile', component : ProfileComponent, canActivate: [AuthGuard] },
 	{ path: 'home', component : HomeComponent },
 	{ path: '', component : HomeComponent }

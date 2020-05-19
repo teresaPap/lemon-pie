@@ -101,7 +101,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 	}
 
 	public navToPlay() {
-		this.router.navigate(['present']);
+		this.router.navigate([`projects/${this.project.id}/present`]);
 		this.notifier.notify('info', 'TODO: nav to play');
 	}
 

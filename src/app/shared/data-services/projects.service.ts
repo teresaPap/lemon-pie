@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase/app';
-import { Observable, forkJoin, from, of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { Observable, forkJoin } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { AuthService } from '../../core/services/auth.service';
-import { IProject, IProjectPreview } from '../interfaces/IProject';
-import { FilesService } from './files.service';
 import { FirebaseApiService } from '../../core/services/firebase-api.service';
+import { FilesService } from './files.service';
+import { IProject, IProjectPreview } from '../interfaces/IProject';
 
 
 @Injectable()
@@ -47,8 +47,8 @@ export class ProjectsService {
 			}),
 			map((projectData: IProjectPreview[]) => {
 				projectData.forEach(elem => {
-					if (elem.files && elem.files.length) {
-						elem.preview = this.getFile(elem.files[0]);
+					if (elem.references && elem.references.length) {
+						elem.preview = this.getFile(elem.references[0]);
 					}
 				});
 				return projectData;

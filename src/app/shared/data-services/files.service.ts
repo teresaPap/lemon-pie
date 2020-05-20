@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-import { map, switchMap, catchError, mergeMap } from 'rxjs/operators';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireStorage } from '@angular/fire/storage';
 import * as firebase from 'firebase/app';
-import { Observable, forkJoin, from, of, iif } from 'rxjs';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { AngularFireStorage, AngularFireStorageReference } from '@angular/fire/storage';
+import { Observable, forkJoin, from, of } from 'rxjs';
+import { map, switchMap, catchError } from 'rxjs/operators';
+import { FirebaseApiService } from '../../core/services/firebase-api.service';
+import { StorageService } from '../services/storage.service';
 import { IFile } from '../interfaces/IFile';
 import { IClickableArea, ILink } from '../interfaces/ILink';
-import { StorageService } from '../services/storage.service';
-import { IProjectPreview } from '../interfaces/IProject';
-import { FirebaseApiService } from '../../core/services/firebase-api.service';
-
 
 @Injectable()
 export class FilesService {
@@ -23,31 +21,11 @@ export class FilesService {
 
 
 	public create(file: File, projectId: string): Observable<any> {
-
-		// NOTE: takes a File and
-		// saves it in firestorage, files collection, projects collection project/files array as a collection ref
-		// returns;
-
-		const fileName = `${file.lastModified}_${file.name}`;
-
-		// Create file document in firestore and this file document ref to projectId
-		return this.storeFileInFireStorage( file, projectId, fileName ).pipe(
-			switchMap( filedata => {
-				if (filedata.downloadURL) {
-					return this.storeFileInFirestore( filedata, projectId );
-				} else {
-					return of('blah');
-				}
-			}),
-			catchError( error => {
-				console.warn('ERROR IN 79 \n' ,  error);
-				if (error.code !== 'storage/object-not-found') {
-					return of(error.code);
-				} else {
-					console.log('ERROR CODE: ', error.code );
-					return of([]);
-				}
-			})
+		return this.apiService.storeFile(file,`files/${projectId}`).pipe(
+			catchError( err => err ),
+			switchMap( (fileData: IFile) =>
+				this.apiService.createDocument(fileData, 'files', `projects/${projectId}`)
+			)
 		);
 	}
 
@@ -57,8 +35,8 @@ export class FilesService {
 
 		return this.firestore.doc(`projects/${projectId}`).get().pipe(
 			map((project: firebase.firestore.DocumentData) => {
-				if ( project.data().files ) {
-					return project.data().files;
+				if ( project.data().references ) {
+					return project.data().references;
 				} else {
 					// TODO: handle no-projects-error! Escape the pipe and return empty []
 					throw new Error('no files for this project!');
@@ -163,60 +141,6 @@ export class FilesService {
 			}
 		});
 		return index;
-	}
-
-	private storeFileInFireStorage(file: File, projectId: string, fileName: string): Observable<IFile|any> {
-		// Reference to storage bucket
-		const storageRef = this.fireStorage.ref(`files/${projectId}/${fileName}`) || {} as AngularFireStorageReference;
-
-		// Main task
-		const uploadTask = this.fireStorage.upload( `files/${projectId}/${fileName}`, file );
-
-		// Progress monitoring
-		// const percentage = uploadTask.percentageChanges();
-
-		const onUploadTaskEnded$: Observable<any> = from( uploadTask );
-
-		return uploadTask.snapshotChanges().pipe(
-			switchMap( () => onUploadTaskEnded$ ),
-			switchMap( () => storageRef.getDownloadURL() ),
-			map( downloadUrl => {
-				return {
-					name: fileName,
-					path: `files/${projectId}/${fileName}`,
-					downloadURL: downloadUrl
-				};
-			}),
-			catchError( error => {
-				console.warn('ERROR IN 104 \n\n' ,  error);
-				if (error.code !== 'storage/object-not-found') {
-					return error.code;
-				}
-				else {
-					console.log('ERROR CODE: ', error.code );
-					return of([]);
-				}
-			})
-		);
-	}
-
-	private storeFileInFirestore(fileData: IFile , projectId: string) {
-		const filesCollectionRef: AngularFirestoreCollection = this.firestore.collection('files');
-		const projectIdDocumentRef: AngularFirestoreDocument = this.firestore.doc(`projects/${projectId}`);
-
-		return from( filesCollectionRef.add(fileData) ).pipe(
-			switchMap( documentRef =>
-				from(
-					projectIdDocumentRef.update(
-						{ 'files': firebase.firestore.FieldValue.arrayUnion(documentRef) }
-				))
-			),
-			// tap( res => console.log( 'FIRE_STORE COMPLETED', res ) ),
-			catchError(error => {
-				console.warn( 'ERROR IN 147' , error);
-				return of(error);
-			})
-		);
 	}
 
 }

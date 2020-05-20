@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import * as firebase from 'firebase';
 import { Observable, from, iif } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
-
-
-import * as firebase from 'firebase';
+import { AuthService } from './auth.service';
+import { IFile } from '../../shared/interfaces/IFile';
 
 
 @Injectable()
@@ -15,6 +15,7 @@ export class FirebaseApiService {
 
     constructor(
     	private authService: AuthService,
+		private fireStorage: AngularFireStorage,
 		public firestore: AngularFirestore,
 	) { }
 
@@ -25,17 +26,28 @@ export class FirebaseApiService {
 		return from( collectionRef.add(documentFields) ).pipe(
 			tap((documentRef: firebase.firestore.DocumentReference) =>
 				iif(() => !!parentDocPath,
-					from(parentDocumentRef.update({
+					parentDocumentRef.update({
 						'references': firebase.firestore.FieldValue.arrayUnion(documentRef)
-					}))
+					})
 				),
 			),
-			tap( res => console.log(res)),
 			switchMap((documentRef: firebase.firestore.DocumentReference) => documentRef.get() ),
 			map((documentData: firebase.firestore.DocumentData) => documentData.data() ),
 			catchError( err => err )
 		);
     }
+
+    public storeFile(file: File, path: string ): Observable<IFile|any> {
+		const uploadTask: AngularFireUploadTask = this.fireStorage.upload( `${path}/${file.name}`, file );
+
+		return from(uploadTask).pipe(
+			switchMap(() => this.fireStorage.ref(`${path}/${file.name}`).getDownloadURL() ),
+			map( (downloadURL: string) => {
+				return { name: file.name, path: `${path}/${file.name}`, downloadURL: downloadURL }
+			}),
+			catchError( err => err )
+		);
+	}
 
 
 }

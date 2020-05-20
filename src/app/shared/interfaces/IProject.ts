@@ -5,7 +5,7 @@ import { IFile } from './IFile';
 export interface IProject {
 	name: string;
 	description: string;
-	files?: Array<firebase.firestore.DocumentReference> | IFile[] ;
+	references?: Array<firebase.firestore.DocumentReference> | IFile[] ;
 	id?: string;
 }
 

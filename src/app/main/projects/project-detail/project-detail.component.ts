@@ -73,9 +73,9 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 				this.initializeForm(this.project.name, this.project.description);
 				if (res[1]) {
 					this.files = res[1];
-					this.project.files = this.files;
+					this.project.references = this.files;
 
-					this.storage.store('storedFiles' , this.project.files.map( el => {
+					this.storage.store('storedFiles' , this.project.references.map( el => {
 						const { displayName, downloadURL, id, name, path } = el;
 						return { displayName, downloadURL, id, name, path };
 					}));
@@ -148,7 +148,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 	}
 
 	public submitDeleteProjectForm() {
-		return;
+		return this.projectCtrl.delete(this.project.id).subscribe( res => console.log(res));
 	}
 
 	private readFiles(projectId: string) {

@@ -20,6 +20,12 @@ export class ProjectsService {
 		private apiService: FirebaseApiService ) {
 	}
 
+
+	public delete(projectId: string) {
+		return this.apiService.deleteDocument(`projects/${projectId}`);
+	}
+
+
 	public create(project: IProject): Observable<IProject|any> {
 		return this.apiService.createDocument(project,'projects',`users/${this.uid}`);
 	}

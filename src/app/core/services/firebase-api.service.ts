@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import * as firebase from 'firebase';
-import { Observable, from, iif } from 'rxjs';
+import { Observable, from, iif, forkJoin, of, defer } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { IFile } from '../../shared/interfaces/IFile';
@@ -49,5 +49,36 @@ export class FirebaseApiService {
 		);
 	}
 
+	public deleteDocument(docPath: string) {
+		return this.deleteDocumentReferences(docPath).pipe(
+			switchMap(() => this.firestore.doc(docPath).delete() ),
+			catchError(err => {
+				console.error(err);
+				return of('Delete failed')
+			}),
+			map(() => 'Delete succeed'),
+		)
+	}
+
+	private deleteDocumentReferences(docPath: string) {
+		return this.firestore.doc(docPath).get().pipe(
+			map((snapshot: firebase.firestore.DocumentSnapshot) => snapshot.get('references')),
+			switchMap((refs: firebase.firestore.DocumentReference[]) => defer( () => (refs && !!refs.length)
+				? forkJoin( refs.map(ref => ref.delete()) )
+				: of('No references array found'),
+			)),
+			catchError(err => {
+				console.error('MERGE MAP ERROR', err);
+				return of(err);
+			})
+		)
+	}
+
+
+	// TODO: on document read also clean up unused references
 
 }
+
+
+
+

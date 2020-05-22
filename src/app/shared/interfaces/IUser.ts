@@ -2,6 +2,8 @@
 // TODO: separate properly the following interfaces according to what the project needs
 
 
+import * as firebase from "firebase";
+
 export interface IUser {
 	uid: string;
 	email: string;
@@ -21,5 +23,5 @@ export interface IUserData {
 	username?: string;
 
 	// Generated data
-	projects?: Array<firebase.firestore.DocumentReference>;
+	references?: Array<firebase.firestore.DocumentReference>;
 }

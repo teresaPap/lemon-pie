@@ -54,7 +54,7 @@ export class ProfileComponent implements OnInit {
 				this.userDetailForm.controls['username'].setValue(currentUser.username);
 				this.userDetailForm.controls['email'].setValue(currentUser.email);
 				this.userDetailForm.controls['role'].setValue(currentUser.role);
-				this.userDetailForm.controls['projectsCount'].setValue(currentUser.projects.length);
+				this.userDetailForm.controls['projectsCount'].setValue(currentUser.references.length);
 			}
 		);
 	}

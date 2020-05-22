@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { forkJoin, Observable, Subscription } from 'rxjs';
+import {forkJoin, Observable, of, Subscription} from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 
 import { NotifierService } from 'angular-notifier';
@@ -58,29 +58,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 		this.project = this.storage.load('activeProject');
 
 		this.route.params.pipe(
-			switchMap(params => {
-				const dataToGet: [Observable<any>, Observable<IFile[]>?] = [this.projectCtrl.readSingle(params.id)];
-				if (params.id !== '0') {
-					this.project.id = params.id;
-					dataToGet.push(this.readFiles(params.id));
-				} else {
-					this.project.id = '';
-				}
-				return forkJoin(dataToGet);
-			}),
-			tap(res => {
-				this.project = { ...this.project, ...res[0].data() };
-				this.initializeForm(this.project.name, this.project.description);
-				if (res[1]) {
-					this.files = res[1];
-					this.project.references = this.files;
-
-					this.storage.store('storedFiles' , this.project.references.map( el => {
-						const { displayName, downloadURL, id, name, path } = el;
-						return { displayName, downloadURL, id, name, path };
-					}));
-				}
-			})
+			tap(params => console.log(params) )
 		).subscribe();
 	}
 
@@ -152,7 +130,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 	}
 
 	private readFiles(projectId: string) {
-		return this.fileCtrl.read(projectId);
+		return this.fileCtrl.readAllFiles(projectId);
 	}
 
 	private initializeForm(name: string, description: string): void {

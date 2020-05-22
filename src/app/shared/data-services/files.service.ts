@@ -29,36 +29,8 @@ export class FilesService {
 		);
 	}
 
-	public read(projectId: string): Observable<IFile[]> {
-		// NOTE: Reads Files[] (containing file references) from a given ProjectId and
-		// returns an observable of an array with the actual files
-
-		return this.firestore.doc(`projects/${projectId}`).get().pipe(
-			map((project: firebase.firestore.DocumentData) => {
-				if ( project.data().references ) {
-					return project.data().references;
-				} else {
-					// TODO: handle no-projects-error! Escape the pipe and return empty []
-					throw new Error('no files for this project!');
-				}
-			}),
-			// For each of the files referenced by this project, get the actual document
-			switchMap((files: firebase.firestore.DocumentReference[]) => {
-				const referencesToGet = [];
-				files.forEach( (fileDocRef: firebase.firestore.DocumentReference) => {
-					referencesToGet.push( this.firestore.doc( fileDocRef.path ).get() );
-				});
-				return forkJoin(referencesToGet);
-			}),
-			// Map the DocumentData to the actual json data and return them to the component
-			map( (file: firebase.firestore.DocumentData) => {
-				const projectData = [];
-				file.forEach(snapsot =>
-					projectData.push({ id: snapsot.id, ...snapsot.data() })
-				);
-				return projectData;
-			})
-		);
+	public readAllFiles(projectId: string): Observable<any[]> {
+		return this.apiService.readDocumentChildReferences(`projects/${projectId}`);
 	}
 
 	public update(fileId: string, updateData ): Observable<void> {
@@ -141,6 +113,12 @@ export class FilesService {
 			}
 		});
 		return index;
+	}
+
+	private getFile(ref) {
+		return this.firestore.doc(ref).get().pipe(
+			map(file => file.data())
+		);
 	}
 
 }

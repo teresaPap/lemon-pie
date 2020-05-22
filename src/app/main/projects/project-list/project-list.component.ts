@@ -22,14 +22,7 @@ export class ProjectListComponent implements OnInit {
 	ngOnInit() {
 		this.projectCtlr.readAllProjectsForActiveUser().subscribe(
 			projects => {
-				this.projects = projects;
-				for ( const p of projects ) {
-					if (p.preview) {
-						p.preview.subscribe( res => p.previewSrc = `url(${res.downloadURL})` );
-					} else {
-						p.previewSrc = 'url("https://www.jobbnorge.no/search/img/no-hits.png")';
-					}
-				}
+				this.populateProjects(projects);
 			}, error => {
 				console.log(error);
 			});
@@ -49,5 +42,16 @@ export class ProjectListComponent implements OnInit {
 			name: project.name,
 			id: project.id
 		});
+	}
+
+	private populateProjects(projects): void {
+		this.projects = projects;
+		for ( const p of projects ) {
+			if (p.preview) {
+				p.preview.subscribe( res => p.previewSrc = `url(${res.downloadURL})` );
+			} else {
+				p.previewSrc = 'url("https://www.jobbnorge.no/search/img/no-hits.png")';
+			}
+		}
 	}
 }

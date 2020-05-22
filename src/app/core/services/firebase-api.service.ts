@@ -23,18 +23,14 @@ export class FirebaseApiService {
 	// CREATE
 
 	public createDocument(documentFields: any, collectionPath: string, parentDocPath?: string): Observable<any> {
-    	const collectionRef: AngularFirestoreCollection = this.firestore.collection(collectionPath);
-		const parentDocumentRef: AngularFirestoreDocument = this.firestore.doc(parentDocPath);
-
-		return from( collectionRef.add(documentFields) ).pipe(
+		return from( this.firestore.collection(collectionPath).add(documentFields) ).pipe(
 			tap((documentRef: firebase.firestore.DocumentReference) =>
 				iif(() => !!parentDocPath,
-					parentDocumentRef.update({
+					this.updateDocument(parentDocPath, {
 						'references': firebase.firestore.FieldValue.arrayUnion(documentRef)
 					})
 				),
 			),
-			// tap((documentRef: firebase.firestore.DocumentReference) => documentRef.update({id: documentRef.id})),
 			switchMap((documentRef: firebase.firestore.DocumentReference) => documentRef.get() ),
 			map((documentData: firebase.firestore.DocumentData) => {
 				return {id: documentData.id, ...documentData.data()}
@@ -79,6 +75,13 @@ export class FirebaseApiService {
 			),
 		)
 	}
+
+	// UPDATE
+
+	public updateDocument(docPath:string, docFields: any) {
+    	return from(this.firestore.doc(docPath).update(docFields));
+	}
+
 
 	// DELETE
 	// TODO: also clean up unused references

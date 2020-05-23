@@ -1,7 +1,7 @@
 import { Component, Output, OnInit, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { IFile } from '../../../../shared/interfaces/IFile';
-import { StorageService } from '../../../../shared/services/storage.service';
+import { IFile } from '../../interfaces/IFile';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
 	selector: 'app-selection-menu',

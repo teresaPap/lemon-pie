@@ -1,10 +1,10 @@
 import { Component, Input, Output, ViewChild, AfterViewInit, OnChanges, SimpleChanges, ElementRef,	EventEmitter } from '@angular/core';
 import { fromEvent, Subscription, forkJoin, of, from, Observable } from 'rxjs';
 import { switchMap, takeUntil, tap, map } from 'rxjs/operators';
-import { CanvasService } from '../../../../shared/services/canvas.service';
-import { StorageService } from '../../../../shared/services/storage.service';
-import { IClickableArea } from '../../../../shared/interfaces/ILink';
-import { ICanvasPosition } from '../../../../shared/interfaces/IEditor';
+import { CanvasService } from '../../services/canvas.service';
+import { StorageService } from '../../services/storage.service';
+import { IClickableArea } from '../../interfaces/ILink';
+import { ICanvasPosition } from '../../interfaces/IEditor';
 
 @Component({
 	selector: 'app-editor',

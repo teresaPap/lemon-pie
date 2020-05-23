@@ -1,7 +1,7 @@
 import { Component, Output, Input, EventEmitter, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { StorageService } from '../../../../shared/services/storage.service';
-import { IFile } from '../../../../shared/interfaces/IFile';
+import { StorageService } from '../../services/storage.service';
+import { IFile } from '../../interfaces/IFile';
 
 @Component({
 	selector: 'app-aside',

@@ -6,9 +6,7 @@ import { MainRoutingModule } from './main-routing.module';
 import { ProjectDetailComponent } from './projects/project-detail/project-detail.component';
 import { ProjectListComponent } from './projects/project-list/project-list.component';
 import { ProjectEditComponent } from './projects/project-edit/project-edit.component';
-import { AsideComponent } from './projects/project-edit/aside/aside.component';
-import { EditorComponent } from './projects/project-edit/editor/editor.component';
-import { SelectionMenuComponent } from './projects/project-edit/selection-menu/selection-menu.component';
+
 import { FileListItemComponent } from './projects/project-detail/file-list-item/file-list-item.component';
 import { ProjectPresentComponent } from './projects/project-present/project-present.component';
 import { ProjectCreateComponent } from './projects/project-create/project-create.component';
@@ -17,14 +15,11 @@ import { ProjectCreateComponent } from './projects/project-create/project-create
 	declarations: [
 		HomeComponent,
 		ProfileComponent,
-		AsideComponent,
 		ProjectListComponent,
 		ProjectDetailComponent,
 		ProjectEditComponent,
 		FileListItemComponent,
 
-		EditorComponent,
-		SelectionMenuComponent,
 		ProjectPresentComponent,
 		ProjectCreateComponent,
 	],

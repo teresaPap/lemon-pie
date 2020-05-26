@@ -1,6 +1,8 @@
 // Styles for commonly used HTML elements
 
-// Example
+html {
+	box-sizing: border-box;
+}
 html,
 body {
     background: $theme-background;

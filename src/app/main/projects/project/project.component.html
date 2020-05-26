@@ -8,34 +8,34 @@
 			</li>
 			<li><hr></li>
 			<li class="menu-item">
-				<a [routerLink]="['/flow-preview']">
+				<a [routerLink]="['flow-preview']">
 					Preview Flow
 				</a>
 			</li>
 			<li class="menu-item">
-				<a [routerLink]="['/flow-edit']">
+				<a [routerLink]="['flow-edit']">
 					Edit Flow
 				</a>
 			</li>
 			<li><hr></li>
 			<li class="menu-item">
-				<a [routerLink]="['/files-inspect']">
+				<a [routerLink]="['files-inspect']">
 					Inspect Files
 				</a>
 			</li>
 			<li class="menu-item">
-				<a [routerLink]="['/files-add']">
+				<a [routerLink]="['files-add']">
 					Upload Files
 				</a>
 			</li>
 			<li><hr></li>
 			<li class="menu-item">
-				<a [routerLink]="['/edit']">
+				<a [routerLink]="['edit']">
 					Edit Project Details
 				</a>
 			</li>
 			<li class="menu-item">
-				<a [routerLink]="['/delete']">
+				<a [routerLink]="['delete']">
 					Delete Project
 				</a>
 			</li>
@@ -44,7 +44,7 @@
 	</div>
 
 	<div class="col-9">
-
+		<router-outlet></router-outlet>
 	</div>
 
 </div>

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProjectListComponent } from './project-list/project-list.component';
+import { ProjectsListComponent } from './projects-list/projects-list.component';
 import { CreateProjectFormComponent } from './create-project-form/create-project-form.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 
@@ -14,7 +14,7 @@ const routes: Routes = [
 	{ path: ':id/edit' },
 	{ path: ':id/delete' },
 	{ path: ':id', component : ProjectDetailsComponent },
-	{ path: '', component : ProjectListComponent },
+	{ path: '', component : ProjectsListComponent },
 ];
 
 @NgModule({

@@ -6,10 +6,10 @@ import { IProject, IProjectPreview } from '../../../shared/interfaces/IProject';
 
 
 @Component({
-	selector: 'app-project-list',
-	templateUrl: './project-list.component.html'
+	selector: 'app-projects-list',
+	templateUrl: './projects-list.component.html'
 })
-export class ProjectListComponent implements OnInit {
+export class ProjectsListComponent implements OnInit {
 
 	public projects: IProjectPreview[];
 	public showCreateForm = false;

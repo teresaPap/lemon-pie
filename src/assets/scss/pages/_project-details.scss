@@ -37,3 +37,15 @@
 	}
 
 }
+
+
+app-project-details {
+	.menu-item {
+		a {
+
+			&:hover {
+				background-color: $theme-accent;
+			}
+		}
+	}
+}

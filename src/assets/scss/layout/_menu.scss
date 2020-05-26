@@ -1,11 +1,13 @@
 // Style all the menus
 
 
-// Nav
+// Top Nav
 nav {
     height: calc(#{$nav-height} - 10px);
     padding: 5px 20px;
-    background-color: $theme-background;
+	margin-bottom: 1px;
+
+	background-color: $theme-background;
     box-shadow: 0px 1px 7px 1px rgba(0,0,0,0.2);
     display: flex;
     justify-content: space-between;
@@ -48,45 +50,33 @@ nav {
 			}
 		}
 	}
-
-
     &.visible {
         opacity: 1;
         pointer-events: all;
     }
 }
 
-// Aside
-aside {
-    position: absolute;
-	width: $aside-width;
-    top: calc(#{$nav-height} + 1px);
-	bottom: 0;
-	left: 0;
+
+// Aside Nav
+.aside-menu {
 	background-color: $theme-background;
-    box-shadow: 3px 7px 7px 1px rgba(0,0,0,0.2);
-	overflow-y: scroll;
+	box-shadow: 3px 7px 7px 1px rgba(0,0,0,0.2);
+	height: calc( 100vh - #{$nav-height} - 1px);
+}
 
-	.aside-menu {
-		padding: 5px 20px;
+.vertical-menu {
+	display: flex;
+	flex-flow: column nowrap;
+	flex: 1 0 auto;
 
+	.menu-item {
+		flex-grow: 1;
 		display: flex;
-		justify-content: flex-start;
-		flex-direction: column;
-
-		.menu-item {
-			margin-bottom: 30px;
-
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-			align-items: baseline;
+		* {
 			flex-grow: 1;
-		}
-
-		.menu-img-item {
-			max-width: 100%;
+			padding: 10px;
 		}
 	}
-
 }
+
+

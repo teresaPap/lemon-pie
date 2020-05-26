@@ -9,10 +9,10 @@ import { IProject } from '../../../shared/interfaces/IProject';
 
 
 @Component({
-  selector: 'app-project-create',
-  templateUrl: './project-create.component.html',
+  selector: 'app-create-project-form',
+  templateUrl: './create-project-form.component.html',
 })
-export class ProjectCreateComponent implements OnInit {
+export class CreateProjectFormComponent implements OnInit {
 
 	public projectCreateForm: FormGroup;
 

@@ -139,13 +139,13 @@ a:focus {
  * Improve readability when focused and also mouse hovered in all browsers.
  */
 
-a:active {
-    outline: 0;
-}
-a:hover {
-	outline: 0;
-    cursor: pointer;
-}
+//a:active {
+//    outline: 0;
+//}
+//a:hover {
+//	outline: 0;
+//    cursor: pointer;
+//}
 
 /**
  * 1. Remove border when inside `a` element in IE 6/7/8/9 and Firefox 3.

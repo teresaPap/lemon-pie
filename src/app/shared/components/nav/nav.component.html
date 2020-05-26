@@ -3,25 +3,39 @@
 		<app-lemon-pie-logo></app-lemon-pie-logo>
 	</a>
 	<ul class="nav-menu">
-		<li [routerLink]="['/home']" class="nav-item">
-			<a>Home</a>
+		<li class="nav-item">
+			<a [routerLink]="['/home']">
+				Home
+			</a>
 		</li>
-		<li *ngIf="!currentUser" [routerLink]="['/login']" class="nav-item">
-			<a>Login</a>
+		<li *ngIf="!currentUser" class="nav-item">
+			<a [routerLink]="['/login']">
+				Login
+			</a>
 		</li>
 		<li *ngIf="currentUser" class="nav-item">
-			<a [routerLink]="['/projects']">Projects</a>
+			<a [routerLink]="['/projects']">
+				Projects
+			</a>
 		</li>
-		<li *ngIf="currentUser" (click)="toggleBubbleMenu()" class="nav-item">
-			<a>{{currentUser.email}}</a>
+		<li *ngIf="currentUser"  class="nav-item">
+			<a (click)="toggleBubbleMenu()">
+				{{currentUser.email}}
+			</a>
 		</li>
 	</ul>
 	<div class="bubble-menu" [ngClass]="{'visible':showBubbleMenu}">
 		<ul>
 			<li *ngIf="currentUser" (click)="toggleBubbleMenu()">
-				<a [routerLink]="['/profile']">Profile</a>
+				<a [routerLink]="['/profile']">
+					Profile
+				</a>
 			</li>
-			<li><a (click)="logout()">Logout</a></li>
+			<li>
+				<a (click)="logout()">
+					Logout
+				</a>
+			</li>
 		</ul>
 	</div>
 </nav>

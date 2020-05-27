@@ -19,3 +19,8 @@ export interface IProjectResolved {
 	project: IProject;
 	error?: any;
 }
+
+export interface IProjectListResolved {
+	projects: IProject[];
+	error?: any;
+}

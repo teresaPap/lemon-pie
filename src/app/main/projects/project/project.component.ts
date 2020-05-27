@@ -8,6 +8,8 @@ import {IProjectResolved} from "../../../shared/interfaces/IProject";
 })
 export class ProjectComponent implements OnInit {
 
+	public projectName: string;
+
    	constructor(
    		private route: ActivatedRoute
 	) { }
@@ -15,6 +17,8 @@ export class ProjectComponent implements OnInit {
    	ngOnInit(): void {
 		const resolvedData: IProjectResolved = this.route.snapshot.data['resolvedData'];
 		console.log(resolvedData);
+		this.projectName = resolvedData.project.name;
+
   	}
 
 }

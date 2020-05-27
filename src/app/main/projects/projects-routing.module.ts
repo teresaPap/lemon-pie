@@ -10,6 +10,7 @@ import { FilesUploaderComponent } from './project/files-uploader/files-uploader.
 import { ProjectDeleteFormComponent } from './project/project-delete-form/project-delete-form.component';
 import { ProjectDetailsFormComponent } from './project/project-details-form/project-details-form.component';
 import {ProjectResolver} from "./project/project-resolver.service";
+import {ProjectsListResolver} from "./projects-list/projects-list-resolver.service";
 
 
 const routes: Routes = [
@@ -28,7 +29,11 @@ const routes: Routes = [
 			{ path: 'delete', component: ProjectDeleteFormComponent },
 		]
 	},
-	{ path: '', component : ProjectsListComponent },
+	{
+		path: '',
+		component : ProjectsListComponent,
+		resolve: { resolvedData: ProjectsListResolver },
+	},
 ];
 
 @NgModule({

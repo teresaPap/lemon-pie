@@ -27,7 +27,7 @@ export class ProjectsService {
 		return this.apiService.createDocument(project,'projects',`users/${this.uid}`);
 	}
 
-	public readAllProjectsForActiveUser(): Observable<firebase.firestore.DocumentData[]> {
+	public readAllProjectsForActiveUser(): Observable<IProject[]> {
 		return this.apiService.readDocumentChildReferences(`users/${this.uid}`);
 	}
 

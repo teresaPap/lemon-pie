@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { ProjectsService } from '../../../shared/data-services/projects.service';
 import { StorageService } from '../../../shared/services/storage.service';
-import { IProject, IProjectPreview } from '../../../shared/interfaces/IProject';
+import {IProject, IProjectPreview, IProjectListResolved} from '../../../shared/interfaces/IProject';
 
 
 @Component({
@@ -15,17 +15,15 @@ export class ProjectsListComponent implements OnInit {
 	public showCreateForm = false;
 
 	constructor(
+		private route: ActivatedRoute,
 		public router: Router,
 		public storage: StorageService,
-		private projectCtlr: ProjectsService ) { }
+	) { }
 
 	ngOnInit() {
-		this.projectCtlr.readAllProjectsForActiveUser().subscribe(
-			projects => {
-				this.populateProjects(projects);
-			}, error => {
-				console.log(error);
-			});
+		const resolvedData: IProjectListResolved = this.route.snapshot.data['resolvedData'];
+		console.log(resolvedData);
+		this.populateProjects(resolvedData.projects);
 	}
 
 	navToProjectDetails(project: IProject) {

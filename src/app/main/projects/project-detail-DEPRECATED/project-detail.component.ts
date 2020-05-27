@@ -30,7 +30,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 	public filesToUpload: File[] = [];
 
 	public projectDetailForm: FormGroup;
-	public deleteProjectForm: FormGroup;
+
 
 	private deleteAction: Subscription = new Subscription;
 
@@ -51,9 +51,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 			description: ''
 		});
 
-		this.deleteProjectForm = this.fb.group({
-			confirmDelete: ['', Validators.pattern('I want to delete my account')]
-		});
+
 
 		this.project = this.storage.load('activeProject');
 

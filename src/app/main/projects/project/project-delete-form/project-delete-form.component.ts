@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
 import { ProjectsService } from '../../../../shared/data-services/projects.service';
+import {IProjectResolved} from "../../../../shared/interfaces/IProject";
 
 
 @Component({
@@ -15,6 +16,7 @@ export class ProjectDeleteFormComponent implements OnInit {
 
 	constructor(
 		private fb: FormBuilder,
+		private route: ActivatedRoute,
 		private projectCtrl: ProjectsService,
 		private notifier: NotifierService,
 		public router: Router,
@@ -31,8 +33,10 @@ export class ProjectDeleteFormComponent implements OnInit {
 			this.deleteProjectForm.setErrors({message: 'Please fill in the security quote.'});
 			return;
 		}
-		this.projectCtrl.delete('projectId').subscribe( res => {
-			console.log('PROJECT DELETE ACTION IS WIP', res);
+		const resolvedData: IProjectResolved = this.route.parent.snapshot.data['resolvedData'];
+		const projectId = resolvedData.project.id;
+
+		this.projectCtrl.delete(projectId).subscribe( res => {
 			this.notifier.notify('success', `Project was deleted successfully`);
 			this.router.navigate(['/projects']);
 		});

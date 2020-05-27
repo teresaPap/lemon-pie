@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { ProjectsListComponent } from './projects-list/projects-list.component';
-import { ProjectEditComponent } from './project-edit-DEPRECATED/project-edit.component';
 import { CreateProjectFormComponent } from './create-project-form/create-project-form.component';
 import { SharedModule } from '../../shared/shared.module';
 import { ProjectsRoutingModule } from './projects-routing.module';
@@ -17,7 +16,6 @@ import { FilesUploaderComponent } from './project/files-uploader/files-uploader.
 @NgModule({
 	declarations: [
 		ProjectsListComponent,
-	  	ProjectEditComponent,
 		CreateProjectFormComponent,
 		ProjectComponent,
 		FlowPreviewComponent,

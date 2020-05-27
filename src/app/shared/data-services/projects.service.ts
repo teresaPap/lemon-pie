@@ -31,7 +31,7 @@ export class ProjectsService {
 		return this.apiService.readDocumentChildReferences(`users/${this.uid}`);
 	}
 
-	public readSingleProject(projectId: string): Observable<firebase.firestore.DocumentData> {
+	public readSingleProject(projectId: string): Observable<IProject> {
 		return this.apiService.readDocument(`projects/${projectId}`);
 	}
 

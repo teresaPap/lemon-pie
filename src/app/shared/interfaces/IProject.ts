@@ -14,3 +14,8 @@ export interface IProjectPreview extends IProject {
 	preview?: Observable<firebase.firestore.DocumentData>;
 	previewSrc?: string;
 }
+
+export interface IProjectResolved {
+	project: IProject;
+	error?: any;
+}

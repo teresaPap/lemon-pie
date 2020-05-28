@@ -35,6 +35,10 @@ export class ProjectsService {
 		return this.apiService.readDocument(`projects/${projectId}`);
 	}
 
+	public update(projectId: string, fields: any) {
+		return this.apiService.updateDocument(`projects/${projectId}`, fields);
+	}
+
 	public delete(projectId: string) {
 		return this.apiService.deleteDocument(`projects/${projectId}`);
 	}

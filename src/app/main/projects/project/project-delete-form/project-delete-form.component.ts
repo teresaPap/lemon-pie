@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
 import { ProjectsService } from '../../../../shared/data-services/projects.service';
-import {IProjectResolved} from "../../../../shared/interfaces/IProject";
+import { IProjectResolved } from '../../../../shared/interfaces/IProject';
 
 
 @Component({

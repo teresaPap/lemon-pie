@@ -12,7 +12,7 @@ import { IProject } from '../interfaces/IProject';
 })
 export class ProjectsService {
 
-	private activeProjectSource = new BehaviorSubject<IProject|null>({} as IProject);
+	private activeProjectSource = new BehaviorSubject<IProject>({} as IProject);
 
 	// Observable: any component can subscribe to this observable and receive notifications when the active project changes (eg name is updated)
 	public activeProjectChanges$ = this.activeProjectSource.asObservable();
@@ -57,7 +57,7 @@ export class ProjectsService {
 
 	public delete(projectId: string) {
 		return this.apiService.deleteDocument(`projects/${projectId}`).pipe(
-			tap( () => this.changeActiveProject(null) )
+			tap( () => this.changeActiveProject({} as IProject) )
 		);
 	}
 

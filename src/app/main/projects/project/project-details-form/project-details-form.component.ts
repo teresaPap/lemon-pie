@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
 import { ProjectsService } from '../../../../shared/data-services/projects.service';
-import { IProjectResolved } from '../../../../shared/interfaces/IProject';
+import { IProject } from '../../../../shared/interfaces/IProject';
 
 
 @Component({
@@ -12,23 +12,29 @@ import { IProjectResolved } from '../../../../shared/interfaces/IProject';
 })
 export class ProjectDetailsFormComponent implements OnInit {
 
+	private activeProjectId: string;
 	public projectDetailForm: FormGroup;
 
 	constructor(
 		private fb: FormBuilder,
 		private route: ActivatedRoute,
-		private projectCtrl: ProjectsService,
+		public projectCtrl: ProjectsService,
 		private notifier: NotifierService,
 		public router: Router,
 	) { }
 
 	ngOnInit(): void {
-		const resolvedData: IProjectResolved = this.route.parent.snapshot.data['resolvedData'];
-
 		this.projectDetailForm = this.fb.group({
-			name: [resolvedData.project.name, Validators.required],
-			description: [resolvedData.project.description]
+			name: ['', Validators.required],
+			description: ''
 		});
+
+		this.projectCtrl.activeProjectChanges$.subscribe( (activeProject: IProject) => {
+			this.projectDetailForm.controls['name'].setValue(activeProject.name);
+			this.projectDetailForm.controls['description'].setValue(activeProject.description);
+			this.activeProjectId = activeProject.id;
+		});
+
 	}
 
 	public submitProjectDetailForm(): void {
@@ -36,16 +42,16 @@ export class ProjectDetailsFormComponent implements OnInit {
 			this.projectDetailForm.setErrors({message: 'Project name is required.'});
 			return;
 		}
-		const resolvedData: IProjectResolved = this.route.parent.snapshot.data['resolvedData'];
-		const projectId = resolvedData.project.id;
 
-
-		this.projectCtrl.update(projectId, {
+		this.projectCtrl.update(this.activeProjectId, {
 			name: this.projectDetailForm.controls['name'].value,
-			description:  this.projectDetailForm.controls['description'].value,
+			description: this.projectDetailForm.controls['description'].value,
 		}).subscribe(
 			res => this.notifier.notify('success', `Project details updated successfully`),
-			err => this.notifier.notify('error', `Project details update failed`)
+			err => {
+				console.error(err);
+				this.notifier.notify('error', `Project details update failed`);
+			}
 		);
 	}
 }

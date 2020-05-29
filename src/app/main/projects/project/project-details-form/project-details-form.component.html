@@ -10,5 +10,6 @@
 		<label class="form-group-label">Description</label>
 		<input class="form-input" type="text" formControlName="description">
 	</div>
+	<p class="form-error" *ngIf="projectDetailForm.errors">{{projectDetailForm.errors.message}}</p>
 	<button type="submit" class="btn success-btn form-btn">Save</button>
 </form>

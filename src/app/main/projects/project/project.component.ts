@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {IProjectResolved} from "../../../shared/interfaces/IProject";
+import { ProjectsService } from '../../../shared/data-services/projects.service';
 
 @Component({
 	selector: 'app-project',
@@ -11,12 +10,11 @@ export class ProjectComponent implements OnInit {
 	public projectName: string;
 
    	constructor(
-   		private route: ActivatedRoute
+		public projectCtrl: ProjectsService
 	) { }
 
    	ngOnInit(): void {
-		const resolvedData: IProjectResolved = this.route.snapshot.data['resolvedData'];
-		this.projectName = resolvedData.project.name;
+		this.projectCtrl.activeProjectChanges$.subscribe( res => this.projectName = res.name );
   	}
 
 }

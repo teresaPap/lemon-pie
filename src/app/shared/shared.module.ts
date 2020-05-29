@@ -6,7 +6,6 @@ import { CoreModule } from '../core/core.module';
 import { NavComponent } from './components/nav/nav.component';
 import { DropzoneDirective } from './directives/dropzone.directive';
 import { FileUploaderComponent } from './components/file-uploader/file-uploader.component';
-import { ProjectsService } from './data-services/projects.service';
 import { AddProjectComponent } from './components/add-project/add-project.component';
 import { FilesService } from './data-services/files.service';
 import { StorageService } from './services/storage.service';
@@ -51,7 +50,6 @@ import {SelectionMenuComponent} from "./components/selection-menu/selection-menu
 		SelectionMenuComponent,
 	],
 	providers: [
-		ProjectsService,
 		FilesService,
 		StorageService
 	]

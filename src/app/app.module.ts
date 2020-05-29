@@ -42,8 +42,8 @@ import { AppRoutingModule } from './app-routing.module';
 		SharedModule,
 		AccountModule,
 
+		AppRoutingModule,
 		MainModule,
-		AppRoutingModule
 	],
 	providers: [],
 	bootstrap: [AppComponent]

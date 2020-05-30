@@ -48,6 +48,7 @@ import {SelectionMenuComponent} from "./components/selection-menu/selection-menu
 		AsideComponent,
 		EditorComponent,
 		SelectionMenuComponent,
+		DropzoneDirective,
 	],
 	providers: [
 		FilesService,

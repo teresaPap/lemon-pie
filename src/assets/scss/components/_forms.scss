@@ -78,6 +78,8 @@
 
 .form,
 .detail-form {
+	max-width: 80%;
+	margin: 0 auto;
 
 	.form-title,
 	.form-btn {
@@ -86,21 +88,20 @@
 	}
 	.form-group {
 		display: flex;
-		margin: 0px 5px 5px 5px;
+		margin-bottom: 5px;
 
 		.form-group-label {
 			flex-grow: 1;
 			width: 0;
-			text-align: right;
 			padding: 12px 10px;
 		}
 		input,
 		textarea,
 		select {
+			height: fit-content;
 			flex-grow: 3;
 			border: 2px solid $mercury;
 			border-radius: 4px;
-			display: flex;
 			padding: 10px;
 			background-color: $theme-light;
 			&::placeholder {

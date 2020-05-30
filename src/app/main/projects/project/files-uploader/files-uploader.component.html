@@ -19,44 +19,21 @@
 		</div>
 	</div>
 
-	<ul>
-		<li class="file-list-item row" *ngFor="let file of files">
-			<img src="lala" alt="file preview" class="file-preview col-4">
-			<div class="form-group col-8">
+	<ul class="file-preview-container" *ngIf="filesToPreview.length">
+		<li class="file-list-item row" *ngFor="let file of filesToPreview">
+			<img src="{{file.base64}}" alt="file preview" class="file-preview col-4">
+			<div class="form-group col-7">
 <!--				<label class="form-group-label">{{file}}</label>-->
 				<input class="form-input" type="text" formControlName="displayName" placeholder="Enter a name for this file">
 			</div>
+			<div class="col-1">
+				<i class="fas fa-trash"></i>
+			</div>
 		</li>
+
 	</ul>
 
 
 	<p class="form-error col-12" *ngIf="uploadFilesForm.errors">{{uploadFilesForm.errors.message}}</p>
 	<button type="submit" class="btn success-btn form-btn">Save</button>
 </form>
-
-<!--<li class="file-list-item">-->
-
-<!--	<div class="page-preview" [ngStyle]="{'background-image': 'url(' +file.downloadURL+ ')' }"></div>-->
-
-<!--	<form [formGroup]="fileItemForm" (ngSubmit)="saveFileItemForm()">-->
-<!--		<div class="form-group">-->
-<!--			<label class="form-group-label">Page name</label>-->
-<!--			<input-->
-<!--				class="form-input"-->
-<!--				type="text"-->
-<!--				formControlName="displayName"-->
-<!--				placeholder="A short declarative name would help..."-->
-<!--			>-->
-<!--		</div>-->
-<!--		<div class="flex-col-container item-actions">-->
-<!--			<button type="submit" class="btn success-btn form-btn">-->
-<!--				Update page name-->
-<!--			</button>-->
-
-<!--			<button type="button" class="btn danger-btn" (click)="onDeleteClicked(file)">-->
-<!--				Delete page-->
-<!--			</button>-->
-<!--		</div>-->
-<!--	</form>-->
-
-<!--</li>-->

@@ -1,6 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IFile } from '../../../../shared/interfaces/IFile';
+import { IFile, IFilePreview } from '../../../../shared/interfaces/IFile';
 
 @Component({
   selector: 'app-files-uploader',
@@ -8,11 +8,11 @@ import { IFile } from '../../../../shared/interfaces/IFile';
 })
 export class FilesUploaderComponent implements OnInit {
 
+	private filesToUpload: File[] = [];
+	public filesToPreview: IFilePreview[] = [];
+
 	public uploadFilesForm: FormGroup;
 	public isHovering: boolean;
-
-	public files: File[]|any = [1,2,3];
-
 
 	constructor(
 		private fb: FormBuilder,
@@ -20,20 +20,41 @@ export class FilesUploaderComponent implements OnInit {
 
   	ngOnInit(): void {
 		this.uploadFilesForm = this.fb.group({
-			confirmDelete: ['', Validators.required ] // Validators.pattern('I want to delete this project')
+			displayName: null
 		});
   	}
-
-
-	public submitUploadFilesForm(): void {
-
-	}
 
 	public toggleHover(isHovering: boolean): void {
 		this.isHovering = isHovering;
 	}
 
+	public submitUploadFilesForm(): void {
+
+	}
+
 	public onDrop(fileList: FileList): void {
-		console.log('files dropped');
+		console.log('files dropped', fileList);
+
+		for (let i = 0 ; i < fileList.length ; i++ ) {
+			console.log(this.isImage(fileList.item(i)));
+
+			if ( !this.isImage( fileList.item(i)) ) continue;
+
+			this.createFilePreview( fileList.item(i) );
+
+			// push into filesToUpload array
+		}
+	}
+
+	private createFilePreview(file: File): void {
+		const reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = (_event) => {
+			this.filesToPreview.push({base64: reader.result});
+		}
+	}
+
+	private isImage(file: File): boolean {
+		return RegExp('image/*').test(file.type);
 	}
 }

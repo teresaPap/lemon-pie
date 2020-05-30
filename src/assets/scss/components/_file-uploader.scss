@@ -1,8 +1,5 @@
 // file uploader
-.file-uploader-container {
-	display: block;
-	// height: 100%;
-}
+
 .dropzone {
 	display: flex;
 	align-items: center;
@@ -27,6 +24,11 @@
 
 progress::-webkit-progress-value {
 	transition: width 0.1s ease;
+}
+
+.file-preview-container {
+	max-height: 60vh;
+	overflow-y: scroll;
 }
 
 .file-preview {

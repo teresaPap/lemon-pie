@@ -14,4 +14,7 @@ export interface IFile {
 	links?: Array<firebase.firestore.DocumentReference> | IClickableArea[] ;
 }
 
-
+export interface IFilePreview {
+	displayName?: string;
+	base64?: any;
+}

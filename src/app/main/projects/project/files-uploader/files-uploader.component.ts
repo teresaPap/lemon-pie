@@ -40,18 +40,22 @@ export class FilesUploaderComponent implements OnInit {
 
 			if ( !this.isImage( fileList.item(i)) ) continue;
 
-			this.createFilePreview( fileList.item(i) );
+			this.addFilePreview( fileList.item(i) );
 
 			// push into filesToUpload array
 		}
 	}
 
-	private createFilePreview(file: File): void {
+	private addFilePreview(file: File): void {
 		const reader = new FileReader();
 		reader.readAsDataURL(file);
 		reader.onload = (_event) => {
-			this.filesToPreview.push({base64: reader.result});
+			this.filesToPreview.push({file: file, base64: reader.result});
 		}
+	}
+
+	public removeFilePreview(index: number): void {
+		this.filesToPreview.splice(index, 1);
 	}
 
 	private isImage(file: File): boolean {

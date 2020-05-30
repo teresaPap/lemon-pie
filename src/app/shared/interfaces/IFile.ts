@@ -17,4 +17,5 @@ export interface IFile {
 export interface IFilePreview {
 	displayName?: string;
 	base64?: any;
+	file: File
 }

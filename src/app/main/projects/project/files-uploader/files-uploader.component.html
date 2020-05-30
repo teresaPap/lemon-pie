@@ -20,14 +20,16 @@
 	</div>
 
 	<ul class="file-preview-container" *ngIf="filesToPreview.length">
-		<li class="file-list-item row" *ngFor="let file of filesToPreview">
+		<li class="file-list-item row" *ngFor="let file of filesToPreview, let i = index">
 			<img src="{{file.base64}}" alt="file preview" class="file-preview col-4">
 			<div class="form-group col-7">
-<!--				<label class="form-group-label">{{file}}</label>-->
+				<label class="form-group-label">{{i}}</label>
 				<input class="form-input" type="text" formControlName="displayName" placeholder="Enter a name for this file">
 			</div>
 			<div class="col-1">
-				<i class="fas fa-trash"></i>
+				<button type="button" (click)="removeFilePreview(i)">
+					<i class="fas fa-trash"></i>
+				</button>
 			</div>
 		</li>
 

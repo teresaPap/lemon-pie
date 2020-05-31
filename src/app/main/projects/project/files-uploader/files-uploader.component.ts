@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, FormArray, Validators} from '@angular/forms';
 import { IFile, IFilePreview } from '../../../../shared/interfaces/IFile';
 
 @Component({
@@ -9,7 +9,10 @@ import { IFile, IFilePreview } from '../../../../shared/interfaces/IFile';
 export class FilesUploaderComponent implements OnInit {
 
 	private filesToUpload: File[] = [];
-	public filesToPreview: IFilePreview[] = [];
+
+	public get filePreviews(): FormArray {
+		return this.uploadFilesForm.get('filePreviews') as FormArray;
+	}
 
 	public uploadFilesForm: FormGroup;
 	public isHovering: boolean;
@@ -20,7 +23,7 @@ export class FilesUploaderComponent implements OnInit {
 
   	ngOnInit(): void {
 		this.uploadFilesForm = this.fb.group({
-			displayName: null
+			filePreviews: this.fb.array([]),
 		});
   	}
 
@@ -29,20 +32,13 @@ export class FilesUploaderComponent implements OnInit {
 	}
 
 	public submitUploadFilesForm(): void {
-
+		console.log(this.uploadFilesForm.value, 'uploadFilesForm is valid: ' + this.uploadFilesForm.valid);
 	}
 
 	public onDrop(fileList: FileList): void {
-		console.log('files dropped', fileList);
-
 		for (let i = 0 ; i < fileList.length ; i++ ) {
-			console.log(this.isImage(fileList.item(i)));
-
 			if ( !this.isImage( fileList.item(i)) ) continue;
-
 			this.addFilePreview( fileList.item(i) );
-
-			// push into filesToUpload array
 		}
 	}
 
@@ -50,12 +46,20 @@ export class FilesUploaderComponent implements OnInit {
 		const reader = new FileReader();
 		reader.readAsDataURL(file);
 		reader.onload = (_event) => {
-			this.filesToPreview.push({file: file, base64: reader.result});
+			this.filePreviews.push( this.buildFilePreview(reader.result, file) )
 		}
 	}
 
+	private buildFilePreview(base64:any, file: File): FormGroup {
+		 return this.fb.group({
+			displayName: ['', Validators.required],
+			base64: base64,
+			file: file
+		});
+	}
+
 	public removeFilePreview(index: number): void {
-		this.filesToPreview.splice(index, 1);
+		this.filePreviews.removeAt(index);
 	}
 
 	private isImage(file: File): boolean {

@@ -2,29 +2,40 @@
 
 
 <form [formGroup]="uploadFilesForm" (ngSubmit)="submitUploadFilesForm()" class="form detail-form">
-	<h3 class="form-title col-12">Upload Files</h3>
 
+	<h3 class="form-title col-12">Upload Files</h3>
 	<div dropzone class="dropzone col-12"
 		 (hovered)="toggleHover($event)" (dropped)="onDrop($event)" [class.hovering]="isHovering">
 		<h4>drop files here</h4>
 	</div>
-
-
 	<div class="row">
 		<div class="col-4">
 			<h4>Preview</h4>
 		</div>
-		<div class="col-8">
+		<div class="col-1">
+			<h4>#</h4>
+		</div>
+		<div class="col-7">
 			<h4>Display name</h4>
 		</div>
 	</div>
 
-	<ul class="file-preview-container" *ngIf="filesToPreview.length">
-		<li class="file-list-item row" *ngFor="let file of filesToPreview, let i = index">
-			<img src="{{file.base64}}" alt="file preview" class="file-preview col-4">
+	<ul formArrayName="filePreviews"
+		class="file-preview-container">
+
+		<li [formGroupName]="i"
+			*ngFor="let file of filePreviews.controls; let i=index"
+			class="file-list-item row">
+
+			<img [src]="file.get('base64').value" alt="file preview" class="file-preview col-4">
 			<div class="form-group col-7">
-				<label class="form-group-label">{{i}}</label>
-				<input class="form-input" type="text" formControlName="displayName" placeholder="Enter a name for this file">
+				<label
+					class="form-group-label">{{i+1}}</label>
+				<input
+					formControlName="displayName"
+					type="text"
+					placeholder="Enter a name for this file"
+					class="form-input">
 			</div>
 			<div class="col-1">
 				<button type="button" (click)="removeFilePreview(i)">
@@ -32,7 +43,6 @@
 				</button>
 			</div>
 		</li>
-
 	</ul>
 
 

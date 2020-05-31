@@ -30,9 +30,11 @@
 			<img [src]="file.get('base64').value" alt="file preview" class="file-preview col-4">
 			<div class="form-group col-7">
 				<label
+					for="{{'fileNo'+i}}"
 					class="form-group-label">{{i+1}}</label>
 				<input
 					formControlName="displayName"
+					id="{{'fileNo'+i}}"
 					type="text"
 					placeholder="Enter a name for this file"
 					class="form-input">
@@ -42,10 +44,9 @@
 					<i class="fas fa-trash"></i>
 				</button>
 			</div>
+			<p *ngIf="file.invalid && !file.pristine || uploadFilesForm.errors && file.invalid"
+			   class="form-inline-error col-12">Please enter a name for this file</p>
 		</li>
 	</ul>
-
-
-	<p class="form-error col-12" *ngIf="uploadFilesForm.errors">{{uploadFilesForm.errors.message}}</p>
 	<button type="submit" class="btn success-btn form-btn">Save</button>
 </form>

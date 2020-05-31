@@ -8,14 +8,12 @@ import { IFile, IFilePreview } from '../../../../shared/interfaces/IFile';
 })
 export class FilesUploaderComponent implements OnInit {
 
-	private filesToUpload: File[] = [];
+	public uploadFilesForm: FormGroup;
+	public isHovering: boolean;
 
 	public get filePreviews(): FormArray {
 		return this.uploadFilesForm.get('filePreviews') as FormArray;
 	}
-
-	public uploadFilesForm: FormGroup;
-	public isHovering: boolean;
 
 	constructor(
 		private fb: FormBuilder,
@@ -31,10 +29,6 @@ export class FilesUploaderComponent implements OnInit {
 		this.isHovering = isHovering;
 	}
 
-	public submitUploadFilesForm(): void {
-		console.log(this.uploadFilesForm.value, 'uploadFilesForm is valid: ' + this.uploadFilesForm.valid);
-	}
-
 	public onDrop(fileList: FileList): void {
 		for (let i = 0 ; i < fileList.length ; i++ ) {
 			if ( !this.isImage( fileList.item(i)) ) continue;
@@ -42,12 +36,19 @@ export class FilesUploaderComponent implements OnInit {
 		}
 	}
 
+	public submitUploadFilesForm(): void {
+		if (this.uploadFilesForm.invalid) {
+			this.uploadFilesForm.setErrors({message: 'Please fill in a display name for all the files.'});
+			return;
+		}
+		console.log(this.uploadFilesForm.value, 'uploadFilesForm is valid: ' + this.uploadFilesForm.valid);
+	}
+
 	private addFilePreview(file: File): void {
 		const reader = new FileReader();
 		reader.readAsDataURL(file);
-		reader.onload = (_event) => {
-			this.filePreviews.push( this.buildFilePreview(reader.result, file) )
-		}
+		reader.onload = (_event) =>
+			this.filePreviews.push( this.buildFilePreview(reader.result, file) );
 	}
 
 	private buildFilePreview(base64:any, file: File): FormGroup {

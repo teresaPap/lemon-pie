@@ -33,6 +33,8 @@ progress::-webkit-progress-value {
 
 .file-preview {
 	height: 10vh;
-	width: 300px;
 	overflow: hidden;
+	img {
+		height: inherit;
+	}
 }

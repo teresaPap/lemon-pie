@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, FormArray, Validators} from '@angular/forms';
-import { IFile, IFilePreview } from '../../../../shared/interfaces/IFile';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
+import { forkJoin } from 'rxjs';
+import { FilesService } from '../../../../shared/data-services/files.service';
+import { IProjectResolved } from '../../../../shared/interfaces/IProject';
+
 
 @Component({
   selector: 'app-files-uploader',
@@ -17,6 +22,9 @@ export class FilesUploaderComponent implements OnInit {
 
 	constructor(
 		private fb: FormBuilder,
+		private route: ActivatedRoute,
+		private notifier: NotifierService,
+		public fileCtrl: FilesService,
 	) { }
 
   	ngOnInit(): void {
@@ -41,7 +49,26 @@ export class FilesUploaderComponent implements OnInit {
 			this.uploadFilesForm.setErrors({message: 'Please fill in a display name for all the files.'});
 			return;
 		}
-		console.log(this.uploadFilesForm.value, 'uploadFilesForm is valid: ' + this.uploadFilesForm.valid);
+		const resolvedData: IProjectResolved = this.route.parent.snapshot.data['resolvedData'];
+		const projectId: string = resolvedData.project.id;
+
+		const filesToUpload = this.filePreviews.controls.map( file => this.fileCtrl.create({
+			name: file.get('name').value,
+			base64: file.get('base64').value
+		}, projectId ));
+
+		forkJoin(filesToUpload).subscribe(
+			res => {
+				this.notifier.notify('success', `Files uploaded successfully`);
+				this.filePreviews.clear();
+				this.uploadFilesForm.reset();
+				console.log(res);
+			},
+			err => {
+				this.notifier.notify('error', `Something went wrong. ${err.message}`);
+				console.log(err)
+			}
+		);
 	}
 
 	private addFilePreview(file: File): void {
@@ -53,9 +80,8 @@ export class FilesUploaderComponent implements OnInit {
 
 	private buildFilePreview(base64:any, file: File): FormGroup {
 		 return this.fb.group({
-			displayName: ['', Validators.required],
+			name: ['', Validators.required],
 			base64: base64,
-			file: file
 		});
 	}
 
@@ -66,4 +92,5 @@ export class FilesUploaderComponent implements OnInit {
 	private isImage(file: File): boolean {
 		return RegExp('image/*').test(file.type);
 	}
+
 }

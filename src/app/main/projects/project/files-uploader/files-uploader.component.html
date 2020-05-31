@@ -8,45 +8,52 @@
 		 (hovered)="toggleHover($event)" (dropped)="onDrop($event)" [class.hovering]="isHovering">
 		<h4>drop files here</h4>
 	</div>
-	<div class="row">
-		<div class="col-4">
-			<h4>Preview</h4>
-		</div>
-		<div class="col-1">
-			<h4>#</h4>
-		</div>
-		<div class="col-7">
-			<h4>Display name</h4>
-		</div>
-	</div>
 
-	<ul formArrayName="filePreviews"
-		class="file-preview-container">
-
-		<li [formGroupName]="i"
-			*ngFor="let file of filePreviews.controls; let i=index"
-			class="file-list-item row">
-
-			<img [src]="file.get('base64').value" alt="file preview" class="file-preview col-4">
-			<div class="form-group col-7">
-				<label
-					for="{{'fileNo'+i}}"
-					class="form-group-label">{{i+1}}</label>
-				<input
-					formControlName="displayName"
-					id="{{'fileNo'+i}}"
-					type="text"
-					placeholder="Enter a name for this file"
-					class="form-input">
+	<ng-container *ngIf="filePreviews.length">
+		<div class="row">
+			<div class="col-4">
+				<h4>Preview</h4>
 			</div>
 			<div class="col-1">
-				<button type="button" (click)="removeFilePreview(i)">
-					<i class="fas fa-trash"></i>
-				</button>
+				<h4>#</h4>
 			</div>
-			<p *ngIf="file.invalid && !file.pristine || uploadFilesForm.errors && file.invalid"
-			   class="form-inline-error col-12">Please enter a name for this file</p>
-		</li>
-	</ul>
-	<button type="submit" class="btn success-btn form-btn">Save</button>
+			<div class="col-7">
+				<h4>Display name</h4>
+			</div>
+		</div>
+
+		<ul formArrayName="filePreviews"
+			class="file-preview-container">
+
+			<li [formGroupName]="i"
+				*ngFor="let file of filePreviews.controls; let i=index"
+				class="file-list-item row">
+
+				<div class="file-preview col-4">
+					<img [src]="file.get('base64').value" alt="file preview">
+				</div>
+
+				<div class="form-group col-7">
+					<label
+						for="{{'fileNo'+i}}"
+						class="form-group-label">{{i+1}}</label>
+					<input
+						formControlName="name"
+						id="{{'fileNo'+i}}"
+						type="text"
+						placeholder="Enter a name for this file"
+						class="form-input">
+				</div>
+				<div class="col-1">
+					<button type="button" (click)="removeFilePreview(i)">
+						<i class="fas fa-trash"></i>
+					</button>
+				</div>
+				<p *ngIf="file.invalid && !file.pristine || uploadFilesForm.errors && file.invalid"
+				   class="form-inline-error col-12">Please enter a name for this file</p>
+			</li>
+		</ul>
+		<button type="submit" class="btn success-btn form-btn">Save</button>
+	</ng-container>
+
 </form>

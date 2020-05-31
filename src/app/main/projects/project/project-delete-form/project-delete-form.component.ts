@@ -34,7 +34,7 @@ export class ProjectDeleteFormComponent implements OnInit {
 			return;
 		}
 		const resolvedData: IProjectResolved = this.route.parent.snapshot.data['resolvedData'];
-		const projectId = resolvedData.project.id;
+		const projectId: string = resolvedData.project.id;
 
 		this.projectCtrl.delete(projectId).subscribe( res => {
 			this.notifier.notify('success', `Project was deleted successfully`);

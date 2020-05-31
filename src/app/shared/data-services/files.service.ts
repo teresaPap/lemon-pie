@@ -6,8 +6,8 @@ import { Observable, forkJoin, from, of } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
 import { FirebaseApiService } from '../../core/services/firebase-api.service';
 import { StorageService } from '../services/storage.service';
-import { IFile } from '../interfaces/IFile';
-import { IClickableArea, ILink } from '../interfaces/ILink';
+import { IFilePreview } from '../interfaces/IFile';
+import { IClickableArea } from '../interfaces/ILink';
 
 @Injectable()
 export class FilesService {
@@ -20,13 +20,8 @@ export class FilesService {
 	) { }
 
 
-	public create(file: File, projectId: string): Observable<any> {
-		return this.apiService.storeFile(file,`files/${projectId}`).pipe(
-			catchError( err => err ),
-			switchMap( (fileData: IFile) =>
-				this.apiService.createDocument(fileData, 'files', `projects/${projectId}`)
-			)
-		);
+	public create(file: IFilePreview, projectId: string): Observable<any> {
+		return this.apiService.createDocument(file, 'files', `projects/${projectId}`);
 	}
 
 	public readAllFiles(projectId: string): Observable<any[]> {
@@ -77,31 +72,31 @@ export class FilesService {
 	}
 
 	// #region - File Update Functions
-	public saveFileLink(area: IClickableArea) {
-		const activeFile: IFile = this.storage.load('activeFile');
-		return this.apiService.createDocument(area,'links',`files/${activeFile.id}` )
-	}
-
-	public getFileLinks(fileId: string): Observable<IClickableArea[]> {
-		return this.firestore.doc(`files/${fileId}`).get().pipe(
-			map( (file: firebase.firestore.DocumentData) => {
-				if ( !file.data().references ) throw 'No links for this file';
-				return file.data().references
-			}),
-			switchMap( (links: firebase.firestore.DocumentReference[]) => {
-				const referencesToGet = [];
-				links.forEach((documentRef: firebase.firestore.DocumentReference) => {
-					referencesToGet.push(this.firestore.doc(documentRef.path).get())
-				});
-				return forkJoin(referencesToGet);
-			}),
-			map( (links: firebase.firestore.DocumentData) => {
-				const linksData = [];
-				links.forEach(documentSnapshot => linksData.push({id: documentSnapshot.id, ...documentSnapshot.data()}));
-				return linksData;
-			})
-		);
-	}
+	// public saveFileLink(area: IClickableArea) {
+	// 	const activeFile: IFile = this.storage.load('activeFile');
+	// 	return this.apiService.createDocument(area,'links',`files/${activeFile.id}` )
+	// }
+	//
+	// public getFileLinks(fileId: string): Observable<IClickableArea[]> {
+	// 	return this.firestore.doc(`files/${fileId}`).get().pipe(
+	// 		map( (file: firebase.firestore.DocumentData) => {
+	// 			if ( !file.data().references ) throw 'No links for this file';
+	// 			return file.data().references
+	// 		}),
+	// 		switchMap( (links: firebase.firestore.DocumentReference[]) => {
+	// 			const referencesToGet = [];
+	// 			links.forEach((documentRef: firebase.firestore.DocumentReference) => {
+	// 				referencesToGet.push(this.firestore.doc(documentRef.path).get())
+	// 			});
+	// 			return forkJoin(referencesToGet);
+	// 		}),
+	// 		map( (links: firebase.firestore.DocumentData) => {
+	// 			const linksData = [];
+	// 			links.forEach(documentSnapshot => linksData.push({id: documentSnapshot.id, ...documentSnapshot.data()}));
+	// 			return linksData;
+	// 		})
+	// 	);
+	// }
 	// #endregion
 
 
@@ -113,12 +108,6 @@ export class FilesService {
 			}
 		});
 		return index;
-	}
-
-	private getFile(ref) {
-		return this.firestore.doc(ref).get().pipe(
-			map(file => file.data())
-		);
 	}
 
 }

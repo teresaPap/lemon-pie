@@ -10,9 +10,8 @@ export interface IProject {
 }
 
 export interface IProjectPreview extends IProject {
-	// added afterwards
-	preview?: Observable<firebase.firestore.DocumentData>;
-	previewSrc?: string;
+	previewSource?: Observable<any>;
+	previewImage: string;
 }
 
 export interface IProjectResolved {
@@ -21,6 +20,6 @@ export interface IProjectResolved {
 }
 
 export interface IProjectListResolved {
-	projects: IProject[];
+	projects: IProjectPreview[];
 	error?: any;
 }

@@ -1,9 +1,9 @@
-import {Injectable} from "@angular/core";
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from "@angular/router";
-import {IProjectListResolved, IProjectResolved} from "../../../shared/interfaces/IProject";
-import {ProjectsService} from "../../../shared/data-services/projects.service";
-import {Observable, of} from "rxjs";
-import {catchError, map} from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
+import { IProjectListResolved } from '../../../shared/interfaces/IProject';
+import { ProjectsService } from '../../../shared/data-services/projects.service';
 
 
 @Injectable({

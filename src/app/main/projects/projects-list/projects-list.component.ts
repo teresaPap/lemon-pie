@@ -12,7 +12,6 @@ import {IProject, IProjectPreview, IProjectListResolved} from '../../../shared/i
 export class ProjectsListComponent implements OnInit {
 
 	public projects: IProjectPreview[];
-	public showCreateForm = false;
 
 	constructor(
 		private route: ActivatedRoute,
@@ -22,18 +21,12 @@ export class ProjectsListComponent implements OnInit {
 
 	ngOnInit() {
 		const resolvedData: IProjectListResolved = this.route.snapshot.data['resolvedData'];
-		console.log(resolvedData);
-		this.populateProjects(resolvedData.projects);
+		this.projects = resolvedData.projects;
 	}
 
 	navToProjectDetails(project: IProject) {
 		this.setActiveProject(project);
 		this.router.navigate([`projects/${project.id}`]);
-		// this.router.navigate([`projects/lalala`]);
-	}
-
-	public toggleCreateProjectForm(isVisible: boolean) {
-		this.showCreateForm = isVisible;
 	}
 
 	private setActiveProject(project) {
@@ -43,14 +36,4 @@ export class ProjectsListComponent implements OnInit {
 		});
 	}
 
-	private populateProjects(projects): void {
-		this.projects = projects;
-		for ( const p of projects ) {
-			if (p.preview) {
-				p.preview.subscribe( res => p.previewSrc = `url(${res.downloadURL})` );
-			} else {
-				p.previewSrc = 'url("https://www.jobbnorge.no/search/img/no-hits.png")';
-			}
-		}
-	}
 }

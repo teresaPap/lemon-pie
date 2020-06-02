@@ -4,7 +4,7 @@ import { IClickableArea } from './ILink';
 
 
 export interface IFile extends IFilePreview {
-	id: string; // NOTE: It is optional only because it is generated asyncronusly.
+	id: string; // NOTE: It is optional only because it is generated asynchronously.
 	links?: Array<firebase.firestore.DocumentReference> | IClickableArea[] ;
 }
 

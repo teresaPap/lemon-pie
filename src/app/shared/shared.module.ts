@@ -7,7 +7,6 @@ import { NavComponent } from './components/nav/nav.component';
 import { DropzoneDirective } from './directives/dropzone.directive';
 import { FileUploaderComponent } from './components/file-uploader/file-uploader.component';
 import { AddProjectComponent } from './components/add-project/add-project.component';
-import { FilesService } from './data-services/files.service';
 import { StorageService } from './services/storage.service';
 import { ButtonToggleComponent } from './components/button-toggle/button-toggle.component';
 import { StarBadgeComponent } from './components/star-badge/star-badge.component';
@@ -51,7 +50,6 @@ import {SelectionMenuComponent} from "./components/selection-menu/selection-menu
 		DropzoneDirective,
 	],
 	providers: [
-		FilesService,
 		StorageService
 	]
 })

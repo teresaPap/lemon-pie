@@ -16,6 +16,7 @@ export interface IProjectPreview extends IProject {
 
 export interface IProjectResolved {
 	project: IProject;
+	files: IFile[];
 	error?: any;
 }
 

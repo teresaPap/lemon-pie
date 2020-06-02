@@ -10,6 +10,8 @@ import {IFile} from "../../../../shared/interfaces/IFile";
 })
 export class FilesListComponent implements OnInit {
 
+	public files: IFile[] = [];
+
   	constructor(
 		private route: ActivatedRoute,
 		private fileCtrl: FilesService
@@ -17,9 +19,9 @@ export class FilesListComponent implements OnInit {
 
   	ngOnInit(): void {
 		const resolvedData: IProjectResolved = this.route.parent.snapshot.data['resolvedData'];
-		const files: IFile[] = resolvedData.files;
+		this.files = resolvedData.files;
 
-		console.log(files);
+		console.log(this.files);
   	}
 
 }

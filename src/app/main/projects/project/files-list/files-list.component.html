@@ -1,1 +1,12 @@
-<p>files-list works!</p>
+<div class="row">
+	<div *ngFor="let file of files" class="col-4">
+		<div class="gallery-item">
+			<div class="gallery-item-preview">
+				<img [src]="file.base64" alt="File preview">
+			</div>
+			<div class="gallery-item-details">
+				{{file.name}}
+			</div>
+		</div>
+	</div>
+</div>

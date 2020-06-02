@@ -2,8 +2,10 @@
 
 <div class="flex-container">
 	<div *ngFor="let project of projects" class="item-preview-container">
-		<div class="item-preview" [ngStyle]="{'background-image': project.previewImage }">
-		</div>
+		<img
+			[src]="project.previewImage"
+			alt="Project Preview Image"
+			class="item-preview">
 		<div class="item-actions">
 			<button type="button" class="transparent-btn" (click)="navToProjectDetails(project)">View Project</button>
 		</div>

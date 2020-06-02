@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import {BehaviorSubject, forkJoin, Observable, of, Subject} from 'rxjs';
-import {concatMap, map, mergeMap, switchMap, tap} from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { AuthService } from '../../core/services/auth.service';
 import { FirebaseApiService } from '../../core/services/firebase-api.service';
-import {IProject, IProjectPreview} from '../interfaces/IProject';
+import { IProject, IProjectPreview } from '../interfaces/IProject';
 
 
 @Injectable({
@@ -27,9 +27,7 @@ export class ProjectsService {
 
 
 	public readAllProjectsForActiveUser(): Observable<IProjectPreview[]|any> {
-		return this.apiService.readDocumentChildReferences(`users/${this.uid}`).pipe(
-			// TODO: populate project preview image
-		);
+		return this.apiService.readDocumentChildReferences(`users/${this.uid}`);
 	}
 
 	public changeActiveProject(activeProject: IProject): void {

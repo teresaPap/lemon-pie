@@ -22,26 +22,8 @@ $transition-easing: cubic-bezier(0.075, 0.82, 0.165, 1);
 	position: relative;
 
 	.item-preview {
-		position: absolute;
-		top:0;
-		left: 0;
-		bottom: 4em;
-		right: 0;
-
-		border: 1px $gallery solid;
-		border-bottom: none;
-		border-top-left-radius: 4px;
-		border-top-right-radius: 4px;
-
-		background-color: $gallery;
-		background-position: center;
-		background-size: cover;
-
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		transition: filter $transition-delay $transition-easing;
+		min-width: 280px;
+		min-height: 200px;
 	}
 
 	.item-actions {

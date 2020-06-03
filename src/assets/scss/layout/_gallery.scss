@@ -126,7 +126,12 @@ $transition-easing: cubic-bezier(0.075, 0.82, 0.165, 1);
 	.gallery-item-details {
 		background-color: $theme-light;
 		padding: 1rem;
-		text-align: center;
+		i {
+			float: right;
+			&:hover {
+				color: $theme-accent;
+			}
+		}
 	}
 
 	&:hover {

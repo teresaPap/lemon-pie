@@ -6,8 +6,7 @@ import { Observable, forkJoin, from, of } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
 import { FirebaseApiService } from '../../core/services/firebase-api.service';
 import { StorageService } from '../services/storage.service';
-import {IFile, IFilePreview} from '../interfaces/IFile';
-import { IClickableArea } from '../interfaces/ILink';
+import { IFile, IFilePreview } from '../interfaces/IFile';
 
 @Injectable({
 	providedIn: 'root'
@@ -38,7 +37,7 @@ export class FilesService {
 		return of();
 	}
 
-	public delete(fileId: string, fileName: string, projectId: string): Observable<any> {
+	public delete(fileId: string, projectId: string): Observable<any> {
 		return of();
 	}
 

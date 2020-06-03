@@ -68,7 +68,7 @@ export class FirebaseApiService {
 			map( (documentData: firebase.firestore.DocumentData) => documentData.references ),
 			switchMap((refs: firebase.firestore.DocumentReference[]) => defer( () => (refs && !!refs.length)
 				? forkJoin( refs.map(ref => ref.get()) )
-				: of('No references array found'),
+				: of('This document has no child references'),
 			)),
 			switchMap( (res: firebase.firestore.DocumentSnapshot[] | string) =>
 				of(typeof res !== 'string' ? res.map(snapshot => ({id: snapshot.id, ...snapshot.data()}) ) : [] ),
@@ -107,10 +107,10 @@ export class FirebaseApiService {
 			map((snapshot: firebase.firestore.DocumentSnapshot) => snapshot.get('references')),
 			switchMap((refs: firebase.firestore.DocumentReference[]) => defer( () => (refs && !!refs.length)
 				? forkJoin( refs.map(ref => ref.delete()) )
-				: of('No references array found'),
+				: of('This document has no child references'),
 			)),
 			catchError(err => {
-				console.error('MERGE MAP ERROR', err);
+				console.error(err);
 				return of(err);
 			})
 		)

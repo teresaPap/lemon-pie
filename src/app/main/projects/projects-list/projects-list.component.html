@@ -1,25 +1,27 @@
-<h2 class="page-header">My Active Projects</h2>
+<h2 class="page-header">My Projects</h2>
 
-<div class="flex-container">
-	<div *ngFor="let project of projects" class="item-preview-container">
-		<div class="item-preview">
-			<img
-				[src]="project.previewImage"
-				alt="Project preview">
-		</div>
-		<div class="item-actions">
-			<button type="button" class="transparent-btn" (click)="navToProjectDetails(project)">View Project</button>
-		</div>
-		<div class="item-description">
-			<label>{{project.name}}</label>
-			<br>
-			<p>{{project.description}}</p>
+<div class="row content-center">
+	<div class="col-2">
+		<div class="gallery-item create-new-item" [routerLink]="'new'">
+			<i class="fa fa-plus"></i>
+			<p>Create new project</p>
 		</div>
 	</div>
+	<div *ngFor="let project of projects" class="col-2">
+		<div class="gallery-item">
+			<div class="gallery-item-preview">
+				<img [src]="project.previewImage" alt="Project preview">
+			</div>
 
-	<div class="item-preview-container create-new-item" [routerLink]="'new'">
-		<i class="fa fa-plus"></i>
-		<p>Create new project</p>
+			<div class="gallery-item-details">
+				<h3>{{project.name}}</h3>
+				<p>{{project.description}}</p>
+			</div>
+
+			<div class="gallery-item-actions">
+				<button type="button" class="btn small-btn info-btn" (click)="navToProjectDetails(project)">View Project</button>
+			</div>
+		</div>
 	</div>
 </div>
 

@@ -1,99 +1,6 @@
 $transition-delay: 500ms;
 $transition-easing: cubic-bezier(0.075, 0.82, 0.165, 1);
 
-.flex-container {
-	display: flex;
-	flex-flow: row wrap;
-	justify-content: center;
-}
-
-.item-preview-container {
-	height: 200px;
-	width: 280px;
-	overflow: hidden;
-
-	border-radius: 4px;
-	background-color: $theme-light;
-
-	margin: 20px;
-
-	display: flex;
-	flex-direction: column;
-	position: relative;
-
-	.item-preview {
-		min-width: 280px;
-		min-height: 10rem;
-		overflow: hidden;
-		position: relative;
-		img {
-			position: absolute;
-			max-width: 100%;
-			height: auto;
-		}
-	}
-
-	.item-actions {
-		position: absolute;
-		top:0;
-		left: 0;
-		bottom: 4em;
-		right: 0;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		opacity: 0;
-		transition: opacity $transition-delay $transition-easing;
-	}
-
-	.item-description {
-		position: absolute;
-		left: 0;
-		bottom: 0;
-		right: 0;
-
-		padding: 10px;
-		height: 3em;
-		background-color: $theme-light;
-		border: 1px $gallery solid;
-		border-bottom-left-radius: 4px;
-		border-bottom-right-radius: 4px;
-
-		text-overflow: ellipsis;
-
-		label {
-			// TODO: set max dimentions and text style
-			font-size: 1.2em;
-		}
-		p {
-			// TODO: set max dimentions and text style
-			height: 2.5em;
-			line-height: 2.5em;
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-		}
-	}
-
-	transition: box-shadow $transition-delay $transition-easing;
-	transition: transform $transition-delay $transition-easing;
-
-	&:hover {
-		box-shadow: 0px 3px 10px 2px rgba(0,0,0,0.2);
-		transform: scale(1.05);
-
-		.item-preview {
-			filter: brightness(60%);
-		}
-		.item-actions {
-			opacity: 1;
-		}
-	}
-
-}
-
-// new gallery
 
 .gallery-item {
 	width: 280px;
@@ -110,7 +17,6 @@ $transition-easing: cubic-bezier(0.075, 0.82, 0.165, 1);
 	transition: box-shadow $transition-delay $transition-easing;
 	transition: transform $transition-delay $transition-easing;
 
-
 	.gallery-item-preview {
 		min-width: 280px;
 		min-height: 10rem;
@@ -126,11 +32,19 @@ $transition-easing: cubic-bezier(0.075, 0.82, 0.165, 1);
 	.gallery-item-details {
 		background-color: $theme-light;
 		padding: 1rem;
+
 		i {
 			float: right;
 			&:hover {
 				color: $theme-accent;
 			}
+		}
+	}
+
+	.gallery-item-actions {
+		padding: 0 1rem 1rem;
+		button {
+			float: right;
 		}
 	}
 
@@ -143,4 +57,16 @@ $transition-easing: cubic-bezier(0.075, 0.82, 0.165, 1);
 		//}
 	}
 
+}
+
+.create-new-item {
+	height: 14rem;
+	align-self: baseline;
+	align-items: center;
+	justify-content: center;
+	border: 1px $gallery solid;
+	i {
+		font-size: 2em;
+		margin-bottom: 1em;
+	}
 }

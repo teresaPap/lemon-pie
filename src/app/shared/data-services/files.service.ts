@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
-import * as firebase from 'firebase/app';
-import {Observable, forkJoin, from, of, BehaviorSubject} from 'rxjs';
-import { tap, switchMap, catchError } from 'rxjs/operators';
+import { Observable, of, BehaviorSubject} from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { FirebaseApiService } from '../../core/services/firebase-api.service';
 import { StorageService } from '../services/storage.service';
 import { IFile, IFilePreview } from '../interfaces/IFile';
@@ -26,7 +25,6 @@ export class FilesService {
 	) { }
 
 	public changeActiveFilesList(): void {
-		// emit this.filesList
 		this.activeFilesListSource.next(this.filesList);
 	}
 

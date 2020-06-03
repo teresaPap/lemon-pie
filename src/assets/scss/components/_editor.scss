@@ -1,17 +1,5 @@
 
 
-.editor-area {
-
-	padding: 20px 0px 0px 20px;
-
-	background: url('assets/img/pixil-frame-0.png') repeat bottom left;
-	height: calc(100vh - #{$nav-height});
-	width: 100vw;
-	overflow: scroll;
-
-	position: fixed;
-	left: $aside-width;
-}
 
 .canvas-container {
 	position: relative;

@@ -1,6 +1,27 @@
-<div class="row">
-	<div class="col-12 text-center">
-		<h4 class="page-header">No files have been uploaded yet...</h4>
-		<a [routerLink]="'../files-add'">Upload files</a>
+
+<div class="flow-edit-page-container">
+	<div class="row editor-area">
+		<app-editor [imgUrl]="activeFile.base64"></app-editor>
+	</div>
+
+	<div class="row navigator-area">
+		<div *ngIf="!files.length" class="col-12 text-center">
+			<h4 class="page-header">No files have been uploaded yet...</h4>
+			<a [routerLink]="'../files-add'">Upload files</a>
+		</div>
+
+		<div *ngFor="let file of files">
+			<div (click)="changeActiveFile(file)" class="gallery-item small" [ngClass]="{'selected': activeFile.id === file.id }">
+				<div class="gallery-item-preview">
+					<img [src]="file.base64" alt="File preview">
+				</div>
+				<div class="gallery-item-details">
+					{{file.name}}
+				</div>
+			</div>
+		</div>
+
 	</div>
 </div>
+
+

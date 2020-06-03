@@ -54,7 +54,7 @@ export class ProjectsService {
 	}
 
 	public delete(projectId: string) {
-		return this.apiService.deleteDocument(`projects/${projectId}`).pipe(
+		return this.apiService.deleteDocument(`projects/${projectId}`, `users/${this.uid}`).pipe(
 			tap( () => this.changeActiveProject({} as IProject) )
 		);
 	}

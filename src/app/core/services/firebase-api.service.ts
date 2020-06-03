@@ -84,11 +84,16 @@ export class FirebaseApiService {
 
 
 	// DELETE
-	// TODO: also clean up unused references
 
-	public deleteDocument(docPath: string): Observable<string> {
+	public deleteDocument(docPath: string, parentDocPath?: string): Observable<string> {
 		return this.deleteDocumentChildReferences(docPath).pipe(
 			switchMap(() => this.firestore.doc(docPath).delete() ),
+			tap(() => iif(() => !!parentDocPath,
+					this.updateDocument(parentDocPath, {
+						'references': firebase.firestore.FieldValue.arrayRemove( this.firestore.doc(docPath).ref )
+					})
+				),
+			),
 			catchError(err => {
 				console.error(err);
 				return of('Delete failed')

@@ -57,7 +57,7 @@ export class FilesService {
 	}
 
 	public delete(fileId: string, projectId: string): Observable<any> {
-		return this.apiService.deleteDocument(`files/${fileId}`).pipe(
+		return this.apiService.deleteDocument(`files/${fileId}`, `projects/${projectId}`).pipe(
 			tap( res => {
 				const index = this.filesList.findIndex(file => file.id = fileId);
 				this.filesList.splice(index,1);

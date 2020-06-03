@@ -20,10 +20,14 @@ export class FilesListComponent implements OnInit {
 	) { }
 
   	ngOnInit(): void {
-		const resolvedData: IProjectResolved = this.route.parent.snapshot.data['resolvedData'];
-		this.files = resolvedData.files;
+		// const resolvedData: IProjectResolved = this.route.parent.snapshot.data['resolvedData'];
+		// this.files = resolvedData.files;
+		//
+		// console.log(this.files);
 
-		console.log(this.files);
+		this.fileCtrl.activeFilesListChanges$.subscribe( (filesList: IFile[]) => {
+			this.files = filesList;
+		});
   	}
 
 	public deleteFile(fileId: string): void {

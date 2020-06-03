@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { forkJoin } from 'rxjs';
 import { FilesService } from '../../../../shared/data-services/files.service';
@@ -25,6 +25,7 @@ export class FilesUploaderComponent implements OnInit {
 		private route: ActivatedRoute,
 		private notifier: NotifierService,
 		public fileCtrl: FilesService,
+		public router: Router,
 	) { }
 
   	ngOnInit(): void {
@@ -60,9 +61,8 @@ export class FilesUploaderComponent implements OnInit {
 		forkJoin(filesToUpload).subscribe(
 			res => {
 				this.notifier.notify('success', `Files uploaded successfully`);
-				this.filePreviews.clear();
-				this.uploadFilesForm.reset();
 				console.log(res);
+				this.router.navigate(['../files-inspect'],{relativeTo: this.route});
 			},
 			err => {
 				this.notifier.notify('error', `Something went wrong. ${err.message}`);

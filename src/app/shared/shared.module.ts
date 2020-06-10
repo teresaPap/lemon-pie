@@ -5,8 +5,6 @@ import { RouterModule } from '@angular/router';
 import { CoreModule } from '../core/core.module';
 import { NavComponent } from './components/nav/nav.component';
 import { DropzoneDirective } from './directives/dropzone.directive';
-import { FileUploaderComponent } from './components/file-uploader/file-uploader.component';
-import { AddProjectComponent } from './components/add-project/add-project.component';
 import { StorageService } from './services/storage.service';
 import { ButtonToggleComponent } from './components/button-toggle/button-toggle.component';
 import { StarBadgeComponent } from './components/star-badge/star-badge.component';
@@ -19,8 +17,6 @@ import {SelectionMenuComponent} from "./components/selection-menu/selection-menu
 	declarations: [
 		NavComponent,
 		DropzoneDirective,
-		FileUploaderComponent,
-		AddProjectComponent,
 		ButtonToggleComponent,
 		StarBadgeComponent,
 		LemonPieLogoComponent,
@@ -39,8 +35,6 @@ import {SelectionMenuComponent} from "./components/selection-menu/selection-menu
 		CommonModule,
 		ReactiveFormsModule,
 		NavComponent,
-		FileUploaderComponent,
-		AddProjectComponent,
 		ButtonToggleComponent,
 		StarBadgeComponent,
 		LemonPieLogoComponent,

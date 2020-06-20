@@ -13,12 +13,17 @@ import { ICanvasPosition } from '../../interfaces/IEditor';
 export class EditorComponent implements AfterViewInit, OnChanges {
 	@Input() imgUrl: string;
 	@Input() showLinks?: boolean;
-	@Input() mode?: 'preview'|'edit' = 'edit';
-	@Output('onSaveArea') onSaveArea?: EventEmitter<IClickableArea> = new EventEmitter<IClickableArea>();
-	@Output('onLinkAreaClicked') onLinkAreaClicked?: EventEmitter<string> = new EventEmitter<string>(); // destination file id
+
+	@Output('onAreaSaved') onAreaSaved?: EventEmitter<IClickableArea> = new EventEmitter<IClickableArea>();
+
 	@ViewChild('canvasBg') public canvasBg: ElementRef;
 	@ViewChild('canvas') public canvas: ElementRef;
 	@ViewChild('selectionMenu') public selectionMenu: ElementRef;
+
+
+	@Input() mode?: 'preview'|'edit' = 'edit';
+	@Output('onLinkAreaClicked') onLinkAreaClicked?: EventEmitter<string> = new EventEmitter<string>(); // destination file id
+
 
 	private cx: CanvasRenderingContext2D;
 	private editor: HTMLCanvasElement;
@@ -69,7 +74,7 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 
 	public saveLink(selectedFileId: string): void {
 		this.canvasSelection.destinationFileId = selectedFileId;
-		this.onSaveArea.emit(this.canvasSelection);
+		this.onAreaSaved.emit(this.canvasSelection);
 		this.closeSelectionMenu();
 	}
 
@@ -98,12 +103,14 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 	// see also https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
 
 	private watchCanvasEvents() {
+		console.log('Watching canvas evens');
 		const mouseDown$ = fromEvent(this.editor, 'mousedown');
 		const mouseUp$ = fromEvent(this.editor, 'mouseup');
 		const mouseMove$ = fromEvent(this.editor, 'mousemove');
 		const mouseLeave$ = fromEvent(this.editor, 'mouseleave');
 
 		mouseDown$.pipe(
+			tap( () => console.log('mouse down')),
 			// Initialize for security
 			tap(() => this.canvasSelection = null as IClickableArea),
 			// Watch while mouse is down

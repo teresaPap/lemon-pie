@@ -1,9 +1,9 @@
 
 <div class="flow-edit-page-container">
-	<div class="row editor-area">
-		<app-editor [imgUrl]="activeFile.base64"></app-editor>
-	</div>
-
+	<app-editor
+		[imgUrl]="activeFile.base64"
+		(onAreaSaved)="areaSaved($event)"
+	></app-editor>
 	<div class="row navigator-area">
 		<div *ngIf="!files.length" class="col-12 text-center">
 			<h4 class="page-header">No files have been uploaded yet...</h4>
@@ -22,6 +22,7 @@
 		</div>
 
 	</div>
+
 </div>
 
 

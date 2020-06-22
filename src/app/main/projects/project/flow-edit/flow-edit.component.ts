@@ -3,7 +3,7 @@ import { NotifierService } from 'angular-notifier';
 import { ActivatedRoute } from '@angular/router';
 import { FilesService } from '../../../../shared/data-services/files.service';
 import { IFile } from '../../../../shared/interfaces/IFile';
-import { IClickableArea } from '../../../../shared/interfaces/ILink';
+import { ICanvasSelection } from '../../../../shared/interfaces/ILink';
 
 @Component({
   selector: 'app-flow-edit',
@@ -30,8 +30,8 @@ export class FlowEditComponent implements OnInit {
 		this.activeFile = file;
 	}
 
-	public areaSaved(area: IClickableArea) {
-		console.log(area);
+	public areaSelected(area: ICanvasSelection) {
+		console.log('Area', area);
 	}
 
 }

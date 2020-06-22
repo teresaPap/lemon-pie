@@ -2,7 +2,7 @@
 <div class="flow-edit-page-container">
 	<app-editor
 		[imgUrl]="activeFile.base64"
-		(onAreaSaved)="areaSaved($event)"
+		(onAreaSelected)="areaSelected($event)"
 	></app-editor>
 
 	<div class="row navigator-area">

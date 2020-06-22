@@ -1,9 +1,9 @@
 import { Component, Input, Output, ViewChild, AfterViewInit, OnChanges, SimpleChanges, ElementRef,	EventEmitter } from '@angular/core';
-import { fromEvent, Subscription, forkJoin, of, from, Observable } from 'rxjs';
+import { fromEvent, Subscription, forkJoin, of, from } from 'rxjs';
 import { switchMap, takeUntil, tap, map } from 'rxjs/operators';
 import { CanvasService } from '../../services/canvas.service';
 import { StorageService } from '../../services/storage.service';
-import { IClickableArea } from '../../interfaces/ILink';
+import { ICanvasSelection } from '../../interfaces/ILink';
 import { ICanvasPosition } from '../../interfaces/IEditor';
 
 @Component({
@@ -11,24 +11,17 @@ import { ICanvasPosition } from '../../interfaces/IEditor';
 	templateUrl: './editor.component.html'
 })
 export class EditorComponent implements AfterViewInit, OnChanges {
-	@Input() imgUrl: string;
-	@Input() showLinks?: boolean;
-
-	@Output('onAreaSaved') onAreaSaved?: EventEmitter<IClickableArea> = new EventEmitter<IClickableArea>();
-
-	@ViewChild('canvasBg') public canvasBg: ElementRef;
-	@ViewChild('canvas') public canvas: ElementRef;
-	@ViewChild('selectionMenu') public selectionMenu: ElementRef;
-
-
-	@Input() mode?: 'preview'|'edit' = 'edit';
-	@Output('onLinkAreaClicked') onLinkAreaClicked?: EventEmitter<string> = new EventEmitter<string>(); // destination file id
-
 
 	private cx: CanvasRenderingContext2D;
 	private editor: HTMLCanvasElement;
-	private canvasSelection: IClickableArea;
-	public showSelectionMenu: boolean;
+
+	@Input() imgUrl: string;
+	@Input() showLinks?: boolean;
+
+	@Output('onAreaSelected') onAreaSelected: EventEmitter<ICanvasSelection> = new EventEmitter<ICanvasSelection>();
+
+	@ViewChild('canvasBg') public canvasBg: ElementRef;
+	@ViewChild('canvas') public canvas: ElementRef;
 
 	constructor(
 		private canvasCtrl: CanvasService,
@@ -36,20 +29,12 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 	) { }
 
 	ngAfterViewInit(): void {
-		this.selectionMenu.nativeElement.style.visibility = 'hidden';
-
 		// get the context
 		this.editor = this.canvas.nativeElement;
 		this.cx = this.editor.getContext('2d');
-
 		// set up the canvas
 		this.setBackground(this.imgUrl);
-
-		// Start watching for canvas events
-		if (this.mode === 'preview') {
-			this.watchCanvasClicks();
-			return;
-		}
+		// watch for events
 		this.watchCanvasEvents();
 	}
 
@@ -70,30 +55,6 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		}
 	}
 
-	// #region - selection menu (mini pop up)
-
-	public saveLink(selectedFileId: string): void {
-		this.canvasSelection.destinationFileId = selectedFileId;
-		this.onAreaSaved.emit(this.canvasSelection);
-		this.closeSelectionMenu();
-	}
-
-	public closeSelectionMenu(): void {
-		CanvasService.clearCanvas(this.cx, this.editor);
-		this.canvasSelection = null as IClickableArea;
-		this.showSelectionMenu = false;
-		this.selectionMenu.nativeElement.style.visibility = 'hidden';
-	}
-
-	private openSelectionMenu(mouseX, mouseY): void {
-		this.showSelectionMenu = true;
-		this.selectionMenu.nativeElement.style.top = `${mouseY - 10}px`;
-		this.selectionMenu.nativeElement.style.left = `${mouseX - 10}px`;
-		this.selectionMenu.nativeElement.style.visibility = 'visible';
-	}
-
-	// #endregion
-
 	private drawSavedLinks() {
 		const links = this.storage.load('activeLinks');
 		this.drawSavedAreas(links);
@@ -110,9 +71,7 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		const mouseLeave$ = fromEvent(this.editor, 'mouseleave');
 
 		mouseDown$.pipe(
-			tap( () => console.log('mouse down')),
-			// Initialize for security
-			tap(() => this.canvasSelection = null as IClickableArea),
+			tap( () => CanvasService.clearCanvas(this.cx, this.editor)),
 			// Watch while mouse is down
 			map((mouseDown: MouseEvent) => CanvasService.getPositionOnCanvas(mouseDown, this.editor)),
 			switchMap((startingPos: ICanvasPosition) => {
@@ -129,36 +88,27 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 				);
 				return forkJoin([of(startingPos), selectionStoped$]);
 			}),
-			// TODO: to unsubscribe use takeUntil( .. ) user saves the action. Then restart listening on user add new action
-		).subscribe(res => {
-			const startingPos = res[0];
-			const finalPos = res[1];
+			map( res => {
+				// format x1,2 and y1,2 so that x1<x2 & y1<y2
+				const startingPos = res[0];
+				const finalPos = res[1];
 
+				return {
+					x1: (startingPos.x<=finalPos.x) ? startingPos.x : finalPos.x ,
+					y1: (startingPos.y<=finalPos.y) ? startingPos.y : finalPos.y ,
+					x2: (startingPos.x>finalPos.x) ? startingPos.x : finalPos.x ,
+					y2: (startingPos.y>finalPos.y) ? startingPos.y : finalPos.y ,
+				};
+			})
+		).subscribe((canvasSelection: ICanvasSelection) => {
 			CanvasService.setStrokeStyle(this.cx);
 			// Draw selection and show selection menu
-			CanvasService.drawRectangle(startingPos, finalPos, this.cx);
-			this.canvasSelection = {
-				... this.canvasSelection,
-				x1: startingPos.x,
-				y1: startingPos.y,
-				x2: finalPos.x,
-				y2: finalPos.y
-			};
-			this.openSelectionMenu(finalPos.x, finalPos.y);
-		});
-	}
-
-	private watchCanvasClicks() {
-		const mouseClick$ = fromEvent(this.editor, 'click');
-
-		mouseClick$.pipe(
-			map((mouseClick: MouseEvent) => CanvasService.getPositionOnCanvas(mouseClick, this.editor)),
-		).subscribe((clickPosition: ICanvasPosition) => {
-			this.getLinkDestinationFromPosition(clickPosition).subscribe(
-				(destinationFileId: string) => {
-					this.onLinkAreaClicked.emit(destinationFileId);
-				}
+			CanvasService.drawRectangle(
+				{x: canvasSelection.x1, y: canvasSelection.y1},
+				{x: canvasSelection.x2, y: canvasSelection.y2},
+				this.cx
 			);
+			this.onAreaSelected.emit(canvasSelection);
 		});
 	}
 
@@ -184,17 +134,6 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		});
 	}
 
-	private getLinkDestinationFromPosition(pos: ICanvasPosition): Observable<string> {
-		// TODO: refactor to be more readable
-		const links = this.storage.load('activeLinks');
-		const areasX = links.filter(area => ((area.x1 <= pos.x) && (pos.x <= area.x2)) );
-		if (!areasX.length) return of(null);
-
-		const areasY = areasX.filter(area => ((area.y1 <= pos.y) && (pos.y <= area.y2)) );
-		if (!areasY.length) return of(null);
-
-		return of(areasY[0].destinationFileId);
-	}
 
 	// #endregion
 }

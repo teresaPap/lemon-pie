@@ -1,9 +1,9 @@
-<div class="selection-menu form-container">
-	<button type="button" (click)="close()" class="x-btn">
-		<i class="fa fa-times"></i>
-	</button>
+<div class="selection-menu">
 
-	<form [formGroup]="linkToFileForm" (ngSubmit)="submitLinkToFileForm()" class="form detail-form">
+	<form [formGroup]="linkToFileForm" (ngSubmit)="submitLinkToFileForm()">
+		<div class="form-group">
+			<i class="fa fa-times" (click)="close()"></i>
+		</div>
 		<div class="form-group">
 			<label class="form-group-label">Link to:</label>
 			<select class="select" formControlName="fileId">
@@ -12,7 +12,11 @@
 				</ng-container>
 			</select>
 		</div>
-		<button type="submit" class="btn success-btn form-btn">Save</button>
+		<div class="btn-group">
+			<button type="submit" (click)="close()" class="btn danger-btn small-btn">Cancel</button>
+			<button type="submit" class="btn success-btn small-btn">Save</button>
+		</div>
+
 	</form>
 
 </div>

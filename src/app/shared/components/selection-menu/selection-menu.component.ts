@@ -1,40 +1,32 @@
-import { Component, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, Output, Input, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { IFile } from '../../interfaces/IFile';
-import { StorageService } from '../../services/storage.service';
 
 @Component({
 	selector: 'app-selection-menu',
 	templateUrl: './selection-menu.component.html'
 })
-export class SelectionMenuComponent implements OnInit {
+export class SelectionMenuComponent {
 
-	@Output() onSaveLink: EventEmitter<string> = new EventEmitter<string>();
+	@Input('files') files: IFile[];
+	@Output() onSubmit: EventEmitter<string> = new EventEmitter<string>();
 	@Output() onClose: EventEmitter<void> = new EventEmitter<void>();
 
-	public files: IFile[];
 	public linkToFileForm: FormGroup;
 
-	constructor(
-		private fb: FormBuilder,
-		public storage: StorageService ) {
-
+	constructor( private fb: FormBuilder ) {
 		this.linkToFileForm = this.fb.group({
 			fileId: ['', Validators.required]
 		});
 	}
 
-	ngOnInit() {
-		this.files = this.storage.load('storedFiles');
-	}
-
-	public submitLinkToFileForm() {
+	public submitLinkToFileForm(): void {
 		if (this.linkToFileForm.valid) {
-			this.onSaveLink.emit(this.linkToFileForm.controls['fileId'].value);
+			this.onSubmit.emit(this.linkToFileForm.controls['fileId'].value);
 		}
 	}
 
-	public close() {
+	public close(): void {
 		this.onClose.emit();
 	}
 

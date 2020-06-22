@@ -19,3 +19,28 @@
 
 	flex-flow: row nowrap;
 }
+
+.actions-area {
+	background-color: $theme-light;
+	position: absolute;
+	left: 0;
+	bottom: 12rem;
+	right: 0;
+	justify-content: space-between;
+	flex-direction: row-reverse;
+	padding: 10px 20px 20px 20px;
+	border-top: 1px #F0F0F0 solid;
+	border-bottom: 1px #F0F0F0 solid;
+
+	height: 36px;
+
+	* {
+		display: inline;
+	}
+	select {
+		min-width: 9rem;
+	}
+	.btn {
+		margin-left: 10px;
+	}
+}

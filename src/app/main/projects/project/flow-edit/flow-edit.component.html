@@ -7,9 +7,11 @@
 	></app-editor>
 
 	<div *ngIf="showSelectionMenu" class="selection-menu-container">
-		<app-selection-menu [files]="files" (onSubmit)="saveLink($event)" (onClose)="closeSelectionMenu()"></app-selection-menu>
+		<app-selection-menu
+			[files]="files"
+			[activeFileId]="activeFile?.id"
+			(onSubmit)="saveLink($event)" (onClose)="closeSelectionMenu()"></app-selection-menu>
 	</div>
-
 
 	<div class="row navigator-area">
 		<div *ngIf="!files.length" class="col-12 text-center">

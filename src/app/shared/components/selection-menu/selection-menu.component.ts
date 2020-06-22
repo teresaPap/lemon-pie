@@ -9,6 +9,7 @@ import { IFile } from '../../interfaces/IFile';
 export class SelectionMenuComponent {
 
 	@Input('files') files: IFile[];
+	@Input('activeFileId') activeFileId: string;
 	@Output() onSubmit: EventEmitter<string> = new EventEmitter<string>();
 	@Output() onClose: EventEmitter<void> = new EventEmitter<void>();
 

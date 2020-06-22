@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable, of, BehaviorSubject} from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { FirebaseApiService } from '../../core/services/firebase-api.service';
-import { StorageService } from '../services/storage.service';
 import { IFile, IFilePreview } from '../interfaces/IFile';
 
 @Injectable({
@@ -18,9 +15,6 @@ export class FilesService {
 	public activeFilesListChanges$ = this.activeFilesListSource.asObservable();
 
 	constructor(
-		public storage: StorageService,
-		private firestore: AngularFirestore,
-		private fireStorage: AngularFireStorage,
 		private apiService: FirebaseApiService
 	) { }
 

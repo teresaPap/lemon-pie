@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AuthService } from '../../core/services/auth.service';
@@ -20,7 +19,6 @@ export class ProjectsService {
 	public uid: string = this.authService.getCurrentUserId();
 
 	constructor(
-		public firestore: AngularFirestore,
 		private authService: AuthService,
 		private apiService: FirebaseApiService ) {
 	}

@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FilesService } from '../../../../shared/data-services/files.service';
 import { IFile } from '../../../../shared/interfaces/IFile';
 import {ICanvasSelection, IClickableArea} from '../../../../shared/interfaces/ILink';
+import {LinksService} from "../../../../shared/data-services/links.service";
 
 @Component({
   selector: 'app-flow-edit',
@@ -21,6 +22,7 @@ export class FlowEditComponent implements OnInit {
 	constructor(
 		private route: ActivatedRoute,
 		private fileCtrl: FilesService,
+		private linkCtrl: LinksService,
 		private notifier: NotifierService,
 	) { }
 
@@ -46,7 +48,13 @@ export class FlowEditComponent implements OnInit {
 		const newLink: IClickableArea = { ...this.selectedArea, destinationFileId: fileId };
 
 		console.log('File to update', this.activeFile );
-		// this.fileCtrl.update(this.activeFile.id, {links})
+
+		this.linkCtrl.create(newLink, this.activeFile.id).subscribe(
+			res => {
+				console.log(res);
+				this.closeSelectionMenu();
+			}
+		);
 	}
 
 	public closeSelectionMenu(): void {

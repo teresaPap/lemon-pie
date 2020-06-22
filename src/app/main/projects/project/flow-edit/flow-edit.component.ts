@@ -14,7 +14,7 @@ export class FlowEditComponent implements OnInit {
 	private selectedArea: ICanvasSelection;
 
 	public files: IFile[] = [];
-	public activeFile: IFile = {} as IFile;
+	public activeFile: IFile;
 
 	public showSelectionMenu: boolean = false;
 

@@ -1,6 +1,7 @@
 
 <div class="flow-edit-page-container">
 	<app-editor
+		*ngIf="activeFile"
 		[imgUrl]="activeFile.base64"
 		(onAreaSelected)="areaSelected($event)"
 	></app-editor>
@@ -17,7 +18,7 @@
 		</div>
 
 		<div *ngFor="let file of files">
-			<div (click)="changeActiveFile(file)" class="gallery-item small" [ngClass]="{'selected': activeFile.id === file.id }">
+			<div (click)="changeActiveFile(file)" class="gallery-item small" [ngClass]="{'selected': activeFile?.id === file.id }">
 				<div class="gallery-item-preview">
 					<img [src]="file.base64" alt="File preview">
 				</div>

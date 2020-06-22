@@ -4,19 +4,7 @@
 	width: 100%;
 	position: relative;
 	background: url('assets/img/pixil-frame-0.png') repeat;
-}
-
-.editor-area {
-	background: url('assets/img/pixil-frame-0.png') repeat;
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 12rem;
-	right: 0;
-	overflow: scroll;
-	* {
-		transform: translateZ(1px);
-	}
+	overflow: hidden;
 }
 
 .navigator-area {

@@ -4,6 +4,7 @@
 		[imgUrl]="activeFile.base64"
 		(onAreaSaved)="areaSaved($event)"
 	></app-editor>
+
 	<div class="row navigator-area">
 		<div *ngIf="!files.length" class="col-12 text-center">
 			<h4 class="page-header">No files have been uploaded yet...</h4>
@@ -20,9 +21,7 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
-
 </div>
 
 

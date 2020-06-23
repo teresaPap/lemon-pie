@@ -1,0 +1,17 @@
+
+.selection-menu-container {
+	position: absolute;
+}
+
+.selection-menu {
+	padding: 15px;
+	width: 300px;
+
+	border: $border-width solid $mercury;
+	border-radius: 4px;
+	background-color: $theme-light;
+
+	select {
+		max-width: 75%;
+	}
+}

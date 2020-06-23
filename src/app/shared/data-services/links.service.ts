@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FirebaseApiService } from '../../core/services/firebase-api.service';
-import { Observable } from 'rxjs';
-import { IClickableArea, ILink } from '../interfaces/ILink';
+import {IClickableArea, ILink} from "../interfaces/ILink";
+import {Observable} from "rxjs";
+import {tap} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'

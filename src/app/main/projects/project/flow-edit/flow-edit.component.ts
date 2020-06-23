@@ -41,14 +41,15 @@ export class FlowEditComponent implements OnInit {
 			this.files = filesList;
 		});
 
-		// TODO: populate this.linksOnActiveFile using linksCtrl
+		this.linkCtrl.activeLinkListChanges$.subscribe( (linkList: ILink[]) => {
+			this.linksOnActiveFile = linkList;
+		});
 	}
 
 	public changeActiveFile(file: IFile) {
 		this.activeFile = file;
+		this.linkCtrl.readAllLinks(this.activeFile.id).subscribe();
 		this.selectedArea = null;
-
-		console.log(this.activeFile);
 	}
 
 	public areaSelected(area: ICanvasSelection) {

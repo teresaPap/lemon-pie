@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { NotifierService } from 'angular-notifier';
 import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NotifierService } from 'angular-notifier';
 import { FilesService } from '../../../../shared/data-services/files.service';
 import { IFile } from '../../../../shared/interfaces/IFile';
-import { ICanvasSelection, IClickableArea } from '../../../../shared/interfaces/ILink';
-import { LinksService } from "../../../../shared/data-services/links.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { ICanvasSelection, IClickableArea, ILink } from '../../../../shared/interfaces/ILink';
+import { LinksService } from '../../../../shared/data-services/links.service';
 
 @Component({
   selector: 'app-flow-edit',
@@ -17,10 +17,12 @@ export class FlowEditComponent implements OnInit {
 
 	public files: IFile[] = [];
 	public activeFile: IFile;
+	public linksOnActiveFile: ILink[];
 
 	public showSelectionMenu: boolean = false;
-	public linkToFileForm: FormGroup;
+	public showLinksOnActiveFile: boolean = false;
 
+	public linkToFileForm: FormGroup;
 
 	constructor(
 		private fb: FormBuilder,
@@ -38,11 +40,15 @@ export class FlowEditComponent implements OnInit {
 		this.fileCtrl.activeFilesListChanges$.subscribe( (filesList: IFile[]) => {
 			this.files = filesList;
 		});
+
+		// TODO: populate this.linksOnActiveFile using linksCtrl
 	}
 
 	public changeActiveFile(file: IFile) {
 		this.activeFile = file;
 		this.selectedArea = null;
+
+		console.log(this.activeFile);
 	}
 
 	public areaSelected(area: ICanvasSelection) {
@@ -57,13 +63,16 @@ export class FlowEditComponent implements OnInit {
 			...this.selectedArea,
 			destinationFileId: this.linkToFileForm.controls['fileId'].value };
 
-		console.log('File to update', this.activeFile, newLink);
-
 		this.linkCtrl.create(newLink, this.activeFile.id).subscribe(
 			res => {
 				console.log(res);
 				this.closeSelectionMenu();
 				this.notifier.notify('success', 'Link was saved successfully.');
+			},
+			err => {
+				console.log(err);
+				this.closeSelectionMenu();
+				this.notifier.notify('error', `Error: ${err.message}`);
 			}
 		);
 	}
@@ -72,8 +81,8 @@ export class FlowEditComponent implements OnInit {
 		this.showSelectionMenu = false;
 	}
 
-	public toggleLinkVisibility() {
-		console.log('TODO: toggle Link Visibility');
+	public toggleLinkVisibility():void {
+		this.showLinksOnActiveFile = !this.showLinksOnActiveFile;
 	}
 
 }

@@ -2,8 +2,7 @@ import { Component, Input, Output, ViewChild, AfterViewInit, OnChanges, SimpleCh
 import { fromEvent, Subscription, forkJoin, of, from } from 'rxjs';
 import { switchMap, takeUntil, tap, map } from 'rxjs/operators';
 import { CanvasService } from '../../services/canvas.service';
-import { StorageService } from '../../services/storage.service';
-import { ICanvasSelection } from '../../interfaces/ILink';
+import {ICanvasSelection, ILink} from '../../interfaces/ILink';
 import { ICanvasPosition } from '../../interfaces/IEditor';
 
 @Component({
@@ -16,7 +15,7 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 	private editor: HTMLCanvasElement;
 
 	@Input() imgUrl: string;
-	@Input() showLinks?: boolean;
+	@Input() linksToDraw?: ILink[];
 
 	@Output('onAreaSelected') onAreaSelected: EventEmitter<ICanvasSelection> = new EventEmitter<ICanvasSelection>();
 	@Output('onCanvasCleared') onCanvasCleared: EventEmitter<void> = new EventEmitter<void>();
@@ -26,7 +25,6 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 
 	constructor(
 		private canvasCtrl: CanvasService,
-		private storage: StorageService
 	) { }
 
 	ngAfterViewInit(): void {
@@ -40,26 +38,22 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		if (changes.showLinks) {
-			if (!changes.showLinks.firstChange) {
-				if (changes.showLinks.currentValue) {
-					this.drawSavedLinks();
-				} else {
-					CanvasService.clearCanvas(this.cx, this.editor);
-				}
-			}
-		}
 		if (changes.imgUrl) {
 			if (!changes.imgUrl.firstChange ) {
 				this.setBackground(changes.imgUrl.currentValue);
 			}
 		}
+		if (changes.linksToDraw) {
+			if (!changes.linksToDraw.firstChange) {
+				if (changes.linksToDraw.currentValue==null) {
+					CanvasService.clearCanvas(this.cx, this.editor);
+				} else {
+					this.drawAreas(this.linksToDraw);
+				}
+			}
+		}
 	}
 
-	private drawSavedLinks() {
-		const links = this.storage.load('activeLinks');
-		this.drawSavedAreas(links);
-	}
 
 	// #region - Canvas events handling
 	// see also https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
@@ -129,7 +123,7 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		);
 	}
 
-	private drawSavedAreas(clickableAreas): any {
+	private drawAreas(clickableAreas: ILink[] ): any {
 		CanvasService.setStrokeStyle(this.cx);
 		clickableAreas.map(area => {
 			const startingPos = { x: area.x1, y: area.y1 };

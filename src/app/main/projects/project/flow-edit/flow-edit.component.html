@@ -3,13 +3,16 @@
 	<app-editor
 		*ngIf="activeFile"
 		[imgUrl]="activeFile.base64"
+		[linksToDraw]="showLinksOnActiveFile ? linksOnActiveFile : null"
 		(onAreaSelected)="areaSelected($event)"
 		(onCanvasCleared)="closeSelectionMenu()"
 	></app-editor>
 
 	<div class="row actions-area">
 		<div>
-		<button type="button" (click)="toggleLinkVisibility()" class="btn info-btn small-btn">Show links</button>
+		<button type="button" (click)="toggleLinkVisibility()" class="btn info-btn small-btn">
+			{{showLinksOnActiveFile ? 'Hide Links' : 'Show links'}}
+		</button>
 	</div>
 
 		<div *ngIf="showSelectionMenu">
@@ -30,7 +33,6 @@
 
 			</form>
 		</div>
-
 
 	</div>
 

@@ -4,6 +4,7 @@
 		*ngIf="activeFile"
 		[imgUrl]="activeFile.base64"
 		(onAreaSelected)="areaSelected($event)"
+		(onCanvasCleared)="closeSelectionMenu()"
 	></app-editor>
 
 	<div class="row actions-area">
@@ -28,7 +29,6 @@
 				<button type="button" (click)="closeSelectionMenu()" class="btn danger-btn small-btn">Cancel</button>
 
 			</form>
-
 		</div>
 
 

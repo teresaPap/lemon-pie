@@ -63,6 +63,7 @@ export class FlowEditComponent implements OnInit {
 			res => {
 				console.log(res);
 				this.closeSelectionMenu();
+				this.notifier.notify('success', 'Link was saved successfully.');
 			}
 		);
 	}

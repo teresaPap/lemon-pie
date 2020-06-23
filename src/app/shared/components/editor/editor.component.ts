@@ -19,6 +19,7 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 	@Input() showLinks?: boolean;
 
 	@Output('onAreaSelected') onAreaSelected: EventEmitter<ICanvasSelection> = new EventEmitter<ICanvasSelection>();
+	@Output('onCanvasCleared') onCanvasCleared: EventEmitter<void> = new EventEmitter<void>();
 
 	@ViewChild('canvasBg') public canvasBg: ElementRef;
 	@ViewChild('canvas') public canvas: ElementRef;
@@ -71,7 +72,10 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		const mouseLeave$ = fromEvent(this.editor, 'mouseleave');
 
 		mouseDown$.pipe(
-			tap( () => CanvasService.clearCanvas(this.cx, this.editor)),
+			tap( () => {
+				CanvasService.clearCanvas(this.cx, this.editor);
+				this.onCanvasCleared.emit();
+			}),
 			// Watch while mouse is down
 			map((mouseDown: MouseEvent) => CanvasService.getPositionOnCanvas(mouseDown, this.editor)),
 			switchMap((startingPos: ICanvasPosition) => {

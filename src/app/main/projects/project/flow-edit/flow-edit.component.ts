@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
 import { FilesService } from '../../../../shared/data-services/files.service';
@@ -26,7 +25,6 @@ export class FlowEditComponent implements OnInit {
 
 	constructor(
 		private fb: FormBuilder,
-		private route: ActivatedRoute,
 		private fileCtrl: FilesService,
 		private linkCtrl: LinksService,
 		private notifier: NotifierService,
@@ -53,9 +51,7 @@ export class FlowEditComponent implements OnInit {
 	}
 
 	public areaSelected(area: ICanvasSelection) {
-		console.log('Area', area);
 		this.selectedArea = area;
-		// show selection menu
 		this.showSelectionMenu = true;
 	}
 

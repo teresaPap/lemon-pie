@@ -11,6 +11,7 @@ import { StarBadgeComponent } from './components/star-badge/star-badge.component
 import { LemonPieLogoComponent } from './components/lemon-pie-logo/lemon-pie-logo.component';
 import { AsideComponent } from './components/aside/aside.component';
 import { EditorComponent } from './components/editor/editor.component';
+import { PreviewEditorComponent } from './components/preview-editor/preview-editor.component';
 
 @NgModule({
 	declarations: [
@@ -21,6 +22,7 @@ import { EditorComponent } from './components/editor/editor.component';
 		LemonPieLogoComponent,
 		AsideComponent,
 		EditorComponent,
+		PreviewEditorComponent,
 	],
 	imports: [
 		RouterModule,
@@ -39,6 +41,7 @@ import { EditorComponent } from './components/editor/editor.component';
 		AsideComponent,
 		EditorComponent,
 		DropzoneDirective,
+		PreviewEditorComponent,
 	],
 	providers: [
 		StorageService

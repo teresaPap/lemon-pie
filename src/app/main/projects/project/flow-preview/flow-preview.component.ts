@@ -1,9 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { IFile } from '../../../../shared/interfaces/IFile';
 import { ILink } from '../../../../shared/interfaces/ILink';
 import { FilesService } from '../../../../shared/data-services/files.service';
 import { LinksService } from '../../../../shared/data-services/links.service';
-import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-flow-preview',
@@ -32,7 +32,10 @@ export class FlowPreviewComponent implements OnInit, OnDestroy {
 			this.linksOnActiveFile = linkList;
 		});
 
-		this.changeActiveFile(this.files[0].id);
+		if (this.files.length>0) {
+			this.changeActiveFile(this.files[0].id);
+			this.linkCtrl.readAllLinks(this.files[0].id).subscribe();
+		}
   	}
 
 	ngOnDestroy(): void {
@@ -40,12 +43,16 @@ export class FlowPreviewComponent implements OnInit, OnDestroy {
 		this.linkChangesListener.unsubscribe();
 	}
 
-	public changeActiveFile(fileId: string) {
-		console.log(fileId);
+	public changeActiveFile(destinationFileId: string) {
 
-		if (!fileId) return;
-		this.activeFile = this.files.find(elem => elem.id = fileId);
-		this.linkCtrl.readAllLinks(this.activeFile.id).subscribe();
+		if (!destinationFileId) {
+			console.log('\nUser clicked on a non clickable area.')
+			return;
+		}
+
+		this.activeFile = this.files.find(elem => elem.id === destinationFileId);
+
+
 	}
 
 }

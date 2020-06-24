@@ -1,8 +1,15 @@
 
-<h3 class="page-header">flow-preview works!</h3>
+<h3 class="page-header">Active file name: {{activeFile?.name}}</h3>
 
 <app-preview-editor
-	[imgUrl]="activeFile?.base64"
+	*ngIf="activeFile"
+	[imgUrl]="activeFile.base64"
 	[links]="linksOnActiveFile"
 	(onLinkAreaClicked)="changeActiveFile($event)"
 ></app-preview-editor>
+
+
+<div *ngIf="!files.length" class="col-12 text-center">
+	<h4 class="page-header">No files have been uploaded yet...</h4>
+	<a [routerLink]="'../files-add'">Upload files</a>
+</div>

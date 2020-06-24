@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Observable, Subscription, fromEvent, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ICanvasPosition } from '../../interfaces/IEditor';
@@ -9,7 +9,7 @@ import { CanvasService } from '../../services/canvas.service';
   selector: 'app-preview-editor',
   templateUrl: './preview-editor.component.html',
 })
-export class PreviewEditorComponent implements AfterViewInit {
+export class PreviewEditorComponent implements AfterViewInit, OnChanges {
 
 	private cx: CanvasRenderingContext2D;
 	private editor: HTMLCanvasElement;
@@ -36,6 +36,15 @@ export class PreviewEditorComponent implements AfterViewInit {
 		this.watchCanvasEvents();
 	}
 
+	ngOnChanges(changes: SimpleChanges): void {
+		console.log('changes', changes);
+		if (changes.imgUrl) {
+			if (!changes.imgUrl.firstChange ) {
+				this.setBackground(changes.imgUrl.currentValue);
+			}
+		}
+	}
+
 	private watchCanvasEvents() {
 		const mouseClick$ = fromEvent(this.editor, 'click');
 
@@ -44,15 +53,15 @@ export class PreviewEditorComponent implements AfterViewInit {
 			map((mouseClick: MouseEvent) => CanvasService.getPositionOnCanvas(mouseClick, this.editor)),
 		).subscribe((clickPosition: ICanvasPosition) => {
 			this.getLinkDestinationFromPosition(clickPosition).subscribe(
-				(link: ILink|any) => {
-					this.onLinkAreaClicked.emit(link);
+				(linkId: string) => {
+					this.onLinkAreaClicked.emit(linkId);
 				}
 			);
 		});
 	}
 
 	private getLinkDestinationFromPosition(pos: ICanvasPosition): Observable<string> {
-		// TODO: refactor to be more readable
+		// TODO: refactor - does not work correctly and should be more readable
 
 		const areasX: ILink[] = this.links.filter(area => ((area.x1 <= pos.x) && (pos.x <= area.x2)) );
 		if (!areasX.length) return of(null);
@@ -60,6 +69,7 @@ export class PreviewEditorComponent implements AfterViewInit {
 		const areasY: ILink[] = areasX.filter(area => ((area.y1 <= pos.y) && (pos.y <= area.y2)) );
 		if (!areasY.length) return of(null);
 
+		console.log(areasY[0]);
 		return of(areasY[0].destinationFileId);
 	}
 

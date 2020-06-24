@@ -1,14 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import {IFile} from "../../../../shared/interfaces/IFile";
-import {ILink} from "../../../../shared/interfaces/ILink";
-import {FilesService} from "../../../../shared/data-services/files.service";
-import {LinksService} from "../../../../shared/data-services/links.service";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import { IFile } from '../../../../shared/interfaces/IFile';
+import { ILink } from '../../../../shared/interfaces/ILink';
+import { FilesService } from '../../../../shared/data-services/files.service';
+import { LinksService } from '../../../../shared/data-services/links.service';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-flow-preview',
   templateUrl: './flow-preview.component.html'
 })
-export class FlowPreviewComponent implements OnInit {
+export class FlowPreviewComponent implements OnInit, OnDestroy {
+
+	private fileChangesListener: Subscription;
+	private linkChangesListener: Subscription;
 
 	public files: IFile[] = [];
 	public activeFile: IFile;
@@ -20,18 +24,21 @@ export class FlowPreviewComponent implements OnInit {
 	) { }
 
   	ngOnInit(): void {
-		this.fileCtrl.activeFilesListChanges$.subscribe( (filesList: IFile[]) => {
+		this.fileChangesListener = this.fileCtrl.activeFilesListChanges$.subscribe( (filesList: IFile[]) => {
 			this.files = filesList;
 		});
 
-		this.linkCtrl.activeLinkListChanges$.subscribe( (linkList: ILink[]) => {
+		this.linkChangesListener = this.linkCtrl.activeLinkListChanges$.subscribe( (linkList: ILink[]) => {
 			this.linksOnActiveFile = linkList;
-			console.log('links changed', this.linksOnActiveFile)
 		});
 
-		console.log(this.files);
 		this.changeActiveFile(this.files[0].id);
   	}
+
+	ngOnDestroy(): void {
+		this.fileChangesListener.unsubscribe();
+		this.linkChangesListener.unsubscribe();
+	}
 
 	public changeActiveFile(fileId: string) {
 		console.log(fileId);

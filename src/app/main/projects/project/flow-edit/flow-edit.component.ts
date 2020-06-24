@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { NotifierService } from 'angular-notifier';
 import { FilesService } from '../../../../shared/data-services/files.service';
 import { IFile } from '../../../../shared/interfaces/IFile';
@@ -10,7 +11,10 @@ import { LinksService } from '../../../../shared/data-services/links.service';
   selector: 'app-flow-edit',
   templateUrl: './flow-edit.component.html',
 })
-export class FlowEditComponent implements OnInit {
+export class FlowEditComponent implements OnInit, OnDestroy {
+
+	private fileChangesListener: Subscription;
+	private linkChangesListener: Subscription;
 
 	private selectedArea: ICanvasSelection;
 
@@ -35,13 +39,18 @@ export class FlowEditComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.fileCtrl.activeFilesListChanges$.subscribe( (filesList: IFile[]) => {
+		this.fileChangesListener = this.fileCtrl.activeFilesListChanges$.subscribe( (filesList: IFile[]) => {
 			this.files = filesList;
 		});
 
-		this.linkCtrl.activeLinkListChanges$.subscribe( (linkList: ILink[]) => {
+		this.linkChangesListener = this.linkCtrl.activeLinkListChanges$.subscribe( (linkList: ILink[]) => {
 			this.linksOnActiveFile = linkList;
 		});
+	}
+
+	ngOnDestroy(): void {
+		this.fileChangesListener.unsubscribe();
+		this.linkChangesListener.unsubscribe();
 	}
 
 	public changeActiveFile(file: IFile) {

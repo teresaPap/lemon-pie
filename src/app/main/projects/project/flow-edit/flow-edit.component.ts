@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { NotifierService } from 'angular-notifier';
@@ -6,12 +6,15 @@ import { FilesService } from '../../../../shared/data-services/files.service';
 import { IFile } from '../../../../shared/interfaces/IFile';
 import { ICanvasSelection, IClickableArea, ILink } from '../../../../shared/interfaces/ILink';
 import { LinksService } from '../../../../shared/data-services/links.service';
+import { EditorComponent } from '../../../../shared/components/editor/editor.component';
 
 @Component({
   selector: 'app-flow-edit',
   templateUrl: './flow-edit.component.html',
 })
 export class FlowEditComponent implements OnInit, OnDestroy {
+
+	@ViewChild(EditorComponent) private editorComponent: EditorComponent;
 
 	private fileChangesListener: Subscription;
 	private linkChangesListener: Subscription;
@@ -85,6 +88,7 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 
 	public closeSelectionMenu(): void {
 		this.showSelectionMenu = false;
+		this.editorComponent.clearCanvas();
 	}
 
 	public toggleLinkVisibility():void {

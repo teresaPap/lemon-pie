@@ -46,12 +46,16 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		if (changes.linksToDraw) {
 			if (!changes.linksToDraw.firstChange) {
 				if (changes.linksToDraw.currentValue==null) {
-					CanvasService.clearCanvas(this.cx, this.editor);
+					this.clearCanvas();
 				} else {
 					this.drawAreas(this.linksToDraw);
 				}
 			}
 		}
+	}
+
+	public clearCanvas(): void {
+		CanvasService.clearCanvas(this.cx, this.editor);
 	}
 
 
@@ -67,7 +71,7 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 
 		mouseDown$.pipe(
 			tap( () => {
-				CanvasService.clearCanvas(this.cx, this.editor);
+				this.clearCanvas();
 				this.onCanvasCleared.emit();
 			}),
 			// Watch while mouse is down
@@ -77,7 +81,7 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 					// While mouse is moving, get the current position and draw a selection
 					map((mouseMoved: MouseEvent) => CanvasService.getPositionOnCanvas(mouseMoved, this.editor)),
 					tap(currentPos => {
-						CanvasService.clearCanvas(this.cx, this.editor);
+						this.clearCanvas();
 						CanvasService.drawSelection(startingPos, currentPos, this.cx);
 					}),
 					// Until mouse is up or leaves

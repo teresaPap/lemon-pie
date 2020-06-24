@@ -50,8 +50,8 @@ export class FlowPreviewComponent implements OnInit, OnDestroy {
 			return;
 		}
 
-		this.activeFile = this.files.find(elem => elem.id === destinationFileId);
-
+		this.activeFile = this.files.find(file => file.id === destinationFileId);
+		this.linkCtrl.readAllLinks(this.activeFile.id).subscribe();
 
 	}
 

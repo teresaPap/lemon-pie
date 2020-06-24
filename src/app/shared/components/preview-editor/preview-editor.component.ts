@@ -37,7 +37,6 @@ export class PreviewEditorComponent implements AfterViewInit, OnChanges {
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		console.log('changes', changes);
 		if (changes.imgUrl) {
 			if (!changes.imgUrl.firstChange ) {
 				this.setBackground(changes.imgUrl.currentValue);
@@ -48,9 +47,8 @@ export class PreviewEditorComponent implements AfterViewInit, OnChanges {
 	private watchCanvasEvents() {
 		const mouseClick$ = fromEvent(this.editor, 'click');
 
-
 		mouseClick$.pipe(
-			map((mouseClick: MouseEvent) => CanvasService.getPositionOnCanvas(mouseClick, this.editor)),
+			map((mouseClick: MouseEvent) => CanvasService.getPositionOnCanvas(mouseClick, this.editor))
 		).subscribe((clickPosition: ICanvasPosition) => {
 			this.getLinkDestinationFromPosition(clickPosition).subscribe(
 				(linkId: string) => {
@@ -61,7 +59,7 @@ export class PreviewEditorComponent implements AfterViewInit, OnChanges {
 	}
 
 	private getLinkDestinationFromPosition(pos: ICanvasPosition): Observable<string> {
-		// TODO: refactor - does not work correctly and should be more readable
+		// TODO: should be more readable
 
 		const areasX: ILink[] = this.links.filter(area => ((area.x1 <= pos.x) && (pos.x <= area.x2)) );
 		if (!areasX.length) return of(null);
@@ -69,7 +67,6 @@ export class PreviewEditorComponent implements AfterViewInit, OnChanges {
 		const areasY: ILink[] = areasX.filter(area => ((area.y1 <= pos.y) && (pos.y <= area.y2)) );
 		if (!areasY.length) return of(null);
 
-		console.log(areasY[0]);
 		return of(areasY[0].destinationFileId);
 	}
 

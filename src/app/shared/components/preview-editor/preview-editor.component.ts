@@ -71,6 +71,13 @@ export class PreviewEditorComponent implements AfterViewInit {
 			dimensions => {
 				this.editor.height = dimensions.height;
 				this.editor.width = dimensions.width;
+
+				this.editor.parentElement.setAttribute(
+					'style',
+					`
+					height: ${dimensions.height}px;
+					width: ${dimensions.width}px;
+				`);
 			}
 		);
 	}

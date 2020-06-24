@@ -44,6 +44,10 @@ export class PreviewEditorComponent implements AfterViewInit, OnChanges {
 		}
 	}
 
+	public highlightLinks(): void {
+		console.log('TODO: highlight links');
+	}
+
 	private watchCanvasEvents() {
 		const mouseClick$ = fromEvent(this.editor, 'click');
 

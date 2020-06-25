@@ -5,6 +5,7 @@ import { IUser, IUserData } from '../interfaces/IUser';
 
 import { Observable, of} from 'rxjs';
 import { catchError, map, tap, switchMap} from 'rxjs/operators';
+import {FirebaseApiService} from "../../core/services/firebase-api.service";
 
 
 @Injectable({
@@ -17,9 +18,16 @@ export class UsersService {
 	private x$: Observable<any> = new Observable(null);
 
 	constructor(
+		private apiService: FirebaseApiService,
 		public firestore: AngularFirestore,
 		private authService: AuthService
 	) { }
+
+	public create(userdata: IUserData): Observable<any> {
+		const registerData
+		return this.authService.register(userdata)
+		this.apiService.createDocument(userdata,'users');
+	}
 
 	public readCurrentUser(): Observable<IUserData|any> {
 		return this.authService.getAuthState().pipe(
@@ -45,4 +53,6 @@ export class UsersService {
 		}
 		return of(null);
 	}
+
+
 }

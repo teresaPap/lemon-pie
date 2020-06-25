@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsersService } from '../../shared/data-services/users.service';
-import { IUser, IUserData } from '../../shared/interfaces/IUser';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {CustomValidators} from '../../shared/custom-validators';
+import { IUser } from '../../shared/interfaces/IUser';
+import { CustomValidators } from '../../shared/custom-validators';
 
 @Component({
 	selector: 'app-profile',
@@ -10,7 +10,7 @@ import {CustomValidators} from '../../shared/custom-validators';
 })
 export class ProfileComponent implements OnInit {
 
-	public currentUser: IUserData;
+	public currentUser: IUser;
 	public userDetailForm: FormGroup;
 	public changePasswordForm: FormGroup;
 	public deleteAccountForm: FormGroup;
@@ -48,7 +48,7 @@ export class ProfileComponent implements OnInit {
 		);
 
 		this.userCtrl.read().subscribe(
-			(currentUser: IUserData) => {
+			(currentUser: IUser) => {
 				this.currentUser = currentUser;
 				console.log('currentUser:', currentUser);
 				this.userDetailForm.controls['username'].setValue(currentUser.username);

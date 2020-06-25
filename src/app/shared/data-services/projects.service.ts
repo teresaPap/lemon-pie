@@ -23,11 +23,6 @@ export class ProjectsService {
 		private apiService: FirebaseApiService ) {
 	}
 
-
-	public readAllProjectsForActiveUser(): Observable<IProjectPreview[]|any> {
-		return this.apiService.readDocumentChildReferences(`users/${this.uid}`);
-	}
-
 	public changeActiveProject(activeProject: IProject): void {
 		// Observer function: any component can push a new value to the activeProjectChanges$ observable.
 		this.activeProjectSource.next(activeProject);
@@ -37,6 +32,10 @@ export class ProjectsService {
 		return this.apiService.createDocument(project,'projects',`users/${this.uid}`).pipe(
 			tap( res => this.changeActiveProject(res) )
 		);
+	}
+
+	public readAllProjectsForActiveUser(): Observable<IProjectPreview[]|any> {
+		return this.apiService.readDocumentChildReferences(`users/${this.uid}`);
 	}
 
 	public readSingleProject(projectId: string): Observable<IProject> {

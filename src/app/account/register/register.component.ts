@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { NotifierService } from 'angular-notifier';
 import { CustomValidators } from '../../shared/custom-validators';
 import { AuthService } from '../../core/services/auth.service';
-import { Router } from '@angular/router';
-import { NotifierService } from 'angular-notifier';
 
 @Component({
 	selector: 'app-register',
 	templateUrl: './register.component.html',
-	styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
 
@@ -34,7 +33,7 @@ export class RegisterComponent implements OnInit {
 	}
 
 	public register() {
-		this.authService.register(this.registerForm.value).then(
+		this.authService.register(this.registerForm.value).subscribe(
 			res => {
 				console.log('Register successful!', res);
 				this.notifier.notify('success', `Register successful!`);
@@ -42,7 +41,7 @@ export class RegisterComponent implements OnInit {
 			},
 			err => {
 				this.notifier.notify('error', `${err.message}`);
-				console.log('An error has occured', err);
+				console.log('An error has occured.', err);
 			}
 		);
 	}

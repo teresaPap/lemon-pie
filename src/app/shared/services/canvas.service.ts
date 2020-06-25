@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ICanvasPosition } from '../interfaces/IEditor';
 import { fromEvent, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import {removeOptionsParameter} from "@angular/core/schematics/migrations/dynamic-queries/util";
 
 const SELECTION_FILL_COLOR = 'rgba(212,209,24,0.53)';
 const SELECTION_STROKE_COLOR = '#c4b90b'; // $theme-accent
@@ -14,28 +15,46 @@ export class CanvasService {
 
 	constructor() { }
 
-	public static async drawRectangle(
-		startingPos: ICanvasPosition,
-		finalPos: ICanvasPosition,
-		cx: CanvasRenderingContext2D): Promise<void> {
+	public static drawRectangle(startingPos: ICanvasPosition, finalPos: ICanvasPosition, cx: CanvasRenderingContext2D): void{
 		const width: number = finalPos.x - startingPos.x;
 		const height: number = finalPos.y - startingPos.y;
 
 		cx.fillStyle = SELECTION_FILL_COLOR;
 		cx.fillRect(startingPos.x, startingPos.y, width, height);
 
-		await cx.rect(startingPos.x, startingPos.y, width, height);
-
-		return cx.stroke();
-
-		// BUG: offset when painting on canvas
-		// occurres if the canvas is resided to fit the screen (this happends automatically)
-		// TODO: use css to display image real size and add scroll bars horizontally and vertically
-		// Otherwise, for responsiveness,  give the canvas the size of the image as it appears on the screen
-		// (switch img.naturalHeight with sth ele, if applicable)
+		cx.rect(startingPos.x, startingPos.y, width, height);
+		cx.stroke();
 	}
 
-	public static drawSelection(startingPos: ICanvasPosition, currentPos: ICanvasPosition, cx: CanvasRenderingContext2D ) {
+	public static highlightRectangle(startingPos: ICanvasPosition, finalPos: ICanvasPosition, cx: CanvasRenderingContext2D, editor: HTMLCanvasElement): void {
+		const width: number = finalPos.x - startingPos.x;
+		const height: number = finalPos.y - startingPos.y;
+
+		let opacity = 1;
+		let fade = false;
+
+		const interval = setInterval(() => {
+			console.log(opacity);
+			cx.clearRect(startingPos.x, startingPos.y, width, height);
+
+			opacity = (fade) ? --opacity : ++opacity ;
+
+			cx.fillStyle = `rgba(212,209,24,0.${opacity})`;
+			cx.fillRect(startingPos.x, startingPos.y, width, height);
+
+			if (opacity<=0) {
+				clearInterval(interval);
+				this.clearCanvas(cx, editor);
+				return;
+			} else if (opacity>=9) {
+				fade = true;
+			}
+
+		},20);
+
+	}
+
+	public static drawSelection(startingPos: ICanvasPosition, currentPos: ICanvasPosition, cx: CanvasRenderingContext2D ): void {
 		const width: number = currentPos.x - startingPos.x;
 		const height: number = currentPos.y - startingPos.y;
 

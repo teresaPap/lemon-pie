@@ -1,5 +1,15 @@
-<p>flow-preview works!</p>
 
-<app-editor
-	imgUrl="https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12225358/Pug-On-White-01.jpg"
-></app-editor>
+<h3 class="page-header">Active file name: {{activeFile?.name}}</h3>
+
+<app-preview-editor
+	*ngIf="activeFile"
+	[imgUrl]="activeFile.base64"
+	[links]="linksOnActiveFile"
+	(onLinkAreaClicked)="changeActiveFile($event)"
+></app-preview-editor>
+
+
+<div *ngIf="!files.length" class="col-12 text-center">
+	<h4 class="page-header">No files have been uploaded yet...</h4>
+	<a [routerLink]="'../files-add'">Upload files</a>
+</div>

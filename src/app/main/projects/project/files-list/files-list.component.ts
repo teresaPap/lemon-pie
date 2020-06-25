@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { FilesService} from "../../../../shared/data-services/files.service";
-import { IProjectResolved} from "../../../../shared/interfaces/IProject";
-import { ActivatedRoute} from "@angular/router";
-import {IFile} from "../../../../shared/interfaces/IFile";
-import {NotifierService} from "angular-notifier";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FilesService } from '../../../../shared/data-services/files.service';
+import { IProjectResolved } from '../../../../shared/interfaces/IProject';
+import { ActivatedRoute } from '@angular/router';
+import { IFile } from '../../../../shared/interfaces/IFile';
+import { NotifierService } from 'angular-notifier';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-files-list',
   templateUrl: './files-list.component.html',
 })
-export class FilesListComponent implements OnInit {
+export class FilesListComponent implements OnInit, OnDestroy {
+
+	private fileChangesListener: Subscription;
 
 	public files: IFile[] = [];
 
@@ -20,10 +23,14 @@ export class FilesListComponent implements OnInit {
 	) { }
 
   	ngOnInit(): void {
-		this.fileCtrl.activeFilesListChanges$.subscribe( (filesList: IFile[]) => {
+		this.fileChangesListener = this.fileCtrl.activeFilesListChanges$.subscribe( (filesList: IFile[]) => {
 			this.files = filesList;
 		});
   	}
+
+	ngOnDestroy(): void {
+		this.fileChangesListener.unsubscribe();
+	}
 
 	public deleteFile(fileId: string): void {
 		const resolvedData: IProjectResolved = this.route.parent.snapshot.data['resolvedData'];

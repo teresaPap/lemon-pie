@@ -38,27 +38,12 @@ export class AuthService {
 		return !!this.currentUser;
 	}
 
-	public login(data: IAuthData) {
-		return new Promise<any>((resolve, reject) => {
-			this.afAuth.auth.signInWithEmailAndPassword(data.email, data.password).then(
-				res => {
-					localStorage.setItem('uid', res.user.uid);
-					resolve(res);
-				},
-				err => reject(err)
-			);
-		});
+	public login(data: IAuthData): Observable<any> {
+		return from(this.afAuth.auth.signInWithEmailAndPassword(data.email, data.password));
 	}
 
 	public register(data: IAuthData): Observable<any> {
-		return from(
-			this.afAuth.auth.createUserWithEmailAndPassword(data.email, data.password).then(
-				res => {
-					localStorage.setItem('uid', res.user.uid);
-					return res;
-				}
-			)
-		);
+		return from(this.afAuth.auth.createUserWithEmailAndPassword(data.email, data.password));
 	}
 
 	public logout():  Observable<void> {

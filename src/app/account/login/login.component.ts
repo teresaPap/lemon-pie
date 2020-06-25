@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
+import { AuthService } from '../../core/services/auth.service';
+import { IAuthData } from '../../shared/interfaces/IUser';
 
 @Component({
 	selector: 'app-login',
 	templateUrl: './login.component.html',
-	styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
 
@@ -29,14 +29,14 @@ export class LoginComponent implements OnInit {
 	}
 
 
-	public firebaseLogin() {
-		const loginCredentials = {
+	public onLoginSubmitted(): void {
+		const loginCredentials: IAuthData = {
 			email: this.loginForm.get('email').value.trim(),
 			password: this.loginForm.get('password').value
-		}
-		this.authService.login(loginCredentials).then(
+		};
+
+		this.authService.login(loginCredentials).subscribe(
 			res => {
-				console.log('Login successful!', res);
 				this.notifier.notify('default', `Login successful!`);
 				this.router.navigate(['/home']);
 			},

@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
-import { CustomValidators } from '../../shared/custom-validators';
 import { AuthService } from '../../core/services/auth.service';
-import {UsersService} from "../../shared/data-services/users.service";
-import {IAuthData, IPersonalData, IUser} from "../../shared/interfaces/IUser";
+import { CustomValidators } from '../../shared/custom-validators';
+import { UsersService } from '../../shared/data-services/users.service';
+import { IAuthData, IPersonalData } from '../../shared/interfaces/IUser';
 
 @Component({
 	selector: 'app-register',
@@ -36,8 +36,6 @@ export class RegisterComponent implements OnInit {
 	}
 
 	public register() {
-		console.log('FORM VALUE', this.registerForm.value);
-
 		const authData: IAuthData = {
 			email: this.registerForm.controls['email'].value,
 			password: this.registerForm.controls['password'].value,

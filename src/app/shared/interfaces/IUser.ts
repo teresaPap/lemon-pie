@@ -1,10 +1,7 @@
 import * as firebase from "firebase";
 
-export interface IUser {
+export interface IUser extends IPersonalData {
 	id: string;
-	email: string;
-	username?: string;
-	role?: string;
 
 	// Generated data
 	references?: Array<firebase.firestore.DocumentReference>;
@@ -18,7 +15,13 @@ export interface IUser {
 	photoURL?: string;
 }
 
-export interface ILoginData {
+export interface IPersonalData {
+	email: string;
+	username: string;
+	role?: string;
+}
+
+export interface IAuthData {
 	email: string;
 	password: string;
 }

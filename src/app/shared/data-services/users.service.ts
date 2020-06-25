@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { AuthService } from '../../core/services/auth.service';
-import { IUser, IUserData } from '../interfaces/IUser';
-
 import { Observable, of} from 'rxjs';
-import { catchError, map, tap, switchMap} from 'rxjs/operators';
-import {FirebaseApiService} from "../../core/services/firebase-api.service";
+import { catchError, map, tap, switchMap } from 'rxjs/operators';
+import { AuthService } from '../../core/services/auth.service';
+import { FirebaseApiService } from '../../core/services/firebase-api.service';
+import { IUser, IAuthData, IPersonalData } from '../interfaces/IUser';
 
 
 @Injectable({
@@ -23,18 +22,22 @@ export class UsersService {
 		private authService: AuthService
 	) { }
 
-	public create(userdata: IUserData): Observable<any> {
-		const registerData
-		return this.authService.register(userdata)
-		this.apiService.createDocument(userdata,'users');
+
+	public create(authData: IAuthData, userdata: IPersonalData): Observable<any> {
+
+		return this.authService.register({email: authData.email, password: authData.password}).pipe(
+			tap( res => console.log(res)),
+			switchMap( res => this.apiService.createDocument(userdata,'users') ),
+			tap( res => console.log(res))
+		);
 	}
 
-	public readCurrentUser(): Observable<IUserData|any> {
+	public readCurrentUser(): Observable<IUser|any> {
 		return this.authService.getAuthState().pipe(
 			tap( currentUser => console.log('This is the current user:', currentUser)),
 			map( (currentUser: IUser) => {
-				if ( !!currentUser && !!currentUser.uid) {
-					return currentUser.uid;
+				if ( !!currentUser && !!currentUser.id) {
+					return currentUser.id;
 				}
 				throw Error('No user is logged in at the moment.');
 			}),
@@ -44,7 +47,7 @@ export class UsersService {
 		);
 	}
 
-	public read(): Observable<IUserData|any> {
+	public read(): Observable<IUser|any> {
 		const uid = this.authService.getCurrentUserId();
 		if (uid) {
 			return this.firestore.doc(`users/${uid}`).get().pipe(

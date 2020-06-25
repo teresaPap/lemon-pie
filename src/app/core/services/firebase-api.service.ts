@@ -6,7 +6,6 @@ import { Observable, from, iif, forkJoin, of, defer } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { IFile } from '../../shared/interfaces/IFile';
-import {IUserData} from "../../shared/interfaces/IUser";
 
 
 @Injectable()
@@ -24,13 +23,23 @@ export class FirebaseApiService {
 
 	public createDocument(documentFields: any, collectionPath: string, parentDocPath?: string): Observable<any> {
 		return from( this.firestore.collection(collectionPath).add(documentFields) ).pipe(
-			tap((documentRef: firebase.firestore.DocumentReference) =>
-				iif(() => !!parentDocPath,
+			tap( res => {
+				console.log(1);
+				console.log(parentDocPath, !!parentDocPath);
+				console.log(2);
+			}),
+			tap((documentRef: firebase.firestore.DocumentReference) => {
+				if (!!parentDocPath) {
 					this.updateDocument(parentDocPath, {
 						'references': firebase.firestore.FieldValue.arrayUnion(documentRef)
 					})
-				),
-			),
+				}
+			}),
+			tap( res => {
+				console.log(3);
+				console.log('res', res);
+				console.log(4);
+			}),
 			switchMap((documentRef: firebase.firestore.DocumentReference) => documentRef.get() ),
 			map((documentData: firebase.firestore.DocumentData) => {
 				return {id: documentData.id, ...documentData.data()}

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Subject, Observable, from } from 'rxjs';
-import { IUser, ILoginData } from '../../shared/interfaces/IUser';
+import { IUser, IAuthData } from '../../shared/interfaces/IUser';
 import { NotifierService } from 'angular-notifier';
 
 
@@ -15,8 +15,8 @@ export class AuthService {
 		if (!fbUserdata) {
 			return;
 		}
-		const { email, id, refreshToken, emailVerified, isAnonymous } = fbUserdata;
-		return { email, id, refreshToken, emailVerified, isAnonymous };
+		const { email, username, id, refreshToken, emailVerified, isAnonymous } = fbUserdata;
+		return { email, username, id, refreshToken, emailVerified, isAnonymous };
 	}
 
 	constructor(
@@ -38,7 +38,7 @@ export class AuthService {
 		return !!this.currentUser;
 	}
 
-	public login(data: ILoginData) {
+	public login(data: IAuthData) {
 		return new Promise<any>((resolve, reject) => {
 			this.afAuth.auth.signInWithEmailAndPassword(data.email, data.password).then(
 				res => {
@@ -50,7 +50,7 @@ export class AuthService {
 		});
 	}
 
-	public register(data: ILoginData): Observable<any> {
+	public register(data: IAuthData): Observable<any> {
 		return from(
 			this.afAuth.auth.createUserWithEmailAndPassword(data.email, data.password).then(
 				res => {

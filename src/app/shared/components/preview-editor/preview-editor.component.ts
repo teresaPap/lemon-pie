@@ -45,7 +45,14 @@ export class PreviewEditorComponent implements AfterViewInit, OnChanges {
 	}
 
 	public highlightLinks(): void {
-		console.log('TODO: highlight links');
+		for( let link of this.links ) {
+			CanvasService.highlightRectangle(
+				{x: link.x1, y: link.y1},
+				{x: link.x2, y: link.y2},
+				this.cx,
+				this.editor
+			);
+		}
 	}
 
 	private watchCanvasEvents() {

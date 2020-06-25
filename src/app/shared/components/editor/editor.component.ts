@@ -139,7 +139,7 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		clickableAreas.map(area => {
 			const startingPos = { x: area.x1, y: area.y1 };
 			const finalPos = { x: area.x2, y: area.y2 };
-			return from( CanvasService.drawRectangle(startingPos, finalPos, this.cx) );
+			return CanvasService.drawRectangle(startingPos, finalPos, this.cx);
 		});
 	}
 

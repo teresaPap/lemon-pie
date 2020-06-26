@@ -1,7 +1,7 @@
 <h2 class="page-header">My Profile</h2>
 
 <div class="profile-page-container">
-	<form [formGroup]="userDetailForm" (ngSubmit)="saveUserDetailForm()" class="form detail-form">
+	<form [formGroup]="userDetailForm" (ngSubmit)="submitUserDetailForm()" class="form detail-form">
 		<h3 class="form-title">User details</h3>
 		<div class="form-group">
 			<label class="form-group-label">Username</label>
@@ -19,11 +19,12 @@
 			<label class="form-group-label">Active projects</label>
 			<input class="form-input" type="number" formControlName="projectsCount" disabled>
 		</div>
+		<button type="submit" class="btn success-btn form-btn">Save</button>
 	</form>
 
 	<br><br>
 
-	<form [formGroup]="changePasswordForm" (ngSubmit)="saveChangePasswordForm()" class="form detail-form">
+	<form [formGroup]="changePasswordForm" (ngSubmit)="submitChangePasswordForm()" class="form detail-form">
 		<h3 class="form-title">Change Password</h3>
 		<div class="form-group">
 			<label class="form-group-label">Old Password</label>

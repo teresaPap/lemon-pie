@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import {switchMap, tap} from 'rxjs/operators';
 import { AuthService } from '../../core/services/auth.service';
 import { FirebaseApiService } from '../../core/services/firebase-api.service';
 import { IUser, IAuthData, IPersonalData } from '../interfaces/IUser';
@@ -30,6 +30,13 @@ export class UsersService {
 		}
 		return this.apiService.readDocument( `users/${this.authService.getCurrentUserId()}` );
 	}
+
+	public updateCurrentUser(fields: any): Observable<void> {
+		return this.apiService.updateDocument(`users/${this.authService.getCurrentUserId()}`, fields)
+	}
+
+
+
 
 
 

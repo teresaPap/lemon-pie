@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable, of } from 'rxjs';
-import { catchError, map, tap, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { AuthService } from '../../core/services/auth.service';
 import { FirebaseApiService } from '../../core/services/firebase-api.service';
 import { IUser, IAuthData, IPersonalData } from '../interfaces/IUser';
@@ -14,7 +13,6 @@ export class UsersService {
 
 	constructor(
 		private apiService: FirebaseApiService,
-		public firestore: AngularFirestore,
 		private authService: AuthService
 	) { }
 
@@ -26,30 +24,13 @@ export class UsersService {
 		);
 	}
 
-	public readCurrentUser(): Observable<IUser|any> {
-		return this.authService.getAuthState().pipe(
-			tap( currentUser => console.log('This is the current user:', currentUser)),
-			map( (currentUser: IUser) => {
-				if ( !!currentUser && !!currentUser.id) {
-					return currentUser.id;
-				}
-				throw Error('No user is logged in at the moment.');
-			}),
-			switchMap( (uid) => this.firestore.doc(`users/${uid}`).get() ),
-			map((user) => user.data() ), // Read user data from given uid
-			catchError( error => of(null) ) // Suppress error - this error occurs when no user has logged in
-		);
+	public readCurrentUser(): Observable<IUser|null> {
+		if ( this.authService.getCurrentUserId() === null ) {
+			return null;
+		}
+		return this.apiService.readDocument( `users/${this.authService.getCurrentUserId()}` );
 	}
 
-	public read(): Observable<IUser|any> {
-		const uid = this.authService.getCurrentUserId();
-		if (uid) {
-			return this.firestore.doc(`users/${uid}`).get().pipe(
-				map((user) => user.data() ), // Read user data from given uid
-			);
-		}
-		return of(null);
-	}
 
 
 }

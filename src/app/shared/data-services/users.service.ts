@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable, of} from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, map, tap, switchMap } from 'rxjs/operators';
 import { AuthService } from '../../core/services/auth.service';
 import { FirebaseApiService } from '../../core/services/firebase-api.service';
@@ -11,10 +11,6 @@ import { IUser, IAuthData, IPersonalData } from '../interfaces/IUser';
 	providedIn: 'root'
 })
 export class UsersService {
-	private uid: string;
-
-	private r$: Observable<any>;
-	private x$: Observable<any> = new Observable(null);
 
 	constructor(
 		private apiService: FirebaseApiService,
@@ -22,13 +18,11 @@ export class UsersService {
 		private authService: AuthService
 	) { }
 
-
 	public create(authData: IAuthData, userdata: IPersonalData): Observable<any> {
-
 		return this.authService.register({email: authData.email, password: authData.password}).pipe(
-			tap( res => console.log(res)),
-			switchMap( res => this.apiService.createDocument(userdata,'users') ),
-			tap( res => console.log(res))
+			switchMap( userCredentials =>
+				this.apiService.createDocumentWithGivenId(userdata, userCredentials.user.uid,'users')
+			),
 		);
 	}
 

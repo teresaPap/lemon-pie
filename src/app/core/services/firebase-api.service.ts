@@ -23,22 +23,12 @@ export class FirebaseApiService {
 
 	public createDocument(documentFields: any, collectionPath: string, parentDocPath?: string): Observable<any> {
 		return from( this.firestore.collection(collectionPath).add(documentFields) ).pipe(
-			tap( res => {
-				console.log(1);
-				console.log(parentDocPath, !!parentDocPath);
-				console.log(2);
-			}),
 			tap((documentRef: firebase.firestore.DocumentReference) => {
 				if (!!parentDocPath) {
 					this.updateDocument(parentDocPath, {
 						'references': firebase.firestore.FieldValue.arrayUnion(documentRef)
 					})
 				}
-			}),
-			tap( res => {
-				console.log(3);
-				console.log('res', res);
-				console.log(4);
 			}),
 			switchMap((documentRef: firebase.firestore.DocumentReference) => documentRef.get() ),
 			map((documentData: firebase.firestore.DocumentData) => {
@@ -48,16 +38,10 @@ export class FirebaseApiService {
 		);
     }
 
-    public storeFile(file: File, path: string ): Observable<IFile|any> {
-		const uploadTask: AngularFireUploadTask = this.fireStorage.upload( `${path}/${file.name}`, file );
-
-		return from(uploadTask).pipe(
-			switchMap(() => this.fireStorage.ref(`${path}/${file.name}`).getDownloadURL() ),
-			map( (downloadURL: string) => {
-				return { name: file.name, path: `${path}/${file.name}`, downloadURL: downloadURL }
-			}),
-			catchError( err => err )
-		);
+    public createDocumentWithGivenId(documentFields: any, documentId: string, collectionPath: string): Observable<any> {
+    	return from( this.firestore.collection(collectionPath).doc(documentId).set(documentFields) ).pipe(
+			// tap(res => console.log(res) )
+		)
 	}
 
 

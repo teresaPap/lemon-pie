@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { IUser } from './shared/interfaces/IUser';
+import {AuthService} from "./core/services/auth.service";
 
 @Component({
 	selector: 'app-root',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
 
-	constructor( ) {	}
+	public currentUser: IUser;
+
+	constructor( private authService: AuthService ) { }
 
 	ngOnInit(): void {
+		this.authService.fireAuthStateChanges$.subscribe( res => {
+			console.log(res);
+			this.currentUser = this.authService.parseUser(res);
+		})
 	}
 
 }

@@ -8,25 +8,25 @@
 				Home
 			</a>
 		</li>
-		<li *ngIf="!currentUser" class="nav-item">
+		<li *ngIf="!currentUserId" class="nav-item">
 			<a [routerLink]="['/login']">
 				Login
 			</a>
 		</li>
-		<li *ngIf="currentUser" class="nav-item">
+		<li *ngIf="currentUserId" class="nav-item">
 			<a [routerLink]="['/projects']">
 				Projects
 			</a>
 		</li>
-		<li *ngIf="currentUser"  class="nav-item">
+		<li *ngIf="currentUserId"  class="nav-item">
 			<a (click)="toggleBubbleMenu()">
-				Hello, {{currentUser.email}}!
+				Hello, {{currentUserId}}!
 			</a>
 		</li>
 	</ul>
 	<div class="bubble-menu" [ngClass]="{'visible':showBubbleMenu}">
 		<ul>
-			<li *ngIf="currentUser" (click)="toggleBubbleMenu()">
+			<li *ngIf="currentUserId" (click)="toggleBubbleMenu()">
 				<a [routerLink]="['/profile']">
 					Profile
 				</a>

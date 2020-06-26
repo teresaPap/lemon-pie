@@ -1,16 +1,16 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { IUser } from '../../interfaces/IUser';
 import { Router } from '@angular/router';
-import { AuthService } from "../../../core/services/auth.service";
+import { AuthService } from '../../../core/services/auth.service';
+import { IUser } from '../../interfaces/IUser';
+
 
 @Component({
 	selector: 'app-nav',
 	templateUrl: './nav.component.html',
-	styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnChanges {
 
-	@Input() currentUser: IUser ;
+	@Input() currentUserId: string|null ;
 	public showBubbleMenu: boolean;
 
 	constructor(
@@ -18,8 +18,9 @@ export class NavComponent implements OnChanges {
 		public router: Router) { }
 
 	ngOnChanges(changes: SimpleChanges) {
-		if (changes.currentUser) {
-			this.currentUser = changes.currentUser.currentValue
+		if (changes.currentUserId) {
+			console.log('Current user changed: ', changes );
+			this.currentUserId = changes.currentUserId.currentValue
 		}
 	}
 

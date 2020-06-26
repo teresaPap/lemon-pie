@@ -9,14 +9,13 @@ import {AuthService} from "./core/services/auth.service";
 })
 export class AppComponent implements OnInit {
 
-	public currentUser: IUser;
+	public currentUserId: string|null;
 
 	constructor( private authService: AuthService ) { }
 
 	ngOnInit(): void {
-		this.authService.fireAuthStateChanges$.subscribe( res => {
-			console.log(res);
-			this.currentUser = this.authService.parseUser(res);
+		this.authService.fireAuthStateChanges$.subscribe( (user:firebase.User) => {
+			this.currentUserId = (user ? user.uid : null);
 		})
 	}
 

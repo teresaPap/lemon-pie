@@ -4,6 +4,7 @@ import { NotifierService } from 'angular-notifier';
 import { UsersService } from '../../shared/data-services/users.service';
 import { IUser } from '../../shared/interfaces/IUser';
 import { CustomValidators } from '../../shared/custom-validators';
+import {Router} from "@angular/router";
 
 @Component({
 	selector: 'app-profile',
@@ -19,6 +20,7 @@ export class ProfileComponent implements OnInit {
 		private fb: FormBuilder,
 		private userCtrl: UsersService,
 		private notifier: NotifierService,
+		public router: Router,
 	) { }
 
 	ngOnInit() {
@@ -26,7 +28,7 @@ export class ProfileComponent implements OnInit {
 			username: '',
 			email: {value: '', disabled: true},
 			role: '',
-			projectsCount: {value: 0, disabled: true},
+			projectsCount: {value: null, disabled: true},
 		});
 
 		this.changePasswordForm = this.fb.group({
@@ -45,11 +47,11 @@ export class ProfileComponent implements OnInit {
 			this.userDetailForm.controls['username'].setValue(currentUser.username);
 			this.userDetailForm.controls['email'].setValue(currentUser.email);
 			this.userDetailForm.controls['role'].setValue(currentUser.role);
-			this.userDetailForm.controls['projectsCount'].setValue(currentUser.references.length);
+			this.userDetailForm.controls['projectsCount'].setValue(currentUser.references? currentUser.references.length : 0);
 		});
 	}
 
-	public submitUserDetailForm() {
+	public submitUserDetailForm(): void {
 		if (!this.userDetailForm.valid) {
 			return;
 		}
@@ -69,8 +71,16 @@ export class ProfileComponent implements OnInit {
 		return;
 	}
 
-	public submitDeleteAccountForm() {
-		return;
+	public submitDeleteAccountForm(): void {
+		this.userCtrl.deleteCurrentUser().subscribe(
+			() => {
+				this.notifier.notify('default', 'Your account was deleted successfully.');
+				this.router.navigate(['/home']);
+			}, err => {
+				this.notifier.notify('error', `${err.message}`);
+				console.error(err);
+			}
+		)
 	}
 
 

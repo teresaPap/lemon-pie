@@ -77,6 +77,7 @@ export class FirebaseApiService {
 
 
 	// DELETE
+	// TODO: delete is still buggy. It deletes only the first level of child references.
 
 	public deleteDocument(docPath: string, parentDocPath?: string): Observable<string> {
 		return this.deleteDocumentChildReferences(docPath).pipe(

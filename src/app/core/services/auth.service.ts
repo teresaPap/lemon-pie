@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable, from } from 'rxjs';
 import { IAuthData } from '../../shared/interfaces/IUser';
+import {tap} from "rxjs/operators";
 
 
 @Injectable({
@@ -34,6 +35,15 @@ export class AuthService {
 	public getCurrentUserId(): string|null {
 		console.log( 'this.afAuth.auth.currentUser.uid', this.afAuth.auth.currentUser?.uid );
 		return ( this.afAuth.auth.currentUser ? this.afAuth.auth.currentUser.uid : null );
+	}
+
+	public delete(uid: string) {
+		return from( this.afAuth.auth.currentUser.delete()).pipe(
+			tap( res => {
+				console.log('user deleted', res );
+				this.logout();
+			}
+		));
 	}
 
 }

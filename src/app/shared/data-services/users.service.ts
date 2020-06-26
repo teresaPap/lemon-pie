@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {switchMap, tap} from 'rxjs/operators';
+import {catchError, switchMap, tap} from 'rxjs/operators';
 import { AuthService } from '../../core/services/auth.service';
 import { FirebaseApiService } from '../../core/services/firebase-api.service';
 import { IUser, IAuthData, IPersonalData } from '../interfaces/IUser';
+import {IProject} from "../interfaces/IProject";
 
 
 @Injectable({
@@ -33,6 +34,17 @@ export class UsersService {
 
 	public updateCurrentUser(fields: any): Observable<void> {
 		return this.apiService.updateDocument(`users/${this.authService.getCurrentUserId()}`, fields)
+	}
+
+	public deleteCurrentUser(): Observable<any> {
+		const currentUserId = this.authService.getCurrentUserId()
+		return this.apiService.deleteDocument(`users/${currentUserId}`).pipe(
+			switchMap( () => this.authService.delete(currentUserId) ),
+			catchError( err => {
+				console.error('ERRORRR\n', err );
+				return err;
+			})
+		);
 	}
 
 

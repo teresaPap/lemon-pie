@@ -13,10 +13,7 @@ export class ProjectsService {
 
 	private activeProjectSource = new BehaviorSubject<IProject>({} as IProject);
 
-	// Observable: any component can subscribe to this observable and receive notifications when the active project changes (eg name is updated)
 	public activeProjectChanges$ = this.activeProjectSource.asObservable();
-
-	public uid: string = this.authService.getCurrentUserId();
 
 	constructor(
 		private authService: AuthService,
@@ -24,18 +21,17 @@ export class ProjectsService {
 	}
 
 	public changeActiveProject(activeProject: IProject): void {
-		// Observer function: any component can push a new value to the activeProjectChanges$ observable.
 		this.activeProjectSource.next(activeProject);
 	}
 
 	public create(project: IProject): Observable<IProject|any> {
-		return this.apiService.createDocument(project,'projects',`users/${this.uid}`).pipe(
+		return this.apiService.createDocument(project,'projects',`users/${this.authService.getCurrentUserId()}`).pipe(
 			tap( res => this.changeActiveProject(res) )
 		);
 	}
 
 	public readAllProjectsForActiveUser(): Observable<IProjectPreview[]|any> {
-		return this.apiService.readDocumentChildReferences(`users/${this.uid}`);
+		return this.apiService.readDocumentChildReferences(`users/${this.authService.getCurrentUserId()}`);
 	}
 
 	public readSingleProject(projectId: string): Observable<IProject> {
@@ -51,7 +47,7 @@ export class ProjectsService {
 	}
 
 	public delete(projectId: string) {
-		return this.apiService.deleteDocument(`projects/${projectId}`, `users/${this.uid}`).pipe(
+		return this.apiService.deleteDocument(`projects/${projectId}`, `users/${this.authService.getCurrentUserId()}`).pipe(
 			tap( () => this.changeActiveProject({} as IProject) )
 		);
 	}

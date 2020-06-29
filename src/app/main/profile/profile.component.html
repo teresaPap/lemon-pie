@@ -29,14 +29,27 @@
 		<div class="form-group">
 			<label class="form-group-label">Old Password</label>
 			<input class="form-input" type="password" formControlName="oldPassword">
+			<p class="form-inline-error"
+			   *ngIf="changePasswordForm.get('oldPassword').touched && changePasswordForm.get('oldPassword').errors">
+				{{ changePasswordForm.get('oldPassword').errors.required ? 'Field is required.' : '' }}
+			</p>
 		</div>
 		<div class="form-group">
 			<label class="form-group-label">New Password</label>
 			<input class="form-input" type="password" formControlName="password">
+			<p class="form-inline-error"
+			   *ngIf="changePasswordForm.get('password').touched && changePasswordForm.get('password').errors">
+				{{ changePasswordForm.get('password').errors.minlength ? 'Password should be at least 6 characters.' : '' }}
+				{{ changePasswordForm.get('password').errors.required ? 'Field is required.' : '' }}
+			</p>
 		</div>
 		<div class="form-group">
 			<label class="form-group-label">Confirm password</label>
 			<input class="form-input" type="password" formControlName="confirmPassword">
+			<p class="form-inline-error"
+			   *ngIf="changePasswordForm.get('confirmPassword').touched && changePasswordForm.errors && changePasswordForm.errors.comparePasswords">
+				Passwords don't match.
+			</p>
 		</div>
 		<button type="submit" class="btn success-btn form-btn">Update Password</button>
 	</form>
@@ -53,6 +66,10 @@
 		<div class="form-group">
 			<label class="form-group-label">Security quote</label>
 			<input class="form-input" type="text" formControlName="confirmDelete">
+			<p class="form-inline-error"
+			   *ngIf="deleteAccountForm.get('confirmDelete').touched && deleteAccountForm.get('confirmDelete').errors">
+				{{ deleteAccountForm.get('confirmDelete').errors.required ? 'Field is required.' : '' }}
+			</p>
 		</div>
 		<button type="submit" class="btn success-btn form-btn">Delete my account</button>
 	</form>

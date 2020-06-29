@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { UsersService } from '../../shared/data-services/users.service';
 import { IUser } from '../../shared/interfaces/IUser';
 import { CustomValidators } from '../../shared/custom-validators';
-import {Router} from "@angular/router";
 
 @Component({
 	selector: 'app-profile',
@@ -38,7 +38,7 @@ export class ProfileComponent implements OnInit {
 		},  { validator: CustomValidators.comparePasswords });
 
 		this.deleteAccountForm = this.fb.group({
-			confirmDelete: ['', Validators.pattern('I want to delete my account')]
+			confirmDelete: ['', [Validators.required, Validators.pattern('I want to delete my account')]]
 		});
 
 		this.userCtrl.readCurrentUser().subscribe((currentUser: IUser) => {
@@ -70,7 +70,7 @@ export class ProfileComponent implements OnInit {
 
 	public submitChangePasswordForm(): void {
 		if (!this.changePasswordForm.valid) {
-			console.log('TODO show user friendly message');
+			console.log('TODO show user friendly message', this.changePasswordForm);
 			return;
 		}
 		this.userCtrl.updateCurrentUserPassword(this.changePasswordForm.controls['password'].value).subscribe(
@@ -97,6 +97,5 @@ export class ProfileComponent implements OnInit {
 			}
 		)
 	}
-
 
 }

@@ -33,7 +33,7 @@ export class ProfileComponent implements OnInit {
 
 		this.changePasswordForm = this.fb.group({
 			oldPassword: ['', Validators.required],
-			password: ['', Validators.required],
+			password: ['', [Validators.required, Validators.minLength(6)] ],
 			confirmPassword: ['']
 		},  { validator: CustomValidators.comparePasswords });
 
@@ -53,13 +53,14 @@ export class ProfileComponent implements OnInit {
 
 	public submitUserDetailForm(): void {
 		if (!this.userDetailForm.valid) {
+			console.log('TODO show user friendly message');
 			return;
 		}
 		this.userCtrl.updateCurrentUser({
 			username: this.userDetailForm.controls['username'].value,
 			role: this.userDetailForm.controls['role'].value
 		}).subscribe(
-			() => this.notifier.notify('success', `User details updated successfully!`),
+			() => this.notifier.notify('success', `User details updated successfully.`),
 			err => {
 				this.notifier.notify('error', `Error! ${err.message}`);
 				console.log(err);
@@ -67,14 +68,28 @@ export class ProfileComponent implements OnInit {
 		)
 	}
 
-	public submitChangePasswordForm() {
-		return;
+	public submitChangePasswordForm(): void {
+		if (!this.changePasswordForm.valid) {
+			console.log('TODO show user friendly message');
+			return;
+		}
+		this.userCtrl.updateCurrentUserPassword(this.changePasswordForm.controls['password'].value).subscribe(
+			() => 	this.notifier.notify('default', 'Password was updated successfully.'),
+			err => {
+				this.notifier.notify('error', `${err.message}`);
+				console.error(err);
+			}
+		);
 	}
 
 	public submitDeleteAccountForm(): void {
+		if (!this.deleteAccountForm.valid) {
+			console.log('TODO show user friendly message');
+			return;
+		}
 		this.userCtrl.deleteCurrentUser().subscribe(
 			() => {
-				this.notifier.notify('default', 'Your account was deleted successfully.');
+				this.notifier.notify('default', 'Account was deleted successfully.');
 				this.router.navigate(['/home']);
 			}, err => {
 				this.notifier.notify('error', `${err.message}`);

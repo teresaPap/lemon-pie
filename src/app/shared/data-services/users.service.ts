@@ -36,10 +36,14 @@ export class UsersService {
 		return this.apiService.updateDocument(`users/${this.authService.getCurrentUserId()}`, fields)
 	}
 
+	public updateCurrentUserPassword(newPassword: string): Observable<void> {
+		return this.authService.updatePassword(newPassword);
+	}
+
 	public deleteCurrentUser(): Observable<any> {
 		const currentUserId = this.authService.getCurrentUserId()
 		return this.apiService.deleteDocument(`users/${currentUserId}`).pipe(
-			switchMap( () => this.authService.delete(currentUserId) ),
+			switchMap( () => this.authService.deleteCurrentUser() ),
 			catchError( err => {
 				console.error('ERRORRR\n', err );
 				return err;

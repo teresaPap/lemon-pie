@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable, from } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { IAuthData } from '../../shared/interfaces/IUser';
-import {tap} from "rxjs/operators";
 
 
 @Injectable({
@@ -10,7 +10,7 @@ import {tap} from "rxjs/operators";
 })
 export class AuthService {
 
-	public fireAuthStateChanges$ = this.afAuth.authState;
+	public fireAuthStateChanges$: Observable<firebase.User> = this.afAuth.authState;
 
 	constructor(
 		public afAuth: AngularFireAuth,
@@ -33,17 +33,17 @@ export class AuthService {
 	}
 
 	public getCurrentUserId(): string|null {
-		console.log( 'this.afAuth.auth.currentUser.uid', this.afAuth.auth.currentUser?.uid );
-		return ( this.afAuth.auth.currentUser ? this.afAuth.auth.currentUser.uid : null );
+		return (this.afAuth.auth.currentUser ? this.afAuth.auth.currentUser.uid : null);
 	}
 
-	public delete(uid: string) {
-		return from( this.afAuth.auth.currentUser.delete()).pipe(
-			tap( res => {
-				console.log('user deleted', res );
-				this.logout();
-			}
-		));
+	public deleteCurrentUser(): Observable<void> {
+		return from(this.afAuth.auth.currentUser.delete()).pipe(
+			switchMap(() => this.logout() )
+		);
+	}
+
+	public updatePassword(newPassword: string): Observable<void> {
+		return from(this.afAuth.auth.currentUser.updatePassword(newPassword));
 	}
 
 }

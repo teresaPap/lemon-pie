@@ -98,4 +98,14 @@ export class ProfileComponent implements OnInit {
 		)
 	}
 
+	public logout(): void {
+		this.userCtrl.logout().subscribe(
+			() => this.router.navigate(['/home']),
+			err => {
+				this.notifier.notify('error', `${err.message}`);
+				console.error(err);
+			}
+		);
+	}
+
 }

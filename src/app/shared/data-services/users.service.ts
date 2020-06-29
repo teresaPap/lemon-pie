@@ -4,7 +4,6 @@ import {catchError, switchMap, tap} from 'rxjs/operators';
 import { AuthService } from '../../core/services/auth.service';
 import { FirebaseApiService } from '../../core/services/firebase-api.service';
 import { IUser, IAuthData, IPersonalData } from '../interfaces/IUser';
-import {IProject} from "../interfaces/IProject";
 
 
 @Injectable({
@@ -51,9 +50,9 @@ export class UsersService {
 		);
 	}
 
-
-
-
+	public logout(): Observable<void> {
+		return this.authService.logout();
+	}
 
 
 }

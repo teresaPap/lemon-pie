@@ -4,38 +4,29 @@
 	</a>
 	<ul class="nav-menu">
 		<li class="nav-item">
-			<a [routerLink]="['/home']">
+			<a [routerLink]="['/home']" routerLinkActive="route-active">
 				Home
 			</a>
 		</li>
-		<li *ngIf="!currentUser" class="nav-item">
-			<a [routerLink]="['/login']">
+		<li *ngIf="!currentUserId" class="nav-item">
+			<a [routerLink]="['/login']" routerLinkActive="route-active">
 				Login
 			</a>
 		</li>
-		<li *ngIf="currentUser" class="nav-item">
-			<a [routerLink]="['/projects']">
+		<li *ngIf="!currentUserId" class="nav-item">
+			<a [routerLink]="['/register']" routerLinkActive="route-active">
+				Register
+			</a>
+		</li>
+		<li *ngIf="currentUserId" class="nav-item">
+			<a [routerLink]="['/projects']" routerLinkActive="route-active">
 				Projects
 			</a>
 		</li>
-		<li *ngIf="currentUser"  class="nav-item">
-			<a (click)="toggleBubbleMenu()">
-				{{currentUser.email}}
+		<li *ngIf="currentUserId"  class="nav-item">
+			<a [routerLink]="['/profile']" routerLinkActive="route-active">
+				My Account
 			</a>
 		</li>
 	</ul>
-	<div class="bubble-menu" [ngClass]="{'visible':showBubbleMenu}">
-		<ul>
-			<li *ngIf="currentUser" (click)="toggleBubbleMenu()">
-				<a [routerLink]="['/profile']">
-					Profile
-				</a>
-			</li>
-			<li>
-				<a (click)="logout()">
-					Logout
-				</a>
-			</li>
-		</ul>
-	</div>
 </nav>

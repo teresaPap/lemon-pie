@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CustomValidators } from '../../shared/custom-validators';
-import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
+import { AuthService } from '../../core/services/auth.service';
+import { CustomValidators } from '../../shared/custom-validators';
+import { UsersService } from '../../shared/data-services/users.service';
+import { IAuthData, IPersonalData } from '../../shared/interfaces/IUser';
 
 @Component({
 	selector: 'app-register',
 	templateUrl: './register.component.html',
-	styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
 
@@ -16,6 +17,7 @@ export class RegisterComponent implements OnInit {
 
 	constructor(
 		private fb: FormBuilder,
+		private usersCtrl: UsersService,
 		private authService: AuthService,
 		private router: Router,
 		private notifier: NotifierService
@@ -24,17 +26,27 @@ export class RegisterComponent implements OnInit {
 	ngOnInit() {
 
 		this.registerForm = this.fb.group({
-			email: ['', Validators.required],
+			email: ['', [Validators.required, Validators.email]],
 			username: '',
 			role: '',
-			password: ['', Validators.required],
+			password: ['', [Validators.required, Validators.minLength(6)]],
 			confirmPassword: ['']
 		},  { validator: CustomValidators.comparePasswords });
 
 	}
 
 	public register() {
-		this.authService.register(this.registerForm.value).then(
+		const authData: IAuthData = {
+			email: this.registerForm.controls['email'].value,
+			password: this.registerForm.controls['password'].value,
+		};
+		const personalData: IPersonalData = {
+			email: this.registerForm.controls['email'].value,
+			username: (!!this.registerForm.controls['username'].value ? this.registerForm.controls['username'].value : this.registerForm.controls['email'].value ),
+			role: this.registerForm.controls['role'].value,
+		}
+
+		this.usersCtrl.create(authData, personalData).subscribe(
 			res => {
 				console.log('Register successful!', res);
 				this.notifier.notify('success', `Register successful!`);
@@ -42,7 +54,7 @@ export class RegisterComponent implements OnInit {
 			},
 			err => {
 				this.notifier.notify('error', `${err.message}`);
-				console.log('An error has occured', err);
+				console.log('An error has occured.', err);
 			}
 		);
 	}

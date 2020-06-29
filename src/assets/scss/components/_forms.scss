@@ -11,11 +11,13 @@
 }
 .form-error,
 .form-inline-error {
-	text-align: center;
 	margin-bottom: 10px;
 	color: $theme-error;
+	padding: 1px;
 }
-
+.form-error {
+	text-align: center;
+}
 
 .img-preview {
     max-height: 200px;
@@ -41,26 +43,27 @@
 	display: flex;
 	margin-bottom: 5px;
 
-	.form-group-label {
+	.form-group-label,
+	.input-label {
 		flex-grow: 1;
 		width: 0;
 		padding: 12px 10px;
 	}
-	input,
-	textarea,
-	select {
-		height: fit-content;
-		flex-grow: 3;
-		border: 2px solid $mercury;
-		border-radius: 4px;
-		padding: 10px;
-		background-color: $theme-light;
-		&::placeholder {
-			font-family: $font-handwritten;
-			font-style: italic;
-			font-size: 0.8em;
+	.input-group {
+		.form-input {
+			width: 50vw;
+			border: 1px solid $theme-text;
+			border-radius: 4px;
+			padding: 10px;
+			background-color: $theme-light;
+			&::placeholder {
+				font-family: $font-handwritten;
+				font-style: italic;
+				font-size: 0.8em;
+			}
 		}
 	}
+
 }
 
 .btn-group {

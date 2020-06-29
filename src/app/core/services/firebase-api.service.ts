@@ -6,7 +6,6 @@ import { Observable, from, iif, forkJoin, of, defer } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { IFile } from '../../shared/interfaces/IFile';
-import {IUserData} from "../../shared/interfaces/IUser";
 
 
 @Injectable()
@@ -24,13 +23,13 @@ export class FirebaseApiService {
 
 	public createDocument(documentFields: any, collectionPath: string, parentDocPath?: string): Observable<any> {
 		return from( this.firestore.collection(collectionPath).add(documentFields) ).pipe(
-			tap((documentRef: firebase.firestore.DocumentReference) =>
-				iif(() => !!parentDocPath,
+			tap((documentRef: firebase.firestore.DocumentReference) => {
+				if (!!parentDocPath) {
 					this.updateDocument(parentDocPath, {
 						'references': firebase.firestore.FieldValue.arrayUnion(documentRef)
 					})
-				),
-			),
+				}
+			}),
 			switchMap((documentRef: firebase.firestore.DocumentReference) => documentRef.get() ),
 			map((documentData: firebase.firestore.DocumentData) => {
 				return {id: documentData.id, ...documentData.data()}
@@ -39,16 +38,10 @@ export class FirebaseApiService {
 		);
     }
 
-    public storeFile(file: File, path: string ): Observable<IFile|any> {
-		const uploadTask: AngularFireUploadTask = this.fireStorage.upload( `${path}/${file.name}`, file );
-
-		return from(uploadTask).pipe(
-			switchMap(() => this.fireStorage.ref(`${path}/${file.name}`).getDownloadURL() ),
-			map( (downloadURL: string) => {
-				return { name: file.name, path: `${path}/${file.name}`, downloadURL: downloadURL }
-			}),
-			catchError( err => err )
-		);
+    public createDocumentWithGivenId(documentFields: any, documentId: string, collectionPath: string): Observable<any> {
+    	return from( this.firestore.collection(collectionPath).doc(documentId).set(documentFields) ).pipe(
+			// tap(res => console.log(res) )
+		)
 	}
 
 
@@ -84,6 +77,7 @@ export class FirebaseApiService {
 
 
 	// DELETE
+	// TODO: delete is still buggy. It deletes only the first level of child references.
 
 	public deleteDocument(docPath: string, parentDocPath?: string): Observable<string> {
 		return this.deleteDocumentChildReferences(docPath).pipe(

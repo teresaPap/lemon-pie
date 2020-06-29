@@ -1,48 +1,58 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import {catchError, switchMap, tap} from 'rxjs/operators';
 import { AuthService } from '../../core/services/auth.service';
-import { IUser, IUserData } from '../interfaces/IUser';
-
-import { Observable, of} from 'rxjs';
-import { catchError, map, tap, switchMap} from 'rxjs/operators';
+import { FirebaseApiService } from '../../core/services/firebase-api.service';
+import { IUser, IAuthData, IPersonalData } from '../interfaces/IUser';
 
 
 @Injectable({
 	providedIn: 'root'
 })
 export class UsersService {
-	private uid: string;
-
-	private r$: Observable<any>;
-	private x$: Observable<any> = new Observable(null);
 
 	constructor(
-		public firestore: AngularFirestore,
+		private apiService: FirebaseApiService,
 		private authService: AuthService
 	) { }
 
-	public readCurrentUser(): Observable<IUserData|any> {
-		return this.authService.getAuthState().pipe(
-			tap( currentUser => console.log('This is the current user:', currentUser)),
-			map( (currentUser: IUser) => {
-				if ( !!currentUser && !!currentUser.uid) {
-					return currentUser.uid;
-				}
-				throw Error('No user is logged in at the moment.');
-			}),
-			switchMap( (uid) => this.firestore.doc(`users/${uid}`).get() ),
-			map((user) => user.data() ), // Read user data from given uid
-			catchError( error => of(null) ) // Suppress error - this error occurs when no user has logged in
+	public create(authData: IAuthData, userdata: IPersonalData): Observable<any> {
+		return this.authService.register({email: authData.email, password: authData.password}).pipe(
+			switchMap( userCredentials =>
+				this.apiService.createDocumentWithGivenId(userdata, userCredentials.user.uid,'users')
+			),
 		);
 	}
 
-	public read(): Observable<IUserData|any> {
-		const uid = this.authService.getCurrentUserId();
-		if (uid) {
-			return this.firestore.doc(`users/${uid}`).get().pipe(
-				map((user) => user.data() ), // Read user data from given uid
-			);
+	public readCurrentUser(): Observable<IUser|null> {
+		if ( this.authService.getCurrentUserId() === null ) {
+			return null;
 		}
-		return of(null);
+		return this.apiService.readDocument( `users/${this.authService.getCurrentUserId()}` );
 	}
+
+	public updateCurrentUser(fields: any): Observable<void> {
+		return this.apiService.updateDocument(`users/${this.authService.getCurrentUserId()}`, fields)
+	}
+
+	public updateCurrentUserPassword(newPassword: string): Observable<void> {
+		return this.authService.updatePassword(newPassword);
+	}
+
+	public deleteCurrentUser(): Observable<any> {
+		const currentUserId = this.authService.getCurrentUserId()
+		return this.apiService.deleteDocument(`users/${currentUserId}`).pipe(
+			switchMap( () => this.authService.deleteCurrentUser() ),
+			catchError( err => {
+				console.error('ERRORRR\n', err );
+				return err;
+			})
+		);
+	}
+
+	public logout(): Observable<void> {
+		return this.authService.logout();
+	}
+
+
 }

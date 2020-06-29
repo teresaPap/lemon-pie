@@ -7,7 +7,6 @@ import { AuthService } from './services/auth.service';
 	imports: [ ],
 	providers: [
 		FirebaseApiService,
-		AuthService,
 		AuthGuard,
 	]
 })

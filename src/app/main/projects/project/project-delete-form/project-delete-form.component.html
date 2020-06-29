@@ -5,8 +5,10 @@
 		<p>Please type in "<strong>I want to delete this project</strong>" to confirm.</p>
 	</div>
 	<div class="form-group">
-		<label class="form-group-label">Security quote</label>
-		<input class="form-input" type="text" formControlName="confirmDelete">
+		<label class="input-label">Security quote</label>
+		<div class="input-group">
+			<input class="form-input" type="text" formControlName="confirmDelete">
+		</div>
 	</div>
 	<p class="form-error" *ngIf="deleteProjectForm.errors">{{deleteProjectForm.errors.message}}</p>
 	<button type="submit" class="btn success-btn form-btn">Delete this project</button>

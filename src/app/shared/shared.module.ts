@@ -12,6 +12,7 @@ import { LemonPieLogoComponent } from './components/lemon-pie-logo/lemon-pie-log
 import { AsideComponent } from './components/aside/aside.component';
 import { EditorComponent } from './components/editor/editor.component';
 import { PreviewEditorComponent } from './components/preview-editor/preview-editor.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 @NgModule({
 	declarations: [
@@ -23,6 +24,7 @@ import { PreviewEditorComponent } from './components/preview-editor/preview-edit
 		AsideComponent,
 		EditorComponent,
 		PreviewEditorComponent,
+		PageNotFoundComponent
 	],
 	imports: [
 		RouterModule,

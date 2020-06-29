@@ -11,6 +11,7 @@ import { ProjectDeleteFormComponent } from './project/project-delete-form/projec
 import { ProjectDetailsFormComponent } from './project/project-details-form/project-details-form.component';
 import { ProjectResolver } from './project/project-resolver.service';
 import { ProjectsListResolver } from './projects-list/projects-list-resolver.service';
+import { PageNotFoundComponent } from '../../shared/components/page-not-found/page-not-found.component';
 
 
 const routes: Routes = [
@@ -27,13 +28,14 @@ const routes: Routes = [
 			{ path: 'files-add', component: FilesUploaderComponent },
 			{ path: 'edit', component: ProjectDetailsFormComponent },
 			{ path: 'delete', component: ProjectDeleteFormComponent },
+			{ path: '**', component: PageNotFoundComponent }
 		]
 	},
 	{
 		path: '',
 		component : ProjectsListComponent,
 		resolve: { resolvedData: ProjectsListResolver },
-	},
+	}
 ];
 
 @NgModule({

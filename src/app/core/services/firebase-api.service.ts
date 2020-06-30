@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireStorage } from '@angular/fire/storage';
 import * as firebase from 'firebase';
 import { Observable, from, iif, forkJoin, of, defer } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
-import { IFile } from '../../shared/interfaces/IFile';
 
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class FirebaseApiService {
 
     public uid: string = this.authService.getCurrentUserId();

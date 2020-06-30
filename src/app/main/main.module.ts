@@ -3,6 +3,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
 import { MainRoutingModule } from './main-routing.module';
+import { AngularFireAuthGuardModule } from "@angular/fire/auth-guard";
 
 @NgModule({
 	declarations: [
@@ -10,6 +11,7 @@ import { MainRoutingModule } from './main-routing.module';
 		ProfileComponent,
 	],
 	imports: [
+		AngularFireAuthGuardModule,
 		SharedModule,
 		MainRoutingModule,
 	]

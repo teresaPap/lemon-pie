@@ -40,7 +40,15 @@ export class FilesUploaderComponent implements OnInit {
 
 	public onDrop(fileList: FileList): void {
 		for (let i = 0 ; i < fileList.length ; i++ ) {
-			if ( !this.isImage( fileList.item(i)) ) continue;
+			if ( !this.isImage( fileList.item(i)) ) {
+				this.notifier.notify('default', `'${fileList.item(i).name}' is not a image.`);
+				continue;
+			}
+			if (fileList.item(i).size>100000) {
+				this.notifier.notify('default', `'${fileList.item(i).name}' is too large.`);
+				continue;
+			}
+
 			this.addFilePreview( fileList.item(i) );
 		}
 	}
@@ -58,10 +66,13 @@ export class FilesUploaderComponent implements OnInit {
 			base64: file.get('base64').value
 		}, projectId ));
 
+		// TODO: replace notification with a loader to prevent user from interacting with the page
+		this.notifier.notify('default', 'Please wait. Files are being uploaded...', 'NOTIF_PLEASE_WAIT');
+
 		forkJoin(filesToUpload).subscribe(
 			res => {
+				this.notifier.hide('NOTIF_PLEASE_WAIT');
 				this.notifier.notify('success', `Files uploaded successfully`);
-				console.log(res);
 				this.router.navigate(['../files-inspect'],{relativeTo: this.route});
 			},
 			err => {

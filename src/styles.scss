@@ -29,7 +29,6 @@
 @import './assets/scss/components/_buttons';
 @import './assets/scss/components/_dropdown';
 @import './assets/scss/components/_forms';
-@import './assets/scss/components/_file-uploader';
 @import './assets/scss/components/_editor';
 @import './assets/scss/components/_logo';
 @import './assets/scss/components/_modal';
@@ -40,9 +39,9 @@
 // Pages
 @import './assets/scss/pages/_home';
 @import './assets/scss/pages/_contact';
+@import './assets/scss/pages/_file-uploader';
 @import './assets/scss/pages/_user-profile';
-@import 'assets/scss/pages/_project-details';
-@import 'assets/scss/pages/_flow-edit';
+@import './assets/scss/pages/_flow-edit';
 
 // Themes
 @import './assets/scss/themes/_admin';

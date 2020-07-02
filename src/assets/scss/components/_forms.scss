@@ -1,12 +1,10 @@
 // Forms and form inputs styling
 
 .form-title {
-	display: flex;
-	margin: 0px 5px 10px 5px;
+	margin-bottom: 10px;
 	font-family: $font-handwritten;
 }
 .form-note {
-	text-align: right;
 	margin-bottom: 10px;
 }
 .form-error,
@@ -20,13 +18,9 @@
 }
 
 .img-preview {
-    max-height: 200px;
+	max-height: 200px;
 }
 
-.detail-form {
-	display: flex;
-	flex-direction: column;
-}
 
 .form,
 .detail-form {
@@ -36,7 +30,6 @@
 
 .form-title,
 .form-btn {
-	align-self: flex-end;
 	margin-top: 10px;
 }
 .form-group {
@@ -44,13 +37,13 @@
 	margin-bottom: 5px;
 
 	.input-label {
-		flex-grow: 1;
-		width: 0;
-		padding: 12px 10px;
+		flex: 0 0 calc(20% - 10px);
+		padding: 12px 10px 12px 0px;
 	}
 	.input-group {
+		flex: 0 0 calc(80% - 20px);
 		.form-input {
-			width: 50vw;
+			width: 100%;
 			border: 1px solid $theme-text;
 			border-radius: 4px;
 			padding: 10px;

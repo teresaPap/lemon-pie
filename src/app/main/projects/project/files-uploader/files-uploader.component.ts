@@ -66,10 +66,13 @@ export class FilesUploaderComponent implements OnInit {
 			base64: file.get('base64').value
 		}, projectId ));
 
+		// TODO: replace notification with a loader to prevent user from interacting with the page
+		this.notifier.notify('default', 'Please wait. Files are being uploaded...', 'NOTIF_PLEASE_WAIT');
+
 		forkJoin(filesToUpload).subscribe(
 			res => {
+				this.notifier.hide('NOTIF_PLEASE_WAIT');
 				this.notifier.notify('success', `Files uploaded successfully`);
-				console.log(res);
 				this.router.navigate(['../files-inspect'],{relativeTo: this.route});
 			},
 			err => {

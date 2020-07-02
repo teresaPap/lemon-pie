@@ -2,13 +2,15 @@
 
 
 // Top Nav
-nav {
+.nav {
     height: calc(#{$nav-height} - 10px);
     padding: 5px 20px;
 	margin-bottom: 1px;
 
+	box-sizing: border-box;
+	border-bottom: 1px solid $mercury;
+
 	background-color: $theme-background;
-    box-shadow: 0px 1px 7px 1px rgba(0,0,0,0.2);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -60,8 +62,14 @@ nav {
 // Aside Nav
 .aside-menu {
 	background-color: $theme-background;
-	box-shadow: 3px 7px 7px 1px rgba(0,0,0,0.2);
 	height: calc( 100vh - #{$nav-height} - 1px);
+	box-sizing: border-box;
+	border-right: 1px solid $mercury;
+}
+@media only screen and (max-width: 768px) {
+	.aside-menu {
+		height: auto;
+	}
 }
 
 .vertical-menu {

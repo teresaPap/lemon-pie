@@ -1,14 +1,18 @@
 // Buttons
 
+$button-padding: 10px;
 
 .btn {
-	border: 2px solid $theme-background;
-	padding: 12px;
+	border: 1px solid $theme-background;
+	padding: $button-padding;
 	border-radius: 4px;
-	margin-top: 10px;
+	//margin-top: 10px;
 	transition: filter 0.1s ease;
 	&:hover {
 		filter: brightness(0.85);
+	}
+	i {
+		height: 1rem;
 	}
 }
 
@@ -17,7 +21,7 @@
 }
 
 .transparent-btn {
-	padding: 5px 10px;
+	padding: $button-padding;
 	border: 1px solid $theme-background;
 	color: $theme-background;
 	background: transparent;

@@ -14,28 +14,31 @@
 			class="file-preview-container">
 
 			<li class="row">
-				<div class="col-4">
-					<h4>Preview</h4>
-				</div>
 				<div class="col-1">
 					<h4>#</h4>
 				</div>
-				<div class="col-7">
+				<div class="col-4">
+					<h4>Image Preview</h4>
+				</div>
+
+				<div class="col-6">
 					<h4>Display name</h4>
+				</div>
+				<div class="col-1">
+
 				</div>
 			</li>
 
 			<li class="row file-preview" [formGroupName]="i" *ngFor="let file of filePreviews.controls; let i=index" >
 
+				<div class="col-1">
+					<h4>{{i+1}}</h4>
+				</div>
 				<div class="col-4">
 					<img class="file-preview-img" [src]="file.get('base64').value" alt="file preview">
 				</div>
-
-				<div class="col-7">
+				<div class="col-6">
 					<div class="form-group">
-						<label for="{{'fileNo'+i}}" class="input-label">
-							{{i+1}}
-						</label>
 						<div class="input-group">
 							<input
 								formControlName="name"

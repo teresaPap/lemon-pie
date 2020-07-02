@@ -4,17 +4,17 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	flex-direction: column;
-	font-weight: 200;
-	height: 100%;
+	//flex-direction: column;
 	min-height: 100px;
 	border: 2px dashed $theme-focus;
 	border-radius: 5px;
-	background: white;
+	background-color: white;
+
+	margin-bottom: 1rem;
 
 	&.hovering {
 		border: 2px solid $theme-accent;
-		color: $theme-background !important;
+		background-color: $mercury;
 	}
 
 	.file-label {
@@ -33,8 +33,10 @@ progress::-webkit-progress-value {
 
 .file-preview {
 	height: 10vh;
-	overflow: hidden;
-	img {
-		height: inherit;
-	}
+	display: flex;
+	align-items: baseline;
+}
+
+.file-preview-img {
+	height: fill-available;
 }

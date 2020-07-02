@@ -40,7 +40,15 @@ export class FilesUploaderComponent implements OnInit {
 
 	public onDrop(fileList: FileList): void {
 		for (let i = 0 ; i < fileList.length ; i++ ) {
-			if ( !this.isImage( fileList.item(i)) ) continue;
+			if ( !this.isImage( fileList.item(i)) ) {
+				this.notifier.notify('default', `'${fileList.item(i).name}' is not a image.`);
+				continue;
+			}
+			if (fileList.item(i).size>100000) {
+				this.notifier.notify('default', `'${fileList.item(i).name}' is too large.`);
+				continue;
+			}
+
 			this.addFilePreview( fileList.item(i) );
 		}
 	}

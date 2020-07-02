@@ -4,8 +4,9 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	//flex-direction: column;
+	flex-direction: column;
 	min-height: 100px;
+	padding: 20px 0;
 	border: 2px dashed $theme-focus;
 	border-radius: 5px;
 	background-color: white;

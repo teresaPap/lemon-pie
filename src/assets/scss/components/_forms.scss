@@ -1,7 +1,6 @@
 // Forms and form inputs styling
 
 .form-title {
-	display: flex;
 	margin-bottom: 10px;
 	font-family: $font-handwritten;
 }
@@ -31,7 +30,6 @@
 
 .form-title,
 .form-btn {
-	align-self: flex-end;
 	margin-top: 10px;
 }
 .form-group {
@@ -39,8 +37,8 @@
 	margin-bottom: 5px;
 
 	.input-label {
-		flex: 0 0 calc(20% - 20px);
-		padding: 12px 10px;
+		flex: 0 0 calc(20% - 10px);
+		padding: 12px 10px 12px 0px;
 	}
 	.input-group {
 		flex: 0 0 calc(80% - 20px);

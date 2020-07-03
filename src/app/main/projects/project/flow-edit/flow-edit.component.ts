@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { NotifierService } from 'angular-notifier';
@@ -15,6 +15,7 @@ import { EditorComponent } from '../../../../shared/components/editor/editor.com
 export class FlowEditComponent implements OnInit, OnDestroy {
 
 	@ViewChild(EditorComponent) private editorComponent: EditorComponent;
+	@ViewChild('editFlowMenu') public editFlowMenu: ElementRef;
 
 	private fileChangesListener: Subscription;
 	private linkChangesListener: Subscription;
@@ -27,6 +28,7 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 
 	public showSelectionMenu: boolean = false;
 	public showLinksOnActiveFile: boolean = false;
+	public isFileNavMini: boolean = false;
 
 	public linkToFileForm: FormGroup;
 
@@ -94,6 +96,16 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 
 	public toggleLinkVisibility():void {
 		this.showLinksOnActiveFile = !this.showLinksOnActiveFile;
+	}
+
+	public toggleMenuSize(): void {
+		this.isFileNavMini = !this.isFileNavMini;
+		console.log(this.editFlowMenu.nativeElement, this.editFlowMenu.nativeElement.height);
+		if ( this.isFileNavMini ) {
+			this.editFlowMenu.nativeElement.classList.add('minified');
+		} else {
+			this.editFlowMenu.nativeElement.classList.remove('minified');
+		}
 	}
 
 }

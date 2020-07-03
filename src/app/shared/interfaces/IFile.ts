@@ -9,5 +9,5 @@ export interface IFilePreview {
 
 export interface IFile extends IFilePreview {
 	id: string; // NOTE: It is optional only because it is generated asynchronously.
-	links?: Array<firebase.firestore.DocumentReference> | IClickableArea[];
+	references?: Array<firebase.firestore.DocumentReference> | IClickableArea[];
 }

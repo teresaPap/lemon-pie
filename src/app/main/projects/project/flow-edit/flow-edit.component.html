@@ -10,10 +10,14 @@
 
 	<div class="row actions-area">
 		<div>
-		<button type="button" (click)="toggleLinkVisibility()" class="btn info-btn small-btn">
-			{{showLinksOnActiveFile ? 'Hide Links' : 'Show links'}}
-		</button>
-	</div>
+			<button
+				type="button"
+				[disabled]="!linksOnActiveFile.length"
+				(click)="toggleLinkVisibility()"
+				class="btn small-btn">
+				{{showLinksOnActiveFile ? 'Hide Links' : 'Show links'}}
+			</button>
+		</div>
 
 		<div *ngIf="showSelectionMenu">
 			<form [formGroup]="linkToFileForm" (ngSubmit)="saveLink()">

@@ -74,6 +74,7 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 		const newLink: IClickableArea = {
 			...this.selectedArea,
 			destinationFileId: this.linkToFileForm.controls['fileId'].value };
+		this.linkToFileForm.reset();
 
 		this.linkCtrl.create(newLink, this.activeFile.id).subscribe(
 			res => {
@@ -91,6 +92,7 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 
 	public closeSelectionMenu(): void {
 		this.showSelectionMenu = false;
+		this.linkToFileForm.reset();
 		this.editorComponent.clearCanvas();
 	}
 

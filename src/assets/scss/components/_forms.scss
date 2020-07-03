@@ -44,18 +44,20 @@
 		flex: 0 0 calc(80% - 20px);
 		.form-input {
 			width: 100%;
-			border: 1px solid $theme-text;
-			border-radius: 4px;
-			padding: 10px;
-			background-color: $theme-light;
-			&::placeholder {
-				font-family: $font-handwritten;
-				font-style: italic;
-				font-size: 0.8em;
-			}
 		}
 	}
+}
 
+.form-input {
+	border: 1px solid $theme-text;
+	border-radius: 4px;
+	padding: 10px;
+	background-color: $theme-light;
+	&::placeholder {
+		font-family: $font-handwritten;
+		font-style: italic;
+		font-size: 0.8em;
+	}
 }
 
 .btn-group {

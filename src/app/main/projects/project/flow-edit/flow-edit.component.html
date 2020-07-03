@@ -29,8 +29,8 @@
 			<div *ngIf="showSelectionMenu">
 				<form [formGroup]="linkToFileForm" (ngSubmit)="saveLink()">
 					<div class="form-group">
-						<label class="form-group-label">Link to:</label>
-						<select formControlName="fileId">
+						<label class="input-label">Link to:</label>
+						<select class="form-input" formControlName="fileId">
 							<ng-container *ngFor="let file of files">
 								<option
 									[value]="file.id"
@@ -41,7 +41,6 @@
 					</div>
 					<button type="submit" class="btn success-btn small-btn">Save</button>
 					<button type="button" (click)="closeSelectionMenu()" class="btn danger-btn small-btn">Cancel</button>
-
 				</form>
 			</div>
 

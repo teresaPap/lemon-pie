@@ -8,11 +8,15 @@ $button-padding: 10px;
 	border-radius: 4px;
 	//margin-top: 10px;
 	transition: filter 0.1s ease;
+	i {
+		height: 1rem;
+	}
 	&:hover {
 		filter: brightness(0.85);
 	}
-	i {
-		height: 1rem;
+	&:disabled {
+		filter: none;
+		color: $theme-muted;
 	}
 }
 

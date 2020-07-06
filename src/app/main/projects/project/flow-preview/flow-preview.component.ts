@@ -1,11 +1,10 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { IFile } from '../../../../shared/interfaces/IFile';
 import { ILink } from '../../../../shared/interfaces/ILink';
 import { FilesService } from '../../../../shared/data-services/files.service';
 import { LinksService } from '../../../../shared/data-services/links.service';
 import { PreviewEditorComponent } from '../../../../shared/components/preview-editor/preview-editor.component';
-import {catchError} from "rxjs/operators";
 
 @Component({
   selector: 'app-flow-preview',
@@ -17,6 +16,7 @@ export class FlowPreviewComponent implements OnInit, OnDestroy {
 
 	private fileChangesListener: Subscription;
 	private linkChangesListener: Subscription;
+	private previousFile: IFile;
 
 	public files: IFile[] = [];
 	public activeFile: IFile;
@@ -47,26 +47,22 @@ export class FlowPreviewComponent implements OnInit, OnDestroy {
 		this.linkChangesListener.unsubscribe();
 	}
 
-	public changeActiveFile(destinationFileId: string) {
-
+	public changeActiveFile(destinationFileId: string): void {
 		if (!destinationFileId) {
 			console.log('\nUser clicked on a non clickable area.');
 			this.previewEditorComponent.highlightLinks();
 			return;
 		}
-
+		this.previousFile = this.activeFile;
 		this.activeFile = this.files.find(file => file.id === destinationFileId);
 		if (!this.activeFile) {
 			return;
 		}
-		this.linkCtrl.readAllLinks(this.activeFile.id).subscribe(
-			res => console.log(res)
-		);
-
+		this.linkCtrl.readAllLinks(this.activeFile.id).subscribe();
 	}
 
 	public prevFile(): void {
-		console.log('TODO: set previous file as active file.');
+		this.activeFile = this.previousFile;
 	}
 
 }

@@ -25,7 +25,6 @@ export class LinksService {
 	public readAllLinks(fileId: string): Observable<any[]> {
 		return this.apiService.readDocumentChildReferences(`files/${fileId}`).pipe(
 			tap( res => {
-				console.log(res);
 				this.linkList = res;
 				this.changeActiveLinkList();
 			})

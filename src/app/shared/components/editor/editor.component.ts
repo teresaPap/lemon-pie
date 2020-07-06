@@ -63,7 +63,6 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 	// see also https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
 
 	private watchCanvasEvents() {
-		console.log('Watching canvas evens');
 		const mouseDown$ = fromEvent(this.editor, 'mousedown');
 		const mouseUp$ = fromEvent(this.editor, 'mouseup');
 		const mouseMove$ = fromEvent(this.editor, 'mousemove');

@@ -34,7 +34,6 @@ export class CanvasService {
 		let fade = false;
 
 		const interval = setInterval(() => {
-			console.log(opacity);
 			cx.clearRect(startingPos.x, startingPos.y, width, height);
 
 			opacity = (fade) ? --opacity : ++opacity ;

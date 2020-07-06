@@ -63,6 +63,7 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 		this.linkCtrl.readAllLinks(this.activeFile.id).subscribe();
 		this.selectedArea = null;
 		this.showLinksOnActiveFile = false;
+		this.closeSelectionMenu();
 	}
 
 	public areaSelected(area: ICanvasSelection) {
@@ -102,7 +103,6 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 
 	public toggleMenuSize(): void {
 		this.isFileNavMini = !this.isFileNavMini;
-		console.log(this.editFlowMenu.nativeElement, this.editFlowMenu.nativeElement.height);
 		if ( this.isFileNavMini ) {
 			this.editFlowMenu.nativeElement.classList.add('minified');
 		} else {

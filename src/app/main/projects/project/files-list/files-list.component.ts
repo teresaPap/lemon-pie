@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IFile } from '../../../../shared/interfaces/IFile';
 import { NotifierService } from 'angular-notifier';
 import { Subscription } from 'rxjs';
+import {LinksService} from "../../../../shared/data-services/links.service";
 
 @Component({
   selector: 'app-files-list',
@@ -20,6 +21,7 @@ export class FilesListComponent implements OnInit, OnDestroy {
 		private route: ActivatedRoute,
 		private fileCtrl: FilesService,
 		private notifier: NotifierService,
+		private linkCtrl: LinksService
 	) { }
 
   	ngOnInit(): void {

@@ -4,13 +4,17 @@
 		<a [routerLink]="'../files-add'">Upload files</a>
 	</div>
 	<div *ngFor="let file of files" class="col-2">
-		<div class="gallery-item">
+		<div class="gallery-item inactive">
 			<div class="gallery-item-preview">
 				<img [src]="file.base64" alt="File preview">
 			</div>
 			<div class="gallery-item-details">
-				{{file.name}}
-				<i class="fas fa-trash" (click)="deleteFile(file.id)"></i>
+				<div class="row">
+					<h4>{{file.name}}</h4>
+					<button class="btn" type="button" (click)="deleteFile(file.id)">
+						<i class="fas fa-trash"></i>
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>

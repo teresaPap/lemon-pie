@@ -11,7 +11,7 @@
 	<div class="form-group">
 		<label class="input-label">Description</label>
 		<div class="input-group">
-			<input class="form-input" type="text" formControlName="description">
+			<textarea formControlName="description" class="form-input" rows="10"></textarea>
 		</div>
 	</div>
 	<p class="form-error" *ngIf="projectDetailForm.errors">{{projectDetailForm.errors.message}}</p>

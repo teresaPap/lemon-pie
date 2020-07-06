@@ -21,6 +21,7 @@ export class FlowPreviewComponent implements OnInit, OnDestroy {
 	public files: IFile[] = [];
 	public activeFile: IFile;
 	public linksOnActiveFile: ILink[];
+	public showBackButton: boolean = false;
 
 	constructor(
 		private fileCtrl: FilesService,
@@ -56,12 +57,14 @@ export class FlowPreviewComponent implements OnInit, OnDestroy {
 		this.previousFile = this.activeFile;
 		this.activeFile = this.files.find(file => file.id === destinationFileId);
 		if (!this.activeFile) {
+			this.showBackButton = true;
 			return;
 		}
 		this.linkCtrl.readAllLinks(this.activeFile.id).subscribe();
 	}
 
 	public prevFile(): void {
+		this.showBackButton = false;
 		this.activeFile = this.previousFile;
 	}
 

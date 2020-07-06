@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import {catchError, tap} from 'rxjs/operators';
 import { FirebaseApiService } from '../../core/services/firebase-api.service';
 import { IClickableArea, ILink } from '../interfaces/ILink';
 
@@ -25,6 +25,7 @@ export class LinksService {
 	public readAllLinks(fileId: string): Observable<any[]> {
 		return this.apiService.readDocumentChildReferences(`files/${fileId}`).pipe(
 			tap( res => {
+				console.log(res);
 				this.linkList = res;
 				this.changeActiveLinkList();
 			})

@@ -5,6 +5,7 @@ import { ILink } from '../../../../shared/interfaces/ILink';
 import { FilesService } from '../../../../shared/data-services/files.service';
 import { LinksService } from '../../../../shared/data-services/links.service';
 import { PreviewEditorComponent } from '../../../../shared/components/preview-editor/preview-editor.component';
+import {catchError} from "rxjs/operators";
 
 @Component({
   selector: 'app-flow-preview',
@@ -55,8 +56,17 @@ export class FlowPreviewComponent implements OnInit, OnDestroy {
 		}
 
 		this.activeFile = this.files.find(file => file.id === destinationFileId);
-		this.linkCtrl.readAllLinks(this.activeFile.id).subscribe();
+		if (!this.activeFile) {
+			return;
+		}
+		this.linkCtrl.readAllLinks(this.activeFile.id).subscribe(
+			res => console.log(res)
+		);
 
+	}
+
+	public prevFile(): void {
+		console.log('TODO: set previous file as active file.');
 	}
 
 }

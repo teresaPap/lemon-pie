@@ -1,5 +1,11 @@
 
-<h3 class="page-header">Active file name: {{activeFile?.name}}</h3>
+<h3 class="page-header">Active file name: {{activeFile ? activeFile.name : '-'}}</h3>
+<span *ngIf="!activeFile" class="text-center">
+	<p>This file might have been deleted.</p>
+	<p *ngIf="!activeFile" class="text-center">
+		<button type="button" class="btn small-btn" (click)="prevFile()">Go back</button> to previous file.
+	</p>
+</span>
 
 <app-preview-editor
 	*ngIf="activeFile"
@@ -7,7 +13,6 @@
 	[links]="linksOnActiveFile"
 	(onLinkAreaClicked)="changeActiveFile($event)"
 ></app-preview-editor>
-
 
 <div *ngIf="!files.length" class="col-12 text-center">
 	<h4 class="page-header">No files have been uploaded yet...</h4>

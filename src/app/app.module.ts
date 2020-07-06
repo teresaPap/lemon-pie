@@ -30,6 +30,9 @@ import { AppRoutingModule } from './app-routing.module';
 		HttpClientModule,
 		NotifierModule.withConfig({
 			// add custom config
+			behaviour: {
+				onMouseover: 'pauseAutoHide'
+			}
 		}),
 
 		// Firebase

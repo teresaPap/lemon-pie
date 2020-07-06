@@ -2,6 +2,24 @@
 // all styles from https://www.npmjs.com/package/angular-notifier package
 
 
+// Notfier positioning
+
+.notifier__container {
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	pointer-events: none;
+
+	.notifier__container-list {
+		margin-top: 25px;
+		pointer-events: auto;
+	}
+}
+
+
 // NOTIFIER: MATERIAL THEME
 //
 // This material theme tries its best to look as material-design'ish as possible - round edges, shadows, and small animations.
@@ -34,7 +52,6 @@ $notifier-shadow-color: rgba(0, 0, 0, .2) !default;
 			vertical-align: top;
 			line-height: 32px;
 			font-size: 15px;
-			font-weight: bold;
 		}
 
 		&-button {

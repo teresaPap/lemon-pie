@@ -81,7 +81,7 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 			res => {
 				console.log(res);
 				this.closeSelectionMenu();
-				this.notifier.notify('success', 'Link was saved successfully.');
+				this.notifier.notify('success', `A link on '${this.activeFile.name}' was created successfully.`);
 			},
 			err => {
 				console.log(err);

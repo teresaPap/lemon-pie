@@ -24,7 +24,7 @@ export class ProjectDeleteFormComponent implements OnInit {
 
   	ngOnInit(): void {
 		this.deleteProjectForm = this.fb.group({
-			confirmDelete: ['', Validators.required ] // Validators.pattern('I want to delete this project')
+			confirmDelete: ['', Validators.pattern('I want to delete this project')]
 		});
   	}
 

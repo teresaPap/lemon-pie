@@ -61,9 +61,12 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 	public changeActiveFile(file: IFile) {
 		this.activeFile = file;
 		this.linkCtrl.readAllLinks(this.activeFile.id).subscribe();
-		this.selectedArea = null;
+
+		if (this.selectedArea) {
+			this.selectedArea = null;
+			this.closeSelectionMenu();
+		}
 		this.showLinksOnActiveFile = false;
-		this.closeSelectionMenu();
 	}
 
 	public areaSelected(area: ICanvasSelection) {

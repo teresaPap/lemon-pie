@@ -8,22 +8,22 @@
 				Home
 			</a>
 		</li>
-		<li *ngIf="!currentUserId" class="nav-item">
+		<li *ngIf="!currentUser" class="nav-item">
 			<a [routerLink]="['/login']" routerLinkActive="route-active">
 				Login
 			</a>
 		</li>
-		<li *ngIf="!currentUserId" class="nav-item">
+		<li *ngIf="!currentUser" class="nav-item">
 			<a [routerLink]="['/register']" routerLinkActive="route-active">
 				Register
 			</a>
 		</li>
-		<li *ngIf="currentUserId" class="nav-item">
+		<li *ngIf="currentUser" class="nav-item">
 			<a [routerLink]="['/projects']" routerLinkActive="route-active">
 				Projects
 			</a>
 		</li>
-		<li *ngIf="currentUserId"  class="nav-item">
+		<li *ngIf="currentUser"  class="nav-item">
 			<a [routerLink]="['/profile']" routerLinkActive="route-active">
 				My Account
 			</a>

@@ -1,21 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { IUser } from './shared/interfaces/IUser';
-import {AuthService} from "./core/services/auth.service";
+import { AuthService } from "./core/services/auth.service";
 
 @Component({
 	selector: 'app-root',
-	templateUrl: './app.component.html',
-	styleUrls: ['./app.component.scss']
+	templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
 
-	public currentUserId: string|null;
+	public currentUser: string|null;
 
 	constructor( private authService: AuthService ) { }
 
 	ngOnInit(): void {
-		this.authService.fireAuthStateChanges$.subscribe( (user:firebase.User) => {
-			this.currentUserId = (user ? user.uid : null);
+		this.authService.fireAuthStateChanges$.subscribe( (user:firebase.UserInfo) => {
+			console.log(user);
+			this.currentUser = (user ? (user.displayName? user.displayName : user.email) : null);
 		})
 	}
 

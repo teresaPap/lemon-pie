@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { User } from 'firebase';
 import { Observable, from } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { IAuthData } from '../../shared/interfaces/IUser';
+import { map, switchMap } from 'rxjs/operators';
+import { IAuthData, IUser } from '../../shared/interfaces/IUser';
 
 
 @Injectable({
@@ -10,7 +11,21 @@ import { IAuthData } from '../../shared/interfaces/IUser';
 })
 export class AuthService {
 
-	public fireAuthStateChanges$: Observable<firebase.User> = this.afAuth.authState;
+	public fireAuthStateChanges$: Observable<firebase.UserInfo|null> = this.afAuth.authState.pipe(
+		map((user: User) => {
+			if (!user) {
+				return null;
+			}
+			return {
+				displayName: user.displayName,
+				email: user.email,
+				phoneNumber: user.phoneNumber,
+				photoURL: null,
+				providerId: user.providerId,
+				uid: user.uid,
+			}
+		})
+	);
 
 	constructor(
 		public afAuth: AngularFireAuth,
@@ -24,8 +39,17 @@ export class AuthService {
 		return from(this.afAuth.auth.signInWithEmailAndPassword(data.email, data.password));
 	}
 
-	public register(data: IAuthData): Observable<firebase.auth.UserCredential> {
-		return from(this.afAuth.auth.createUserWithEmailAndPassword(data.email, data.password));
+	public register(data: IAuthData): Observable<IUser> {
+		return from(this.afAuth.auth.createUserWithEmailAndPassword(data.email, data.password)).pipe(
+			switchMap( () => this.afAuth.auth.currentUser.updateProfile({displayName: data.displayName})),
+			map( () => {
+				return {
+					id: this.afAuth.auth.currentUser.uid,
+					email: this.afAuth.auth.currentUser.email,
+					username: this.afAuth.auth.currentUser.displayName
+				}
+			})
+		);
 	}
 
 	public logout():  Observable<void> {

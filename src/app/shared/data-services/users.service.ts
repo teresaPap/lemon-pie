@@ -17,9 +17,9 @@ export class UsersService {
 	) { }
 
 	public create(authData: IAuthData, userdata: IPersonalData): Observable<any> {
-		return this.authService.register({email: authData.email, password: authData.password}).pipe(
-			switchMap( userCredentials =>
-				this.apiService.createDocumentWithGivenId(userdata, userCredentials.user.uid,'users')
+		return this.authService.register({email: authData.email, password: authData.password, displayName: userdata.username}).pipe(
+			switchMap( (user: IUser) =>
+				this.apiService.createDocumentWithGivenId(userdata, user.id,'users')
 			),
 		);
 	}

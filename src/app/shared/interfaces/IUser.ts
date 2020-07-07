@@ -14,4 +14,5 @@ export interface IPersonalData {
 export interface IAuthData {
 	email: string;
 	password: string;
+	displayName?: string;
 }

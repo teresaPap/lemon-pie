@@ -8,15 +8,14 @@ import { Router } from '@angular/router';
 })
 export class NavComponent implements OnChanges {
 
-	@Input() currentUserId: string|null ;
+	@Input() currentUser: string|null ;
 
 	constructor(
 		public router: Router) { }
 
 	ngOnChanges(changes: SimpleChanges) {
-		if (changes.currentUserId) {
-			console.log('Current user changed: ', changes );
-			this.currentUserId = changes.currentUserId.currentValue
+		if (changes.currentUser) {
+			this.currentUser = changes.currentUser.currentValue;
 		}
 	}
 

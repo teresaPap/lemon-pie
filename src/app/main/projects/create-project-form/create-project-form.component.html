@@ -18,5 +18,9 @@
 			<textarea formControlName="description" class="form-input" rows="10"></textarea>
 		</div>
 	</div>
-	<button type="submit" class="btn success-btn form-btn">Create Project</button>
+	<div class="btn-group">
+		<button type="button" class="btn danger-btn form-btn" [routerLink]="['/../../projects']">Cancel</button>
+		<button type="submit" class="btn success-btn form-btn">Create Project</button>
+	</div>
+
 </form>

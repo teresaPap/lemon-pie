@@ -39,5 +39,9 @@ progress::-webkit-progress-value {
 }
 
 .file-preview-img {
-	height: fill-available;
+}
+
+//noinspection CssInvalidPropertyValue
+.file-preview-img {
+	height: stretch;
 }

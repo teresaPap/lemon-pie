@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
 		this.authService.login(loginCredentials).subscribe(
 			res => {
 				this.notifier.notify('default', `Login successful!`);
-				this.router.navigate(['/home']);
+				this.router.navigate(['/projects']);
 			},
 			err => {
 				this.loginFormErrorMessage = err.message;

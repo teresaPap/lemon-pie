@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
 			username: '',
 			role: '',
 			password: ['', [Validators.required, Validators.minLength(6)]],
-			confirmPassword: ['']
+			confirmPassword: ['', Validators.required]
 		},  { validator: CustomValidators.comparePasswords });
 
 	}
@@ -48,9 +48,8 @@ export class RegisterComponent implements OnInit {
 
 		this.usersCtrl.create(authData, personalData).subscribe(
 			res => {
-				console.log('Register successful!', res);
 				this.notifier.notify('success', `Register successful!`);
-				this.router.navigate(['/home']);
+				this.router.navigate(['/projects']);
 			},
 			err => {
 				this.notifier.notify('error', `${err.message}`);

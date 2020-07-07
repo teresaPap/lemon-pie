@@ -101,6 +101,7 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 	}
 
 	public toggleLinkVisibility():void {
+		this.closeSelectionMenu();
 		this.showLinksOnActiveFile = !this.showLinksOnActiveFile;
 	}
 

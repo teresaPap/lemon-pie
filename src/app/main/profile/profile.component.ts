@@ -43,7 +43,6 @@ export class ProfileComponent implements OnInit {
 
 		this.userCtrl.readCurrentUser().subscribe((currentUser: IUser) => {
 			// TODO: use route resolver instead
-			console.log('currentUser:', currentUser);
 			this.userDetailForm.controls['username'].setValue(currentUser.username);
 			this.userDetailForm.controls['email'].setValue(currentUser.email);
 			this.userDetailForm.controls['role'].setValue(currentUser.role);

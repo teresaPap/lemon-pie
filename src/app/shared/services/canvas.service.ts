@@ -92,7 +92,7 @@ export class CanvasService {
 		);
 	}
 
-	public getLinkDestinationFromPosition(links:ILink[], pos: ICanvasPosition): Observable<string> {
+	public getLinkDestinationFromPosition(links:ILink[], pos: ICanvasPosition): Observable<ILink> {
 		// TODO: should be more readable
 
 		const areasX: ILink[] = links.filter(area => ((area.x1 <= pos.x) && (pos.x <= area.x2)) );
@@ -101,7 +101,7 @@ export class CanvasService {
 		const areasY: ILink[] = areasX.filter(area => ((area.y1 <= pos.y) && (pos.y <= area.y2)) );
 		if (!areasY.length) return of(null);
 
-		return of(areasY[0].destinationFileId);
+		return of(areasY[0]);
 	}
 
 	public setBackground(url: string, canvasBg: ElementRef, editor: HTMLCanvasElement): Observable<void> {

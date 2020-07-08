@@ -105,8 +105,12 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 		this.showLinksOnActiveFile = !this.showLinksOnActiveFile;
 	}
 
-	public linkAreaClicked(linkId: string): void {
-		console.log('link id clicked: '+ linkId);
+	public linkAreaClicked(link: ILink): void {
+		if (!link) {
+			return;
+		}
+		this.editorComponent.highlightSelectedLink(link);
+		// TODO: add edit/delete link actions here
 	}
 
 	public toggleMenuSize(): void {

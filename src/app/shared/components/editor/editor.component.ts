@@ -24,7 +24,7 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 	@Output('onAreaSelected') onAreaSelected: EventEmitter<ICanvasSelection> = new EventEmitter<ICanvasSelection>();
 	@Output('onCanvasCleared') onCanvasCleared: EventEmitter<void> = new EventEmitter<void>();
 
-	@Output('onLinkAreaClicked') onLinkAreaClicked: EventEmitter<string> = new EventEmitter<string>();
+	@Output('onLinkAreaClicked') onLinkAreaClicked: EventEmitter<ILink> = new EventEmitter<ILink>();
 
 	@ViewChild('canvasBg') public canvasBg: ElementRef;
 	@ViewChild('canvas') public canvas: ElementRef;
@@ -69,6 +69,14 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		CanvasService.clearCanvas(this.cx, this.editor);
 	}
 
+	public highlightSelectedLink(link: ILink): void {
+		CanvasService.drawRectangle(
+			{x: link.x1, y: link.y1},
+			{x: link.x2, y: link.y2},
+			this.cx
+		);
+	}
+
 	private startWatchingForCanvasDragEvents(): void {
 		this.watchForCanvasDragEvents$ = this.canvasDragEvents$().subscribe(
 			(canvasSelection: ICanvasSelection) => {
@@ -87,8 +95,8 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		this.watchForCanvasClickEvents$ = this.canvasClickEvents$().subscribe(
 			(clickPosition: ICanvasPosition) => {
 				this.canvasCtrl.getLinkDestinationFromPosition(this.links, clickPosition).subscribe(
-					(linkId: string) => {
-						this.onLinkAreaClicked.emit(linkId);
+					(link: ILink) => {
+						this.onLinkAreaClicked.emit(link);
 					}
 				)
 		});

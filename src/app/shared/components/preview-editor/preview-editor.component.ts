@@ -61,7 +61,9 @@ export class PreviewEditorComponent implements AfterViewInit, OnChanges {
 		mouseClick$.pipe(
 			map((mouseClick: MouseEvent) => CanvasService.getPositionOnCanvas(mouseClick, this.editor))
 		).subscribe((clickPosition: ICanvasPosition) => {
-			this.canvasCtrl.getLinkDestinationFromPosition(this.links, clickPosition).subscribe(
+			this.canvasCtrl.getLinkDestinationFromPosition(this.links, clickPosition).pipe(
+				map((link: ILink) => (link ? link.destinationFileId : null))
+			).subscribe(
 				(linkId: string) => {
 					this.onLinkAreaClicked.emit(linkId);
 				}

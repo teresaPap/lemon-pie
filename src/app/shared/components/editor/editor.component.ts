@@ -40,7 +40,7 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		// set up the canvas
 		this.setBackground(this.imgUrl);
 		// watch for events
-		this.listenToCanvasDragEvents();
+		this.startWatchingForCanvasDragEvents();
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
@@ -57,10 +57,10 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		if (changes.isDrawModeOn && !changes.links.firstChange) {
 			if (changes.isDrawModeOn.currentValue===false) {
 				this.watchForCanvasDragEvents$.unsubscribe();
-				this.listenToCanvasClickEvents();
+				this.startWatchingForClickEvents();
 			} else {
 				this.watchForCanvasClickEvents$.unsubscribe();
-				this.listenToCanvasDragEvents();
+				this.startWatchingForCanvasDragEvents();
 			}
 		}
 	}
@@ -69,8 +69,8 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		CanvasService.clearCanvas(this.cx, this.editor);
 	}
 
-	private listenToCanvasDragEvents(): void {
-		this.watchForCanvasDragEvents$ = this.watchCanvasDragEvents().subscribe(
+	private startWatchingForCanvasDragEvents(): void {
+		this.watchForCanvasDragEvents$ = this.canvasDragEvents$().subscribe(
 			(canvasSelection: ICanvasSelection) => {
 				CanvasService.setStrokeStyle(this.cx);
 				// Draw selection and show selection menu
@@ -83,8 +83,8 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		});
 	}
 
-	private listenToCanvasClickEvents(): void {
-		this.watchForCanvasClickEvents$ = this.watchCanvasClickEvents().subscribe(
+	private startWatchingForClickEvents(): void {
+		this.watchForCanvasClickEvents$ = this.canvasClickEvents$().subscribe(
 			(clickPosition: ICanvasPosition) => {
 				this.canvasCtrl.getLinkDestinationFromPosition(this.links, clickPosition).subscribe(
 					(linkId: string) => {
@@ -94,11 +94,7 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		});
 	}
 
-
-	// #region - Canvas events handling
-	// see also https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
-
-	private watchCanvasDragEvents(): Observable<any> {
+	private canvasDragEvents$(): Observable<any> {
 		const mouseDown$ = fromEvent(this.editor, 'mousedown');
 		const mouseUp$ = fromEvent(this.editor, 'mouseup');
 		const mouseMove$ = fromEvent(this.editor, 'mousemove');
@@ -141,7 +137,7 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 
 	}
 
-	private watchCanvasClickEvents(): Observable<any> {
+	private canvasClickEvents$(): Observable<any> {
 		const mouseClick$ = fromEvent(this.editor, 'click');
 
 		return mouseClick$.pipe(
@@ -179,5 +175,7 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 	}
 
 
-	// #endregion
+	// Canvas events handling
+	// see also https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
+
 }

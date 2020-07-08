@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import {ElementRef, Injectable} from '@angular/core';
 import { ICanvasPosition } from '../interfaces/IEditor';
-import {fromEvent, Observable, of} from 'rxjs';
-import { map } from 'rxjs/operators';
+import {fromEvent, Observable, of, Subscription} from 'rxjs';
+import {map, tap} from 'rxjs/operators';
 import {removeOptionsParameter} from "@angular/core/schematics/migrations/dynamic-queries/util";
 import {ILink} from "../interfaces/ILink";
 
@@ -102,6 +102,26 @@ export class CanvasService {
 		if (!areasY.length) return of(null);
 
 		return of(areasY[0].destinationFileId);
+	}
+
+	public setBackground(url: string, canvasBg: ElementRef, editor: HTMLCanvasElement): Observable<void> {
+
+		const img = canvasBg.nativeElement;
+		img.src = url;
+
+		return this.getSizeFromImage(img).pipe(
+			tap(dimensions => {
+				editor.height = dimensions.height;
+				editor.width = dimensions.width;
+
+				editor.parentElement.setAttribute(
+					'style',
+					`
+					height: ${dimensions.height}px;
+					width: ${dimensions.width}px;
+				`);
+			}
+		));
 	}
 
 }

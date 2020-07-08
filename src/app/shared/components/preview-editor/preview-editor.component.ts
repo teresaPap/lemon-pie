@@ -69,23 +69,8 @@ export class PreviewEditorComponent implements AfterViewInit, OnChanges {
 		});
 	}
 
-	private setBackground(url): Subscription {
-		const img = this.canvasBg.nativeElement;
-		img.src = url;
-
-		return this.canvasCtrl.getSizeFromImage(img).subscribe(
-			dimensions => {
-				this.editor.height = dimensions.height;
-				this.editor.width = dimensions.width;
-
-				this.editor.parentElement.setAttribute(
-					'style',
-					`
-					height: ${dimensions.height}px;
-					width: ${dimensions.width}px;
-				`);
-			}
-		);
+	private setBackground(url): void {
+		this.canvasCtrl.setBackground(url, this.canvasBg, this.editor).subscribe();
 	}
 
 }

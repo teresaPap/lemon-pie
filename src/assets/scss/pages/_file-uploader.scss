@@ -36,12 +36,12 @@ progress::-webkit-progress-value {
 	height: 10vh;
 	display: flex;
 	align-items: baseline;
+	.col-4 {
+		overflow: hidden;
+	}
 }
 
 .file-preview-img {
-}
-
-//noinspection CssInvalidPropertyValue
-.file-preview-img {
-	height: stretch;
+	height: 10vh;
+	width: auto;
 }

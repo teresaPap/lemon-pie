@@ -3,10 +3,11 @@
 	<app-editor
 		*ngIf="activeFile"
 		[imgUrl]="activeFile.base64"
-		[linksToDraw]="showLinksOnActiveFile ? linksOnActiveFile : null"
+		[links]="showLinksOnActiveFile ? linksOnActiveFile : null"
 		[isDrawModeOn]="!showLinksOnActiveFile"
 		(onAreaSelected)="areaSelected($event)"
 		(onCanvasCleared)="closeSelectionMenu()"
+		(onLinkAreaClicked)="linkAreaClicked($event)"
 	></app-editor>
 
 	<div class="edit-flow-menu" #editFlowMenu>

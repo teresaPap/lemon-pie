@@ -105,6 +105,10 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 		this.showLinksOnActiveFile = !this.showLinksOnActiveFile;
 	}
 
+	public linkAreaClicked(linkId: string): void {
+		console.log('link id clicked: '+ linkId);
+	}
+
 	public toggleMenuSize(): void {
 		this.isFileNavMini = !this.isFileNavMini;
 		if ( this.isFileNavMini ) {

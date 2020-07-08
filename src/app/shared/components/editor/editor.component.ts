@@ -14,14 +14,17 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 	private cx: CanvasRenderingContext2D;
 	private editor: HTMLCanvasElement;
 
-	private watchForCanvasEvents$;
+	private watchForCanvasDragEvents$: Subscription;
+	private watchForCanvasClickEvents$: Subscription;
 
 	@Input() imgUrl: string;
-	@Input() linksToDraw?: ILink[];
+	@Input() links?: ILink[];
 	@Input() isDrawModeOn: boolean;
 
 	@Output('onAreaSelected') onAreaSelected: EventEmitter<ICanvasSelection> = new EventEmitter<ICanvasSelection>();
 	@Output('onCanvasCleared') onCanvasCleared: EventEmitter<void> = new EventEmitter<void>();
+
+	@Output('onLinkAreaClicked') onLinkAreaClicked: EventEmitter<string> = new EventEmitter<string>();
 
 	@ViewChild('canvasBg') public canvasBg: ElementRef;
 	@ViewChild('canvas') public canvas: ElementRef;
@@ -37,25 +40,27 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		// set up the canvas
 		this.setBackground(this.imgUrl);
 		// watch for events
-		this.listenToCanvasEvents();
+		this.listenToCanvasDragEvents();
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
 		if ((changes.imgUrl && !changes.imgUrl.firstChange)) {
 			this.setBackground(changes.imgUrl.currentValue);
 		}
-		if (changes.linksToDraw && !changes.linksToDraw.firstChange) {
-			if (changes.linksToDraw.currentValue==null) {
+		if (changes.links && !changes.links.firstChange) {
+			if (changes.links.currentValue==null) {
 				this.clearCanvas();
 			} else {
-				this.drawAreas(this.linksToDraw);
+				this.drawAreas(this.links);
 			}
 		}
-		if (changes.isDrawModeOn && !changes.linksToDraw.firstChange) {
+		if (changes.isDrawModeOn && !changes.links.firstChange) {
 			if (changes.isDrawModeOn.currentValue===false) {
-				this.watchForCanvasEvents$.unsubscribe();
+				this.watchForCanvasDragEvents$.unsubscribe();
+				this.listenToCanvasClickEvents();
 			} else {
-				this.listenToCanvasEvents();
+				this.watchForCanvasClickEvents$.unsubscribe();
+				this.listenToCanvasDragEvents();
 			}
 		}
 	}
@@ -64,8 +69,8 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		CanvasService.clearCanvas(this.cx, this.editor);
 	}
 
-	private listenToCanvasEvents(): void {
-		this.watchForCanvasEvents$ = this.watchCanvasEvents().subscribe(
+	private listenToCanvasDragEvents(): void {
+		this.watchForCanvasDragEvents$ = this.watchCanvasDragEvents().subscribe(
 			(canvasSelection: ICanvasSelection) => {
 				CanvasService.setStrokeStyle(this.cx);
 				// Draw selection and show selection menu
@@ -78,10 +83,22 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		});
 	}
 
+	private listenToCanvasClickEvents(): void {
+		this.watchForCanvasClickEvents$ = this.watchCanvasClickEvents().subscribe(
+			(clickPosition: ICanvasPosition) => {
+				this.canvasCtrl.getLinkDestinationFromPosition(this.links, clickPosition).subscribe(
+					(linkId: string) => {
+						this.onLinkAreaClicked.emit(linkId);
+					}
+				)
+		});
+	}
+
+
 	// #region - Canvas events handling
 	// see also https://medium.com/@tarik.nzl/creating-a-canvas-component-with-free-hand-drawing-with-rxjs-and-angular-61279f577415
 
-	private watchCanvasEvents(): Observable<any> {
+	private watchCanvasDragEvents(): Observable<any> {
 		const mouseDown$ = fromEvent(this.editor, 'mousedown');
 		const mouseUp$ = fromEvent(this.editor, 'mouseup');
 		const mouseMove$ = fromEvent(this.editor, 'mousemove');
@@ -122,6 +139,14 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 			})
 		);
 
+	}
+
+	private watchCanvasClickEvents(): Observable<any> {
+		const mouseClick$ = fromEvent(this.editor, 'click');
+
+		return mouseClick$.pipe(
+			map((mouseClick: MouseEvent) => CanvasService.getPositionOnCanvas(mouseClick, this.editor))
+		);
 	}
 
 	private setBackground(url): Subscription {

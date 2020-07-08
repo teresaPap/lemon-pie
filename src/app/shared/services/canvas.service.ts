@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ICanvasPosition } from '../interfaces/IEditor';
-import { fromEvent, Observable } from 'rxjs';
+import {fromEvent, Observable, of} from 'rxjs';
 import { map } from 'rxjs/operators';
 import {removeOptionsParameter} from "@angular/core/schematics/migrations/dynamic-queries/util";
+import {ILink} from "../interfaces/ILink";
 
 const SELECTION_FILL_COLOR = 'rgba(212,209,24,0.53)';
 const SELECTION_STROKE_COLOR = '#c4b90b'; // $theme-accent
@@ -89,6 +90,18 @@ export class CanvasService {
 				return { height: img.naturalHeight, width: img.naturalWidth };
 			})
 		);
+	}
+
+	public getLinkDestinationFromPosition(links:ILink[], pos: ICanvasPosition): Observable<string> {
+		// TODO: should be more readable
+
+		const areasX: ILink[] = links.filter(area => ((area.x1 <= pos.x) && (pos.x <= area.x2)) );
+		if (!areasX.length) return of(null);
+
+		const areasY: ILink[] = areasX.filter(area => ((area.y1 <= pos.y) && (pos.y <= area.y2)) );
+		if (!areasY.length) return of(null);
+
+		return of(areasY[0].destinationFileId);
 	}
 
 }

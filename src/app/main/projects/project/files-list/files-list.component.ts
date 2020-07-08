@@ -41,7 +41,7 @@ export class FilesListComponent implements OnInit, OnDestroy {
   		this.fileCtrl.delete(fileId, projectId).subscribe(
   			res => {
   				console.log(res);
-				this.notifier.notify('success', `Project was deleted successfully`);
+				this.notifier.notify('success', `Image was deleted successfully`);
 			}, err => {
 				console.error(err);
 				this.notifier.notify('error', `Something went wrong. ${err.message}`);

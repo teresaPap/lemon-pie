@@ -28,9 +28,10 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 
 	public showSelectionMenu: boolean = false;
 	public showLinksOnActiveFile: boolean = false;
+	public showEditLinkMenu: boolean = false;
 	public isFileNavMini: boolean = false;
 
-	public linkToFileForm: FormGroup;
+	public createLinkForm: FormGroup;
 
 	constructor(
 		private fb: FormBuilder,
@@ -38,7 +39,7 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 		private linkCtrl: LinksService,
 		private notifier: NotifierService,
 	) {
-		this.linkToFileForm = this.fb.group({
+		this.createLinkForm = this.fb.group({
 			fileId: ['', Validators.required]
 		});
 	}
@@ -74,11 +75,11 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 		this.showSelectionMenu = true;
 	}
 
-	public saveLink(): void {
+	public onCreateLinkSubmit(): void {
 		const newLink: IClickableArea = {
 			...this.selectedArea,
-			destinationFileId: this.linkToFileForm.controls['fileId'].value };
-		this.linkToFileForm.reset();
+			destinationFileId: this.createLinkForm.controls['fileId'].value };
+		this.createLinkForm.reset();
 
 		this.linkCtrl.create(newLink, this.activeFile.id).subscribe(
 			res => {
@@ -96,7 +97,7 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 
 	public closeSelectionMenu(): void {
 		this.showSelectionMenu = false;
-		this.linkToFileForm.reset();
+		this.createLinkForm.reset();
 		this.editorComponent.clearCanvas();
 	}
 

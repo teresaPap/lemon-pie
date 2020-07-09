@@ -69,8 +69,17 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		CanvasService.clearCanvas(this.cx, this.editor);
 	}
 
-	public highlightSelectedLink(link: ILink): void {
-		CanvasService.drawRectangle(
+	public strokeSelectedLink(link: ILink): void {
+		CanvasService.strokeRectangle(
+			{x: link.x1, y: link.y1},
+			{x: link.x2, y: link.y2},
+			this.cx,
+			'#c64a0c'
+		);
+	}
+
+	public unStrokeSelectedLink(link: ILink): void {
+		CanvasService.strokeRectangle(
 			{x: link.x1, y: link.y1},
 			{x: link.x2, y: link.y2},
 			this.cx

@@ -16,6 +16,18 @@ export class CanvasService {
 
 	constructor() { }
 
+	public static strokeRectangle(startingPos: ICanvasPosition, finalPos: ICanvasPosition, cx: CanvasRenderingContext2D, color?: string): void {
+
+		console.log('strokeRect');
+
+		const width: number = finalPos.x - startingPos.x;
+		const height: number = finalPos.y - startingPos.y;
+
+		cx.strokeStyle = color ? color : SELECTION_STROKE_COLOR;
+		// cx.rect(startingPos.x, startingPos.y, width, height);
+		cx.strokeRect(startingPos.x, startingPos.y, width, height);
+	}
+
 	public static drawRectangle(startingPos: ICanvasPosition, finalPos: ICanvasPosition, cx: CanvasRenderingContext2D): void{
 		const width: number = finalPos.x - startingPos.x;
 		const height: number = finalPos.y - startingPos.y;
@@ -25,6 +37,13 @@ export class CanvasService {
 
 		cx.rect(startingPos.x, startingPos.y, width, height);
 		cx.stroke();
+	}
+
+	public static clearRectangle(startingPos: ICanvasPosition, finalPos: ICanvasPosition, cx: CanvasRenderingContext2D): void {
+		const width: number = finalPos.x - startingPos.x;
+		const height: number = finalPos.y - startingPos.y;
+
+		cx.clearRect(startingPos.x, startingPos.y, width, height);
 	}
 
 	public static highlightRectangle(startingPos: ICanvasPosition, finalPos: ICanvasPosition, cx: CanvasRenderingContext2D, editor: HTMLCanvasElement): void {

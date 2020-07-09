@@ -150,6 +150,7 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 	public deleteLink(): void {
 		this.linkCtrl.delete(this.selectedLink.id, this.activeFile.id).subscribe(
 			res => {
+				this.editorComponent.unStrokeSelectedLink(this.selectedLink);
 				this.closeEditLinkMenu();
 				this.notifier.notify('success', `Link was deleted successfully.`);
 			},
@@ -161,6 +162,7 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 	}
 
 	public closeEditLinkMenu(): void {
+		this.editorComponent.unStrokeSelectedLink(this.selectedLink);
 		this.showEditLinkMenu = false;
 		this.editLinkForm.reset();
 	}
@@ -170,7 +172,7 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 			return;
 		}
 		this.selectedLink = link;
-		this.editorComponent.highlightSelectedLink(link);
+		this.editorComponent.strokeSelectedLink(link);
 		this.showEditLinkMenu = true;
 	}
 

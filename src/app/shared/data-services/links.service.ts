@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 import { FirebaseApiService } from '../../core/services/firebase-api.service';
 import { IClickableArea, ILink } from '../interfaces/ILink';
+import {IProject} from "../interfaces/IProject";
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +46,18 @@ export class LinksService {
 			tap(() => {
 				const index = this.linkList.findIndex(link => link.id === linkId);
 				this.linkList[index] = { ...fields };
-				console.log(this.linkList);
+				this.changeActiveLinkList();
+			})
+		)
+	}
+
+
+	public delete(linkId: string, fileId: string) {
+		return this.apiService.deleteDocument(`links/${linkId}`, `files/${fileId}`).pipe(
+			tap(res => {
+				console.log(res);
+				const index = this.linkList.findIndex(link => link.id === linkId);
+				this.linkList.splice(index,1);
 				this.changeActiveLinkList();
 			})
 		)

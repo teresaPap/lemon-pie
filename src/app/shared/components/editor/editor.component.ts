@@ -86,6 +86,14 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		);
 	}
 
+	public eraseSelectedLink(link: ILink): void {
+		CanvasService.clearRectangle(
+			{x: link.x1, y: link.y1},
+			{x: link.x2, y: link.y2},
+			this.cx
+		);
+	}
+
 	private startWatchingForCanvasDragEvents(): void {
 		this.watchForCanvasDragEvents$ = this.canvasDragEvents$().subscribe(
 			(canvasSelection: ICanvasSelection) => {

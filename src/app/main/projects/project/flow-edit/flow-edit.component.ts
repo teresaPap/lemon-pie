@@ -150,7 +150,7 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 	public deleteLink(): void {
 		this.linkCtrl.delete(this.selectedLink.id, this.activeFile.id).subscribe(
 			res => {
-				this.editorComponent.unStrokeSelectedLink(this.selectedLink);
+				this.editorComponent.eraseSelectedLink(this.selectedLink);
 				this.closeEditLinkMenu();
 				this.notifier.notify('success', `Link was deleted successfully.`);
 			},

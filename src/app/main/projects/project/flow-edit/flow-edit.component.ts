@@ -135,6 +135,16 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 
 	public onEditLinkSubmit(): void {
 		console.log('edit link submitted');
+		this.linkCtrl.update( this.selectedLink.id ,{ ...this.selectedLink, destinationFileId: this.editLinkForm.controls['fileId'].value}).subscribe(
+			res => {
+				this.closeEditLinkMenu();
+				this.notifier.notify('success', `Link was edited successfully.`);
+			},
+			err => {
+				this.closeEditLinkMenu();
+				this.notifier.notify('error', `Error: ${err.message}`);
+			}
+		);
 	}
 
 	public closeEditLinkMenu(): void {

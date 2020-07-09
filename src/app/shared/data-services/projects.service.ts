@@ -40,7 +40,7 @@ export class ProjectsService {
 		);
 	}
 
-	public update(projectId: string, fields: any) {
+	public update(projectId: string, fields: any): Observable<void> {
 		return this.apiService.updateDocument(`projects/${projectId}`, fields).pipe(
 			tap(() => this.changeActiveProject({ ...fields, id: projectId} ))
 		);

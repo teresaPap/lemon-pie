@@ -40,4 +40,15 @@ export class LinksService {
 		);
 	}
 
+	public update(linkId: string, fields: any) {
+		return this.apiService.updateDocument(`links/${linkId}`, fields).pipe(
+			tap(() => {
+				const index = this.linkList.findIndex(link => link.id === linkId);
+				this.linkList[index] = { ...fields };
+				console.log(this.linkList);
+				this.changeActiveLinkList();
+			})
+		)
+	}
+
 }

@@ -176,9 +176,7 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 		this.showEditLinkMenu = true;
 	}
 
-
 	// #endregion
-
 
 
 }

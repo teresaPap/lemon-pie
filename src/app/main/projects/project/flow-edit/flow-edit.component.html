@@ -3,10 +3,10 @@
 	<app-editor
 		*ngIf="activeFile"
 		[imgUrl]="activeFile.base64"
-		[links]="showLinksOnActiveFile ? linksOnActiveFile : null"
-		[isDrawModeOn]="!showLinksOnActiveFile"
+		[links]="linksOnActiveVisible ? linksOnActiveFile : null"
+		[isDrawModeOn]="!linksOnActiveVisible"
 		(onAreaSelected)="areaSelected($event)"
-		(onCanvasCleared)="closeSelectionMenu()"
+		(onCanvasCleared)="closeCreateLinkMenu()"
 		(onLinkAreaClicked)="linkAreaClicked($event)"
 	></app-editor>
 
@@ -18,7 +18,7 @@
 					[disabled]="!linksOnActiveFile.length"
 					(click)="toggleLinkVisibility()"
 					class="btn small-btn">
-					{{showLinksOnActiveFile ? 'Hide Links' : 'Show links'}}
+					{{linksOnActiveVisible ? 'Hide Links' : 'Show links'}}
 				</button>
 				<button
 					type="button"
@@ -42,12 +42,28 @@
 						</select>
 					</div>
 					<button type="submit" class="btn success-btn small-btn">Save</button>
-					<button type="button" (click)="closeSelectionMenu()" class="btn danger-btn small-btn">Cancel</button>
+					<button type="button" (click)="closeCreateLinkMenu()" class="btn danger-btn small-btn">Cancel</button>
 				</form>
 			</div>
 
 			<div *ngIf="showEditLinkMenu">
-
+				<form [formGroup]="editLinkForm" (ngSubmit)="onEditLinkSubmit()">
+					<div class="form-group">
+						<label class="input-label">Edit Link:</label>
+						<select class="form-input" formControlName="fileId">
+							<ng-container *ngFor="let file of files">
+								<option
+									[value]="file.id"
+									[selected]="file.id === selectedLink.destinationFileId"
+									[disabled]="file.id === activeFile?.id"
+								>{{file.name}}</option>
+							</ng-container>
+						</select>
+					</div>
+					<button type="submit" class="btn success-btn small-btn">Save</button>
+					<button type="button" class="btn danger-btn small-btn">Delete link</button>
+					<button type="button" (click)="closeEditLinkMenu()" class="btn small-btn">Cancel</button>
+				</form>
 			</div>
 
 		</div>

@@ -20,3 +20,4 @@ Built with Angular 9 and Firebase.
 ## Build
 Open terminal in the project's root folder and run `npm run build`. This will create the project's dist folder. 
 
+

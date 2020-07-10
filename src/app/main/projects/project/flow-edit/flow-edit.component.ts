@@ -7,6 +7,7 @@ import { IFile } from '../../../../shared/interfaces/IFile';
 import { ICanvasSelection, IClickableArea, ILink } from '../../../../shared/interfaces/ILink';
 import { LinksService } from '../../../../shared/data-services/links.service';
 import { EditorComponent } from '../../../../shared/components/editor/editor.component';
+import set = Reflect.set;
 
 @Component({
   selector: 'app-flow-edit',
@@ -33,7 +34,7 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 
 	public createLinkForm: FormGroup;
 	public editLinkForm: FormGroup;
-	public selectedLink: ILink;
+	public selectedLink: ILink = {} as ILink;
 
 	constructor(
 		private fb: FormBuilder,
@@ -168,12 +169,12 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 	}
 
 	public linkAreaClicked(link: ILink): void {
-		if (!link) {
-			return;
-		}
-		this.selectedLink = link;
-		this.editorComponent.strokeSelectedLink(link);
 		this.showEditLinkMenu = true;
+		// TODO: setTimeout is bad :) - find a workaround
+		setTimeout(() => {
+			this.selectedLink = link;
+			this.editorComponent.strokeSelectedLink(link);
+		},10);
 	}
 
 	// #endregion

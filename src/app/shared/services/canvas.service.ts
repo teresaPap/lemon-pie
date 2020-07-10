@@ -17,14 +17,10 @@ export class CanvasService {
 	constructor() { }
 
 	public static strokeRectangle(startingPos: ICanvasPosition, finalPos: ICanvasPosition, cx: CanvasRenderingContext2D, color?: string): void {
-
-		console.log('strokeRect');
-
 		const width: number = finalPos.x - startingPos.x;
 		const height: number = finalPos.y - startingPos.y;
 
 		cx.strokeStyle = color ? color : SELECTION_STROKE_COLOR;
-		// cx.rect(startingPos.x, startingPos.y, width, height);
 		cx.strokeRect(startingPos.x, startingPos.y, width, height);
 	}
 

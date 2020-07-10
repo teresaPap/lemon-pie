@@ -112,8 +112,10 @@ export class EditorComponent implements AfterViewInit, OnChanges {
 		this.watchForCanvasClickEvents$ = this.canvasClickEvents$().subscribe(
 			(clickPosition: ICanvasPosition) => {
 				this.canvasCtrl.getLinkDestinationFromPosition(this.links, clickPosition).subscribe(
-					(link: ILink) => {
-						this.onLinkAreaClicked.emit(link);
+					(link: ILink|null) => {
+						if (link) {
+							this.onLinkAreaClicked.emit(link);
+						}
 					}
 				)
 		});

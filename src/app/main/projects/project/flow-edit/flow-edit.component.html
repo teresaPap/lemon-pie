@@ -28,7 +28,7 @@
 				</button>
 			</div>
 
-			<div *ngIf="showSelectionMenu">
+			<ng-container *ngIf="showSelectionMenu">
 				<form [formGroup]="createLinkForm" (ngSubmit)="onCreateLinkSubmit()">
 					<div class="form-group">
 						<label class="input-label">Link to:</label>
@@ -44,9 +44,9 @@
 					<button type="submit" class="btn success-btn small-btn">Save</button>
 					<button type="button" (click)="closeCreateLinkMenu()" class="btn danger-btn small-btn">Cancel</button>
 				</form>
-			</div>
+			</ng-container>
 
-			<div *ngIf="showEditLinkMenu">
+			<ng-container *ngIf="showEditLinkMenu">
 				<form [formGroup]="editLinkForm" (ngSubmit)="onEditLinkSubmit()">
 					<div class="form-group">
 						<label class="input-label">Edit Link:</label>
@@ -56,7 +56,7 @@
 									[value]="file.id"
 									[selected]="file.id === selectedLink.destinationFileId"
 									[disabled]="file.id === activeFile?.id"
-								>{{file.name}}</option>
+								>{{file.name}} {{file.id === selectedLink.destinationFileId ? '(current target)' : ''}}</option>
 							</ng-container>
 						</select>
 					</div>
@@ -64,7 +64,7 @@
 					<button type="button" (click)="deleteLink()" class="btn danger-btn small-btn">Delete link</button>
 					<button type="button" (click)="closeEditLinkMenu()" class="btn small-btn">Cancel</button>
 				</form>
-			</div>
+			</ng-container>
 
 		</div>
 

@@ -6,11 +6,11 @@
 
 .notifier__container {
 	position: fixed;
-	top: 0;
-	right: 0;
-	left: 0;
+	top: $nav-height;
+	right: 20px;
+	left: 20px;
 	display: flex;
-	justify-content: center;
+	justify-content: flex-end;
 	pointer-events: none;
 
 	.notifier__container-list {

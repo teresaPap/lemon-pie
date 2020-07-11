@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import {ElementRef, Injectable} from '@angular/core';
 import { ICanvasPosition } from '../interfaces/IEditor';
-import { fromEvent, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {fromEvent, Observable, of, Subscription} from 'rxjs';
+import {map, tap} from 'rxjs/operators';
 import {removeOptionsParameter} from "@angular/core/schematics/migrations/dynamic-queries/util";
+import {ILink} from "../interfaces/ILink";
 
 const SELECTION_FILL_COLOR = 'rgba(212,209,24,0.53)';
 const SELECTION_STROKE_COLOR = '#c4b90b'; // $theme-accent
@@ -15,6 +16,14 @@ export class CanvasService {
 
 	constructor() { }
 
+	public static strokeRectangle(startingPos: ICanvasPosition, finalPos: ICanvasPosition, cx: CanvasRenderingContext2D, color?: string): void {
+		const width: number = finalPos.x - startingPos.x;
+		const height: number = finalPos.y - startingPos.y;
+
+		cx.strokeStyle = color ? color : SELECTION_STROKE_COLOR;
+		cx.strokeRect(startingPos.x, startingPos.y, width, height);
+	}
+
 	public static drawRectangle(startingPos: ICanvasPosition, finalPos: ICanvasPosition, cx: CanvasRenderingContext2D): void{
 		const width: number = finalPos.x - startingPos.x;
 		const height: number = finalPos.y - startingPos.y;
@@ -24,6 +33,13 @@ export class CanvasService {
 
 		cx.rect(startingPos.x, startingPos.y, width, height);
 		cx.stroke();
+	}
+
+	public static clearRectangle(startingPos: ICanvasPosition, finalPos: ICanvasPosition, cx: CanvasRenderingContext2D): void {
+		const width: number = finalPos.x - startingPos.x;
+		const height: number = finalPos.y - startingPos.y;
+
+		cx.clearRect(startingPos.x, startingPos.y, width, height);
 	}
 
 	public static highlightRectangle(startingPos: ICanvasPosition, finalPos: ICanvasPosition, cx: CanvasRenderingContext2D, editor: HTMLCanvasElement): void {
@@ -89,6 +105,38 @@ export class CanvasService {
 				return { height: img.naturalHeight, width: img.naturalWidth };
 			})
 		);
+	}
+
+	public getLinkDestinationFromPosition(links:ILink[], pos: ICanvasPosition): Observable<ILink> {
+		// TODO: should be more readable
+
+		const areasX: ILink[] = links.filter(area => ((area.x1 <= pos.x) && (pos.x <= area.x2)) );
+		if (!areasX.length) return of(null);
+
+		const areasY: ILink[] = areasX.filter(area => ((area.y1 <= pos.y) && (pos.y <= area.y2)) );
+		if (!areasY.length) return of(null);
+
+		return of(areasY[0]);
+	}
+
+	public setBackground(url: string, canvasBg: ElementRef, editor: HTMLCanvasElement): Observable<void> {
+
+		const img = canvasBg.nativeElement;
+		img.src = url;
+
+		return this.getSizeFromImage(img).pipe(
+			tap(dimensions => {
+				editor.height = dimensions.height;
+				editor.width = dimensions.width;
+
+				editor.parentElement.setAttribute(
+					'style',
+					`
+					height: ${dimensions.height}px;
+					width: ${dimensions.width}px;
+				`);
+			}
+		));
 	}
 
 }

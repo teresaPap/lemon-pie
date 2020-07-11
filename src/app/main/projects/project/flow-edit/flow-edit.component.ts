@@ -7,6 +7,7 @@ import { IFile } from '../../../../shared/interfaces/IFile';
 import { ICanvasSelection, IClickableArea, ILink } from '../../../../shared/interfaces/ILink';
 import { LinksService } from '../../../../shared/data-services/links.service';
 import { EditorComponent } from '../../../../shared/components/editor/editor.component';
+import set = Reflect.set;
 
 @Component({
   selector: 'app-flow-edit',
@@ -27,10 +28,14 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 	public linksOnActiveFile: ILink[];
 
 	public showSelectionMenu: boolean = false;
-	public showLinksOnActiveFile: boolean = false;
+	public linksOnActiveVisible: boolean = false;
+	public showEditLinkMenu: boolean = false;
 	public isFileNavMini: boolean = false;
 
-	public linkToFileForm: FormGroup;
+	public createLinkForm: FormGroup;
+	public editLinkForm: FormGroup;
+	public selectedLink: ILink = {} as ILink;
+	public previousSelectedLink: ILink = {} as ILink;
 
 	constructor(
 		private fb: FormBuilder,
@@ -38,9 +43,13 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 		private linkCtrl: LinksService,
 		private notifier: NotifierService,
 	) {
-		this.linkToFileForm = this.fb.group({
+		this.createLinkForm = this.fb.group({
 			fileId: ['', Validators.required]
 		});
+		this.editLinkForm = this.fb.group({
+			fileId: ['', Validators.required]
+		});
+
 	}
 
 	ngOnInit(): void {
@@ -64,45 +73,18 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 
 		if (this.selectedArea) {
 			this.selectedArea = null;
-			this.closeSelectionMenu();
+			this.closeCreateLinkMenu();
 		}
-		this.showLinksOnActiveFile = false;
-	}
-
-	public areaSelected(area: ICanvasSelection) {
-		this.selectedArea = area;
-		this.showSelectionMenu = true;
-	}
-
-	public saveLink(): void {
-		const newLink: IClickableArea = {
-			...this.selectedArea,
-			destinationFileId: this.linkToFileForm.controls['fileId'].value };
-		this.linkToFileForm.reset();
-
-		this.linkCtrl.create(newLink, this.activeFile.id).subscribe(
-			res => {
-				console.log(res);
-				this.closeSelectionMenu();
-				this.notifier.notify('success', `A link on '${this.activeFile.name}' was created successfully.`);
-			},
-			err => {
-				console.log(err);
-				this.closeSelectionMenu();
-				this.notifier.notify('error', `Error: ${err.message}`);
-			}
-		);
-	}
-
-	public closeSelectionMenu(): void {
-		this.showSelectionMenu = false;
-		this.linkToFileForm.reset();
-		this.editorComponent.clearCanvas();
+		this.linksOnActiveVisible = false;
 	}
 
 	public toggleLinkVisibility():void {
-		this.closeSelectionMenu();
-		this.showLinksOnActiveFile = !this.showLinksOnActiveFile;
+		this.linksOnActiveVisible = !this.linksOnActiveVisible;
+		if (this.linksOnActiveVisible) {
+			this.closeCreateLinkMenu();
+		} else {
+			this.closeEditLinkMenu()
+		}
 	}
 
 	public toggleMenuSize(): void {
@@ -113,5 +95,92 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 			this.editFlowMenu.nativeElement.classList.remove('minified');
 		}
 	}
+
+
+	// #region - Create Link
+
+	public onCreateLinkSubmit(): void {
+		const newLink: IClickableArea = {
+			...this.selectedArea,
+			destinationFileId: this.createLinkForm.controls['fileId'].value };
+		this.createLinkForm.reset();
+
+		this.linkCtrl.create(newLink, this.activeFile.id).subscribe(
+			res => {
+				console.log(res);
+				this.closeCreateLinkMenu();
+				this.notifier.notify('success', `A link on '${this.activeFile.name}' was created successfully.`);
+			},
+			err => {
+				console.log(err);
+				this.closeCreateLinkMenu();
+				this.notifier.notify('error', `Error: ${err.message}`);
+			}
+		);
+	}
+
+	public closeCreateLinkMenu(): void {
+		this.showSelectionMenu = false;
+		this.createLinkForm.reset();
+		this.editorComponent.clearCanvas();
+	}
+
+	public areaSelected(area: ICanvasSelection) {
+		this.selectedArea = area;
+		this.showSelectionMenu = true;
+	}
+
+	// #endregion
+
+
+	// #region - Edit Link
+
+	public onEditLinkSubmit(): void {
+		console.log('edit link submitted');
+		this.linkCtrl.update( this.selectedLink.id ,{ ...this.selectedLink, destinationFileId: this.editLinkForm.controls['fileId'].value}).subscribe(
+			res => {
+				this.closeEditLinkMenu();
+				this.notifier.notify('success', `Link was edited successfully.`);
+			},
+			err => {
+				this.closeEditLinkMenu();
+				this.notifier.notify('error', `Error: ${err.message}`);
+			}
+		);
+	}
+
+	public deleteLink(): void {
+		this.linkCtrl.delete(this.selectedLink.id, this.activeFile.id).subscribe(
+			res => {
+				this.editorComponent.eraseSelectedLink(this.selectedLink);
+				this.closeEditLinkMenu();
+				this.notifier.notify('success', `Link was deleted successfully.`);
+			},
+			err => {
+				this.closeEditLinkMenu();
+				this.notifier.notify('error', `Error: ${err.message}`);
+			}
+		)
+	}
+
+	public closeEditLinkMenu(): void {
+		this.editorComponent.unStrokeSelectedLink(this.selectedLink);
+		this.showEditLinkMenu = false;
+		this.editLinkForm.reset();
+	}
+
+	public linkAreaClicked(link: ILink): void {
+		this.previousSelectedLink = this.selectedLink;
+		this.editorComponent.unStrokeSelectedLink(this.previousSelectedLink);
+
+		this.showEditLinkMenu = true;
+		// TODO: setTimeout is bad :) - find a workaround
+		setTimeout(() => {
+			this.selectedLink = link;
+			this.editorComponent.strokeSelectedLink(link);
+		},10);
+	}
+
+	// #endregion
 
 }

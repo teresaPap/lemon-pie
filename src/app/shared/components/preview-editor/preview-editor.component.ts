@@ -61,7 +61,9 @@ export class PreviewEditorComponent implements AfterViewInit, OnChanges {
 		mouseClick$.pipe(
 			map((mouseClick: MouseEvent) => CanvasService.getPositionOnCanvas(mouseClick, this.editor))
 		).subscribe((clickPosition: ICanvasPosition) => {
-			this.getLinkDestinationFromPosition(clickPosition).subscribe(
+			this.canvasCtrl.getLinkDestinationFromPosition(this.links, clickPosition).pipe(
+				map((link: ILink) => (link ? link.destinationFileId : null))
+			).subscribe(
 				(linkId: string) => {
 					this.onLinkAreaClicked.emit(linkId);
 				}
@@ -69,35 +71,8 @@ export class PreviewEditorComponent implements AfterViewInit, OnChanges {
 		});
 	}
 
-	private getLinkDestinationFromPosition(pos: ICanvasPosition): Observable<string> {
-		// TODO: should be more readable
-
-		const areasX: ILink[] = this.links.filter(area => ((area.x1 <= pos.x) && (pos.x <= area.x2)) );
-		if (!areasX.length) return of(null);
-
-		const areasY: ILink[] = areasX.filter(area => ((area.y1 <= pos.y) && (pos.y <= area.y2)) );
-		if (!areasY.length) return of(null);
-
-		return of(areasY[0].destinationFileId);
-	}
-
-	private setBackground(url): Subscription {
-		const img = this.canvasBg.nativeElement;
-		img.src = url;
-
-		return this.canvasCtrl.getSizeFromImage(img).subscribe(
-			dimensions => {
-				this.editor.height = dimensions.height;
-				this.editor.width = dimensions.width;
-
-				this.editor.parentElement.setAttribute(
-					'style',
-					`
-					height: ${dimensions.height}px;
-					width: ${dimensions.width}px;
-				`);
-			}
-		);
+	private setBackground(url): void {
+		this.canvasCtrl.setBackground(url, this.canvasBg, this.editor).subscribe();
 	}
 
 }

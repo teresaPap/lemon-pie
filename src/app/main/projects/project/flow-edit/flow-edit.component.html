@@ -17,7 +17,8 @@
 					type="button"
 					[disabled]="!linksOnActiveFile.length"
 					(click)="toggleLinkVisibility()"
-					class="btn small-btn">
+					class="btn small-btn"
+					[ngClass]="{'info-btn' : linksOnActiveVisible}">
 					{{linksOnActiveVisible ? 'Hide Links' : 'Show links'}}
 				</button>
 				<button

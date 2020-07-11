@@ -35,6 +35,7 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 	public createLinkForm: FormGroup;
 	public editLinkForm: FormGroup;
 	public selectedLink: ILink = {} as ILink;
+	public previousSelectedLink: ILink = {} as ILink;
 
 	constructor(
 		private fb: FormBuilder,
@@ -169,6 +170,9 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 	}
 
 	public linkAreaClicked(link: ILink): void {
+		this.previousSelectedLink = this.selectedLink;
+		this.editorComponent.unStrokeSelectedLink(this.previousSelectedLink);
+
 		this.showEditLinkMenu = true;
 		// TODO: setTimeout is bad :) - find a workaround
 		setTimeout(() => {
@@ -178,6 +182,5 @@ export class FlowEditComponent implements OnInit, OnDestroy {
 	}
 
 	// #endregion
-
 
 }

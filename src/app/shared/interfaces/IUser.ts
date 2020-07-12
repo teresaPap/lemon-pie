@@ -1,4 +1,4 @@
-import * as firebase from "firebase";
+import * as firebase from 'firebase/app';
 
 export interface IUser extends IPersonalData {
 	id: string;

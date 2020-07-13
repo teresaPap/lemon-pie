@@ -1,7 +1,6 @@
 import { DocumentReference } from '@angular/fire/firestore';
 import { IClickableArea } from './ILink';
 
-
 export interface IFilePreview {
 	name: string;
 	base64: any;

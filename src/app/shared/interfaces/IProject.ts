@@ -5,7 +5,7 @@ import { IFile } from './IFile';
 export interface IProject {
 	name: string;
 	description: string;
-	references?: DocumentReference[] | IFile[] ;
+	references?: DocumentReference[] | IFile[];
 	id?: string;
 }
 

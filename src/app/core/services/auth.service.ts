@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { User } from 'firebase/app';
+import { User, UserInfo } from 'firebase/app';
 import { Observable, from } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { IAuthData, IUser } from '../../shared/interfaces/IUser';
@@ -11,19 +11,13 @@ import { IAuthData, IUser } from '../../shared/interfaces/IUser';
 })
 export class AuthService {
 
-	public fireAuthStateChanges$: Observable<firebase.UserInfo|null> = this.afAuth.authState.pipe(
+	public fireAuthStateChanges$: Observable<UserInfo|null> = this.afAuth.authState.pipe(
 		map((user: User) => {
 			if (!user) {
 				return null;
 			}
-			return {
-				displayName: user.displayName,
-				email: user.email,
-				phoneNumber: user.phoneNumber,
-				photoURL: null,
-				providerId: user.providerId,
-				uid: user.uid,
-			}
+			const { displayName, email, phoneNumber, photoURL, providerId, uid }: UserInfo = user;
+			return { displayName, email, phoneNumber, photoURL, providerId, uid };
 		})
 	);
 

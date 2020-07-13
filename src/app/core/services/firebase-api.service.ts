@@ -1,23 +1,19 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireStorage } from '@angular/fire/storage';
-import * as firebase from 'firebase/app';
 import { Observable, from, iif, forkJoin, of, defer } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { AuthService } from './auth.service';
 
-import {DocumentReference, DocumentData } from "@angular/fire/firestore";
+
+import * as firebase from 'firebase/app';
+import { AngularFirestore, DocumentSnapshot, DocumentReference, DocumentData } from "@angular/fire/firestore";
+
+
 
 @Injectable({
 	providedIn: 'root'
 })
 export class FirebaseApiService {
 
-    public uid: string = this.authService.getCurrentUserId();
-
     constructor(
-    	private authService: AuthService,
-		private fireStorage: AngularFireStorage,
 		public firestore: AngularFirestore,
 	) { }
 
@@ -51,7 +47,7 @@ export class FirebaseApiService {
 
 	public readDocument(docPath: string): Observable<any> {
 		return this.firestore.doc(docPath).get().pipe(
-			switchMap((documentSnapshot: firebase.firestore.DocumentSnapshot) => defer(() => documentSnapshot.exists
+			switchMap((documentSnapshot: DocumentSnapshot<any>) => defer(() => documentSnapshot.exists
 				? of({id: documentSnapshot.id, ...documentSnapshot.data()} )
 				: of({})
 			))
@@ -65,7 +61,7 @@ export class FirebaseApiService {
 				? forkJoin( refs.map(ref => ref.get()) )
 				: of('This document has no child references'),
 			)),
-			switchMap( (res: firebase.firestore.DocumentSnapshot[] | string) =>
+			switchMap( (res: Array<DocumentSnapshot<any>> | string) =>
 				of(typeof res !== 'string' ? res.map(snapshot => ({id: snapshot.id, ...snapshot.data()}) ) : [] ),
 			),
 		)
@@ -100,7 +96,7 @@ export class FirebaseApiService {
 
 	private deleteDocumentChildReferences(docPath: string): Observable<any> {
 		return this.firestore.doc(docPath).get().pipe(
-			map((snapshot: firebase.firestore.DocumentSnapshot) => snapshot.get('references')),
+			map((snapshot: DocumentSnapshot<any>) => snapshot.get('references')),
 			switchMap((refs: DocumentReference[]) => defer( () => (refs && !!refs.length)
 				? forkJoin( refs.map(ref => ref.delete()) )
 				: of('This document has no child references'),

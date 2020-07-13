@@ -1,8 +1,8 @@
-import * as firebase from 'firebase/app';
+import { DocumentReference } from '@angular/fire/firestore';
 
 export interface IUser extends IPersonalData {
 	id: string;
-	references?: Array<firebase.firestore.DocumentReference>;
+	references?: DocumentReference[];
 }
 
 export interface IPersonalData {

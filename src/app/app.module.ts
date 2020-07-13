@@ -9,7 +9,6 @@ import { NotifierModule } from 'angular-notifier';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
@@ -41,7 +40,6 @@ import { environment } from '../environments/environment';
 		AngularFireModule.initializeApp(environment.firebase), // initialize app
 		AngularFirestoreModule, // firestore - imports firebase/firestore, only needed for database features
 		AngularFireAuthModule, // auth - imports firebase/auth, only needed for auth features
-		AngularFireStorageModule, // storage
 
 		CoreModule,
 		SharedModule,
@@ -51,7 +49,6 @@ import { environment } from '../environments/environment';
 		AppRoutingModule,
 
 	],
-	providers: [],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }

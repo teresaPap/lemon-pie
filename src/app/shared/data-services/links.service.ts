@@ -3,7 +3,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 import { FirebaseApiService } from '../../core/services/firebase-api.service';
 import { IClickableArea, ILink } from '../interfaces/ILink';
-import {IProject} from "../interfaces/IProject";
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +22,8 @@ export class LinksService {
 		this.activeLinkListSource.next(this.linkList);
 	}
 
-	public readAllLinks(fileId: string): Observable<any[]> {
-		return this.apiService.readDocumentChildReferences(`files/${fileId}`).pipe(
+	public readAllLinks(fileId: string): Observable<any> {
+		return this.apiService.readDocsFromCollection(`files/${fileId}/links`).pipe(
 			tap( res => {
 				this.linkList = res;
 				this.changeActiveLinkList();
@@ -33,7 +32,7 @@ export class LinksService {
 	}
 
 	public create(link: IClickableArea, parentFileId: string): Observable<ILink|any> {
-		return this.apiService.createDocument(link, 'links', `files/${parentFileId}`).pipe(
+		return this.apiService.createDocument(link, `files/${parentFileId}/links`).pipe(
 			tap( res => {
 				this.linkList.push(res);
 				this.changeActiveLinkList();
@@ -41,8 +40,8 @@ export class LinksService {
 		);
 	}
 
-	public update(linkId: string, fields: any) {
-		return this.apiService.updateDocument(`links/${linkId}`, fields).pipe(
+	public update(linkId: string, parentFileId: string, fields: any) {
+		return this.apiService.updateDocument(`files/${parentFileId}/links/${linkId}`, fields).pipe(
 			tap(() => {
 				const index = this.linkList.findIndex(link => link.id === linkId);
 				this.linkList[index] = { ...fields };
@@ -53,7 +52,7 @@ export class LinksService {
 
 
 	public delete(linkId: string, fileId: string) {
-		return this.apiService.deleteDocument(`links/${linkId}`, `files/${fileId}`).pipe(
+		return this.apiService.deleteDoc(`files/${fileId}/links/${linkId}`).pipe(
 			tap(res => {
 				console.log(res);
 				const index = this.linkList.findIndex(link => link.id === linkId);

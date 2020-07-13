@@ -4,7 +4,13 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
 
 import * as firebase from 'firebase/app';
-import { AngularFirestore, DocumentSnapshot, DocumentReference, DocumentData } from "@angular/fire/firestore";
+import {
+	AngularFirestore,
+	DocumentSnapshot,
+	DocumentReference,
+	DocumentData,
+	QuerySnapshot, QueryDocumentSnapshot
+} from "@angular/fire/firestore";
 
 
 
@@ -67,6 +73,16 @@ export class FirebaseApiService {
 		)
 	}
 
+	public readDocsFromCollection(collectionPath: string): Observable<any[]> {
+    	return this.firestore.collection(collectionPath).get().pipe(
+			map( (snapshot: QuerySnapshot<any> ) => {
+				const docs: any[] = [];
+				snapshot.forEach( doc => docs.push( {id: doc.id , ...doc.data()} ))
+				return docs;
+			}),
+		)
+	}
+
 	// UPDATE
 
 	public updateDocument(docPath:string, docFields: any) {
@@ -75,6 +91,12 @@ export class FirebaseApiService {
 
 
 	// DELETE
+
+	public deleteDoc(docPath: string): Observable<void> {
+    	return from(this.firestore.doc(docPath).delete())
+	}
+
+
 	// TODO: delete is still buggy. It deletes only the first level of child references.
 
 	public deleteDocument(docPath: string, parentDocPath?: string): Observable<string> {

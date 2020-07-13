@@ -1,11 +1,11 @@
-import * as firebase from 'firebase';
+import { DocumentReference } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { IFile } from './IFile';
 
 export interface IProject {
 	name: string;
 	description: string;
-	references?: Array<firebase.firestore.DocumentReference> | IFile[] ;
+	references?: DocumentReference[] | IFile[];
 	id?: string;
 }
 

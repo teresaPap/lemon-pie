@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireStorage } from '@angular/fire/storage';
-import * as firebase from 'firebase';
 import { Observable, from, iif, forkJoin, of, defer } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { AuthService } from './auth.service';
+
+
+import * as firebase from 'firebase/app';
+import { AngularFirestore, DocumentSnapshot, DocumentReference, DocumentData } from "@angular/fire/firestore";
+
 
 
 @Injectable({
@@ -12,11 +13,7 @@ import { AuthService } from './auth.service';
 })
 export class FirebaseApiService {
 
-    public uid: string = this.authService.getCurrentUserId();
-
     constructor(
-    	private authService: AuthService,
-		private fireStorage: AngularFireStorage,
 		public firestore: AngularFirestore,
 	) { }
 
@@ -24,15 +21,15 @@ export class FirebaseApiService {
 
 	public createDocument(documentFields: any, collectionPath: string, parentDocPath?: string): Observable<any> {
 		return from( this.firestore.collection(collectionPath).add(documentFields) ).pipe(
-			tap((documentRef: firebase.firestore.DocumentReference) => {
+			tap((documentRef: DocumentReference) => {
 				if (!!parentDocPath) {
 					this.updateDocument(parentDocPath, {
 						'references': firebase.firestore.FieldValue.arrayUnion(documentRef)
 					})
 				}
 			}),
-			switchMap((documentRef: firebase.firestore.DocumentReference) => documentRef.get() ),
-			map((documentData: firebase.firestore.DocumentData) => {
+			switchMap((documentRef: DocumentReference) => documentRef.get() ),
+			map((documentData: DocumentData) => {
 				return {id: documentData.id, ...documentData.data()}
 			}),
 			catchError( err => err )
@@ -50,7 +47,7 @@ export class FirebaseApiService {
 
 	public readDocument(docPath: string): Observable<any> {
 		return this.firestore.doc(docPath).get().pipe(
-			switchMap((documentSnapshot: firebase.firestore.DocumentSnapshot) => defer(() => documentSnapshot.exists
+			switchMap((documentSnapshot: DocumentSnapshot<any>) => defer(() => documentSnapshot.exists
 				? of({id: documentSnapshot.id, ...documentSnapshot.data()} )
 				: of({})
 			))
@@ -59,12 +56,12 @@ export class FirebaseApiService {
 
 	public readDocumentChildReferences(docPath: string): Observable<any[]> {
     	return this.readDocument(docPath).pipe(
-			map( (documentData: firebase.firestore.DocumentData) => documentData.references ),
-			switchMap((refs: firebase.firestore.DocumentReference[]) => defer( () => (refs && !!refs.length)
+			map( (documentData: DocumentData) => documentData.references ),
+			switchMap((refs: DocumentReference[]) => defer( () => (refs && !!refs.length)
 				? forkJoin( refs.map(ref => ref.get()) )
 				: of('This document has no child references'),
 			)),
-			switchMap( (res: firebase.firestore.DocumentSnapshot[] | string) =>
+			switchMap( (res: Array<DocumentSnapshot<any>> | string) =>
 				of(typeof res !== 'string' ? res.map(snapshot => ({id: snapshot.id, ...snapshot.data()}) ) : [] ),
 			),
 		)
@@ -99,8 +96,8 @@ export class FirebaseApiService {
 
 	private deleteDocumentChildReferences(docPath: string): Observable<any> {
 		return this.firestore.doc(docPath).get().pipe(
-			map((snapshot: firebase.firestore.DocumentSnapshot) => snapshot.get('references')),
-			switchMap((refs: firebase.firestore.DocumentReference[]) => defer( () => (refs && !!refs.length)
+			map((snapshot: DocumentSnapshot<any>) => snapshot.get('references')),
+			switchMap((refs: DocumentReference[]) => defer( () => (refs && !!refs.length)
 				? forkJoin( refs.map(ref => ref.delete()) )
 				: of('This document has no child references'),
 			)),

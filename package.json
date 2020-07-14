@@ -13,7 +13,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-	"deploy": "ng build --prod && firebase deploy --only hosting"
+    "deploy": "ng build --prod && firebase deploy --only hosting"
   },
   "private": true,
   "dependencies": {
@@ -31,6 +31,8 @@
     "angular-notifier": "^6.0.1",
     "core-js": "^3.2.1",
     "firebase": "^6.4.0",
+    "firebase-admin": "^8.13.0",
+    "firebase-functions": "^3.8.0",
     "firebase-tools": "^8.4.3",
     "rxjs": "^6.5.2",
     "rxjs-compat": "^6.5.2",

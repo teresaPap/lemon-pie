@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.authService.fireAuthStateChanges$.subscribe( (user:firebase.UserInfo) => {
-			console.log(user);
+			// console.log(user);
 			this.currentUser = (user ? (user.displayName? user.displayName : user.email) : null);
 		})
 	}

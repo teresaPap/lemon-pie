@@ -7,7 +7,6 @@ import { IFile } from '../../../../shared/interfaces/IFile';
 import { ICanvasSelection, IClickableArea, ILink } from '../../../../shared/interfaces/ILink';
 import { LinksService } from '../../../../shared/data-services/links.service';
 import { EditorComponent } from '../../../../shared/components/editor/editor.component';
-import set = Reflect.set;
 
 @Component({
   selector: 'app-flow-edit',

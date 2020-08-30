@@ -5,6 +5,8 @@ import { NotifierService } from 'angular-notifier';
 import { forkJoin } from 'rxjs';
 import { FilesService } from '../../../../shared/data-services/files.service';
 import { IProjectResolved } from '../../../../shared/interfaces/IProject';
+import { FileResizeService } from "../../../../shared/services/file-resize.service";
+import {switchMap, tap} from "rxjs/operators";
 
 
 @Component({
@@ -26,6 +28,7 @@ export class FilesUploaderComponent implements OnInit {
 		private notifier: NotifierService,
 		public fileCtrl: FilesService,
 		public router: Router,
+		public fileResize: FileResizeService
 	) { }
 
   	ngOnInit(): void {
@@ -83,13 +86,21 @@ export class FilesUploaderComponent implements OnInit {
 	}
 
 	private addFilePreview(file: File): void {
+		// wip
+		this.fileResize.readImgDimenions(file).pipe(
+			switchMap(res => this.fileResize.resizeImage(res.base64, res.height, res.width)),
+			tap( res => console.log(res))
+		).subscribe();
+
+
 		const reader = new FileReader();
 		reader.readAsDataURL(file);
-		reader.onload = (_event) =>
-			this.filePreviews.push( this.buildFilePreview(reader.result, file) );
+		reader.onload = (_event) => {
+			this.filePreviews.push( this.buildFilePreview(reader.result) );
+		}
 	}
 
-	private buildFilePreview(base64:any, file: File): FormGroup {
+	private buildFilePreview(base64:any): FormGroup {
 		 return this.fb.group({
 			name: ['', Validators.required],
 			base64: base64,

@@ -34,22 +34,33 @@ export class FileResizeService {
 		);
 	}
 
-	public resizeImage(base46, height: number, width: number) {
+	public resizeImage(base46) {
 
-		const tempCanvas = document.createElement('canvas');
+		const canvas = document.createElement('canvas');
+		const ctx = canvas.getContext('2d');
 
-		tempCanvas.height = (height*50)/100;
-		tempCanvas.width = (width*50)/100;
+		const img = new Image();
 
-		const tempImg = new Image();
-		tempImg.src = base46;
+		img.src = base46;
 
-		const tempCtx = tempCanvas.getContext('2d');
-		tempCtx.drawImage(tempImg, 0, 0);
+		canvas.width = img.width * 0.5;
+		canvas.height = img.height * 0.5;
+		ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-		return of( this.domSanitizer.bypassSecurityTrustHtml(tempCanvas.toDataURL('image/jpeg')) ).pipe(
-			// @ts-ignore
-			map( sanitizedRes =>  sanitizedRes.changingThisBreaksApplicationSecurity )
+		// step 2
+		ctx.drawImage(canvas, 0, 0, canvas.width * 0.5, canvas.height * 0.5);
+
+		// step 3, resize to final size
+		ctx.drawImage(canvas, 0, 0, canvas.width * 0.5, canvas.height * 0.5,
+			0, 0, canvas.width, canvas.height);
+
+		return of( this.domSanitizer.bypassSecurityTrustHtml(canvas.toDataURL('image/jpeg')) ).pipe(
+
+			map( sanitizedRes =>  {
+				console.log(sanitizedRes);
+				// @ts-ignore
+				return sanitizedRes.changingThisBreaksApplicationSecurity
+			})
 		);
 
 	}

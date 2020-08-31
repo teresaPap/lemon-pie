@@ -34,25 +34,20 @@ export class FileResizeService {
 		);
 	}
 
-	public resizeImage(base46) {
+	public resizeImage(base46, imgHeight, imgWidth) {
 
 		const canvas = document.createElement('canvas');
 		const ctx = canvas.getContext('2d');
 
 		const img = new Image();
-
 		img.src = base46;
 
-		canvas.width = img.width * 0.5;
-		canvas.height = img.height * 0.5;
+		// resizing works
+		// TODO: add implementation to control the new dimensions
+		canvas.height = 100; // hardcoded
+		canvas.width = canvas.height * (img.width / img.height); // set width in proportion with height
+
 		ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-		// step 2
-		ctx.drawImage(canvas, 0, 0, canvas.width * 0.5, canvas.height * 0.5);
-
-		// step 3, resize to final size
-		ctx.drawImage(canvas, 0, 0, canvas.width * 0.5, canvas.height * 0.5,
-			0, 0, canvas.width, canvas.height);
 
 		return of( this.domSanitizer.bypassSecurityTrustHtml(canvas.toDataURL('image/jpeg')) ).pipe(
 
@@ -65,7 +60,37 @@ export class FileResizeService {
 
 	}
 
+	public resizeImageFile(file: File) {
+		if (!RegExp('image/*').test(file.type)) {
+			return 'this is not an image';
+		}
+		if (file.size<100000) {
+			// file size is accepted, do not proceed with transformations
+			return file;
+		}
 
 
+
+
+
+	}
+
+
+	// public resizeBase64Img(base64, width, height) {
+	// 	const canvas = document.createElement("canvas");
+	// 	canvas.width = width;
+	// 	canvas.height = height;
+	// 	const context = canvas.getContext("2d");
+	//
+	//
+	//
+	// 	const deferred = $.Deferred();
+	// 	$("<img/>").attr("src", "data:image/gif;base64," + base64).load(function() {
+	// 		context.scale(width/this.width,  height/this.height);
+	// 		context.drawImage(this, 0, 0);
+	// 		deferred.resolve($("<img/>").attr("src", canvas.toDataURL()));
+	// 	});
+	// 	return deferred.promise();
+	// }
 
 }

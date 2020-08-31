@@ -47,10 +47,10 @@ export class FilesUploaderComponent implements OnInit {
 				this.notifier.notify('default', `'${fileList.item(i).name}' is not a image.`);
 				continue;
 			}
-			if (fileList.item(i).size>100000) {
-				this.notifier.notify('default', `'${fileList.item(i).name}' is too large.`);
-				continue;
-			}
+			// if (fileList.item(i).size>100000) {
+			// 	this.notifier.notify('default', `'${fileList.item(i).name}' is too large.`);
+			// 	continue;
+			// }
 
 			this.addFilePreview( fileList.item(i) );
 		}
@@ -88,7 +88,7 @@ export class FilesUploaderComponent implements OnInit {
 	private addFilePreview(file: File): void {
 		// wip
 		this.fileResize.readImgDimenions(file).pipe(
-			switchMap(res => this.fileResize.resizeImage(res.base64)),
+			switchMap(res => this.fileResize.resizeImage(res.base64, res.height, res.width)),
 			tap(resizedImage => {
 				console.log(resizedImage);
 				this.filePreviews.push( this.buildFilePreview(resizedImage) );

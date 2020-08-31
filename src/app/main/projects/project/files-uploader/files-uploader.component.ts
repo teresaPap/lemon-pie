@@ -6,7 +6,7 @@ import { forkJoin } from 'rxjs';
 import { FilesService } from '../../../../shared/data-services/files.service';
 import { IProjectResolved } from '../../../../shared/interfaces/IProject';
 import { FileResizeService } from "../../../../shared/services/file-resize.service";
-import {switchMap, tap} from "rxjs/operators";
+import {map, switchMap, tap} from "rxjs/operators";
 
 
 @Component({
@@ -89,15 +89,17 @@ export class FilesUploaderComponent implements OnInit {
 		// wip
 		this.fileResize.readImgDimenions(file).pipe(
 			switchMap(res => this.fileResize.resizeImage(res.base64, res.height, res.width)),
-			tap( res => console.log(res))
+			tap(resizedImage => {
+				console.log(resizedImage);
+				this.filePreviews.push( this.buildFilePreview(resizedImage) );
+			})
 		).subscribe();
 
-
-		const reader = new FileReader();
-		reader.readAsDataURL(file);
-		reader.onload = (_event) => {
-			this.filePreviews.push( this.buildFilePreview(reader.result) );
-		}
+		// const reader = new FileReader();
+		// reader.readAsDataURL(file);
+		// reader.onload = (_event) => {
+		// 	this.filePreviews.push( this.buildFilePreview(reader.result) );
+		// }
 	}
 
 	private buildFilePreview(base64:any): FormGroup {

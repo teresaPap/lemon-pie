@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import {fromEvent, Observable, of} from "rxjs";
-import {map, switchMap, tap} from "rxjs/operators";
+import { fromEvent, Observable, of } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
+import {DomSanitizer} from '@angular/platform-browser'
 
 @Injectable({
 	providedIn: 'root'
@@ -9,7 +10,7 @@ export class FileResizeService {
 
 	// wip
 
-	constructor() { }
+	constructor(private domSanitizer: DomSanitizer) { }
 
 	public readImgDimenions(file: File): Observable<{base64:any, height: number, width: number}> {
 		const reader = new FileReader();
@@ -34,12 +35,23 @@ export class FileResizeService {
 	}
 
 	public resizeImage(base46, height: number, width: number) {
-		const img = new Image();
-		img.height = (height*50)/100;
-		img.width = (width*50)/100;
 
-		img.src = base46;
-		return of(img);
+		const tempCanvas = document.createElement('canvas');
+
+		tempCanvas.height = (height*50)/100;
+		tempCanvas.width = (width*50)/100;
+
+		const tempImg = new Image();
+		tempImg.src = base46;
+
+		const tempCtx = tempCanvas.getContext('2d');
+		tempCtx.drawImage(tempImg, 0, 0);
+
+		return of( this.domSanitizer.bypassSecurityTrustHtml(tempCanvas.toDataURL('image/jpeg')) ).pipe(
+			// @ts-ignore
+			map( sanitizedRes =>  sanitizedRes.changingThisBreaksApplicationSecurity )
+		);
+
 	}
 
 

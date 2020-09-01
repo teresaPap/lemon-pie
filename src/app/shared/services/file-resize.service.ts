@@ -3,16 +3,17 @@ import { fromEvent, Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser'
 
+const MAX_WIDTH: number = 800;
+const MAX_HEIGHT: number = 600;
+
 @Injectable({
 	providedIn: 'root'
 })
 export class FileResizeService {
 
-	// wip
-
 	constructor(private domSanitizer: DomSanitizer) { }
 
-	public readImgDimenions(file: File): Observable<{base64:any, height: number, width: number}> {
+	public readImgDimensions(file: File): Observable<{base64:any, height: number, width: number}> {
 		const reader = new FileReader();
 		reader.readAsDataURL(file);
 
@@ -42,25 +43,39 @@ export class FileResizeService {
 		const img = new Image();
 		img.src = base46;
 
-		// resizing works
-		// TODO: add implementation to control the new dimensions
-		canvas.height = 100; // hardcoded
-		canvas.width = canvas.height * (img.width / img.height); // set width in proportion with height
+		const {width, height} = this.createNewDimensions(img.width, img.height);
+		canvas.height = height;
+		canvas.width = width;
+
+		// console.log(`w: ${img.width} ${width}\nh: ${img.height} ${height}`);
 
 		ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
 		return of( this.domSanitizer.bypassSecurityTrustHtml(canvas.toDataURL('image/jpeg')) ).pipe(
 			map( (sanitizedRes: SafeHtml) =>  {
-				console.log(sanitizedRes);
 				// @ts-ignore
 				return sanitizedRes.changingThisBreaksApplicationSecurity
 			})
 		);
-
 	}
 
-	private createProportion(width: number, height: number) {
-		// TODO
+	private createNewDimensions(imgWidth: number, imgHeight: number): {width: number, height: number} {
+		if (imgWidth<=MAX_WIDTH && imgHeight<=MAX_HEIGHT) {
+			// width, height are within the allowed values
+			return {width: imgWidth, height: imgHeight}
+		};
+		if (imgWidth>imgHeight) {
+			const initialWidth: number = (imgWidth>MAX_WIDTH) ? MAX_WIDTH : imgWidth;
+			return {
+				width: initialWidth,
+				height: initialWidth * (imgHeight / imgWidth)
+			};
+		} else {
+			const initialHeight: number = (imgHeight>MAX_HEIGHT) ? MAX_HEIGHT : imgHeight;
+			return {
+				width: initialHeight * (imgWidth / imgHeight),
+				height: initialHeight
+			};
+		}
 	}
-
 }

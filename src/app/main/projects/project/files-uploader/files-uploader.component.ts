@@ -81,12 +81,9 @@ export class FilesUploaderComponent implements OnInit {
 	}
 
 	private addFilePreview(file: File): void {
-		this.fileResize.readImgDimensions(file).pipe(
-			switchMap(res => this.fileResize.resizeImage(res.base64, res.height, res.width)),
-			tap(resizedImage => {
-				this.filePreviews.push( this.buildFilePreview(resizedImage) );
-			})
-		).subscribe();
+		this.fileResize.resizeFile(file).subscribe(resizedImage => {
+			this.filePreviews.push(this.buildFilePreview(resizedImage))
+		});
 	}
 
 	private buildFilePreview(base64:any): FormGroup {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser'
 import { fromEvent, Observable, of } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
-import {DomSanitizer, SafeHtml} from '@angular/platform-browser'
+import { map, switchMap } from 'rxjs/operators';
 
 const MAX_WIDTH: number = 800;
 const MAX_HEIGHT: number = 600;
@@ -13,29 +13,19 @@ export class FileResizeService {
 
 	constructor(private domSanitizer: DomSanitizer) { }
 
-	public readImgDimensions(file: File): Observable<{base64:any, height: number, width: number}> {
+	public resizeFile(file: File): Observable<string> {
 		const reader = new FileReader();
 		reader.readAsDataURL(file);
 
 		return fromEvent(reader, 'loadend').pipe(
 			// @ts-ignore
 			map(event => event.target.result ),
-			switchMap(base64 => {
-				const img = new Image();
-				img.src = base64;
-				return fromEvent(img, 'load').pipe(
-					map(() => {
-						return {
-							base64: base64,
-							height: img.naturalHeight,
-							width: img.naturalWidth
-						}
-					}))
-			})
-		);
+			switchMap( base64 => this.resizeImage(base64))
+			// TODO: optimize to return earlier when the image does not need any resizing opperations/ img dimensions are acceptable
+		)
 	}
 
-	public resizeImage(base46, imgHeight, imgWidth) {
+	private resizeImage(base46): Observable<string> {
 
 		const canvas = document.createElement('canvas');
 		const ctx = canvas.getContext('2d');

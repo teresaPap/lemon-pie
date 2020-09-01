@@ -47,11 +47,6 @@ export class FilesUploaderComponent implements OnInit {
 				this.notifier.notify('default', `'${fileList.item(i).name}' is not a image.`);
 				continue;
 			}
-			// if (fileList.item(i).size>100000) {
-			// 	this.notifier.notify('default', `'${fileList.item(i).name}' is too large.`);
-			// 	continue;
-			// }
-
 			this.addFilePreview( fileList.item(i) );
 		}
 	}

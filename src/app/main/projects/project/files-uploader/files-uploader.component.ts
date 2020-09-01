@@ -5,6 +5,7 @@ import { NotifierService } from 'angular-notifier';
 import { forkJoin } from 'rxjs';
 import { FilesService } from '../../../../shared/data-services/files.service';
 import { IProjectResolved } from '../../../../shared/interfaces/IProject';
+import { FileResizeService } from '../../../../shared/services/file-resize.service';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class FilesUploaderComponent implements OnInit {
 		private notifier: NotifierService,
 		public fileCtrl: FilesService,
 		public router: Router,
+		public fileResize: FileResizeService
 	) { }
 
   	ngOnInit(): void {
@@ -44,11 +46,6 @@ export class FilesUploaderComponent implements OnInit {
 				this.notifier.notify('default', `'${fileList.item(i).name}' is not a image.`);
 				continue;
 			}
-			if (fileList.item(i).size>100000) {
-				this.notifier.notify('default', `'${fileList.item(i).name}' is too large.`);
-				continue;
-			}
-
 			this.addFilePreview( fileList.item(i) );
 		}
 	}
@@ -83,13 +80,12 @@ export class FilesUploaderComponent implements OnInit {
 	}
 
 	private addFilePreview(file: File): void {
-		const reader = new FileReader();
-		reader.readAsDataURL(file);
-		reader.onload = (_event) =>
-			this.filePreviews.push( this.buildFilePreview(reader.result, file) );
+		this.fileResize.resizeFile(file).subscribe(resizedImage => {
+			this.filePreviews.push(this.buildFilePreview(resizedImage))
+		});
 	}
 
-	private buildFilePreview(base64:any, file: File): FormGroup {
+	private buildFilePreview(base64:any): FormGroup {
 		 return this.fb.group({
 			name: ['', Validators.required],
 			base64: base64,

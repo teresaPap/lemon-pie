@@ -5,8 +5,7 @@ import { NotifierService } from 'angular-notifier';
 import { forkJoin } from 'rxjs';
 import { FilesService } from '../../../../shared/data-services/files.service';
 import { IProjectResolved } from '../../../../shared/interfaces/IProject';
-import { FileResizeService } from "../../../../shared/services/file-resize.service";
-import {map, switchMap, tap} from "rxjs/operators";
+import { FileResizeService } from '../../../../shared/services/file-resize.service';
 
 
 @Component({

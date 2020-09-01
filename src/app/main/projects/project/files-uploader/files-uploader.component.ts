@@ -86,7 +86,6 @@ export class FilesUploaderComponent implements OnInit {
 	}
 
 	private addFilePreview(file: File): void {
-		// wip
 		this.fileResize.readImgDimenions(file).pipe(
 			switchMap(res => this.fileResize.resizeImage(res.base64, res.height, res.width)),
 			tap(resizedImage => {
@@ -94,12 +93,6 @@ export class FilesUploaderComponent implements OnInit {
 				this.filePreviews.push( this.buildFilePreview(resizedImage) );
 			})
 		).subscribe();
-
-		// const reader = new FileReader();
-		// reader.readAsDataURL(file);
-		// reader.onload = (_event) => {
-		// 	this.filePreviews.push( this.buildFilePreview(reader.result) );
-		// }
 	}
 
 	private buildFilePreview(base64:any): FormGroup {

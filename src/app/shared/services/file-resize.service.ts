@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-import {DomSanitizer} from '@angular/platform-browser'
+import {DomSanitizer, SafeHtml} from '@angular/platform-browser'
 
 @Injectable({
 	providedIn: 'root'
@@ -50,8 +50,7 @@ export class FileResizeService {
 		ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
 		return of( this.domSanitizer.bypassSecurityTrustHtml(canvas.toDataURL('image/jpeg')) ).pipe(
-
-			map( sanitizedRes =>  {
+			map( (sanitizedRes: SafeHtml) =>  {
 				console.log(sanitizedRes);
 				// @ts-ignore
 				return sanitizedRes.changingThisBreaksApplicationSecurity
@@ -60,37 +59,8 @@ export class FileResizeService {
 
 	}
 
-	public resizeImageFile(file: File) {
-		if (!RegExp('image/*').test(file.type)) {
-			return 'this is not an image';
-		}
-		if (file.size<100000) {
-			// file size is accepted, do not proceed with transformations
-			return file;
-		}
-
-
-
-
-
+	private createProportion(width: number, height: number) {
+		// TODO
 	}
-
-
-	// public resizeBase64Img(base64, width, height) {
-	// 	const canvas = document.createElement("canvas");
-	// 	canvas.width = width;
-	// 	canvas.height = height;
-	// 	const context = canvas.getContext("2d");
-	//
-	//
-	//
-	// 	const deferred = $.Deferred();
-	// 	$("<img/>").attr("src", "data:image/gif;base64," + base64).load(function() {
-	// 		context.scale(width/this.width,  height/this.height);
-	// 		context.drawImage(this, 0, 0);
-	// 		deferred.resolve($("<img/>").attr("src", canvas.toDataURL()));
-	// 	});
-	// 	return deferred.promise();
-	// }
 
 }

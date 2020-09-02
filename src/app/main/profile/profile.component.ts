@@ -69,33 +69,32 @@ export class ProfileComponent implements OnInit {
 	}
 
 	public submitChangePasswordForm(): void {
-		if (!this.changePasswordForm.valid) {
-			console.log('TODO show user friendly message', this.changePasswordForm);
-			return;
+		if (this.changePasswordForm.valid && !this.changePasswordForm.pristine) {
+			this.userCtrl.updateCurrentUserPassword(this.changePasswordForm.controls['password'].value).subscribe(
+				() => 	{
+					this.notifier.notify('default', 'Password was updated successfully.');
+					this.changePasswordForm.markAsPristine();
+				},
+				err => {
+					this.notifier.notify('error', `${err.message}`);
+					console.error(err);
+				}
+			);
 		}
-		this.userCtrl.updateCurrentUserPassword(this.changePasswordForm.controls['password'].value).subscribe(
-			() => 	this.notifier.notify('default', 'Password was updated successfully.'),
-			err => {
-				this.notifier.notify('error', `${err.message}`);
-				console.error(err);
-			}
-		);
 	}
 
 	public submitDeleteAccountForm(): void {
-		if (!this.deleteAccountForm.valid) {
-			console.log('TODO show user friendly message');
-			return;
+		if (this.deleteAccountForm.valid && !this.deleteAccountForm.pristine) {
+			this.userCtrl.deleteCurrentUser().subscribe(
+				() => {
+					this.notifier.notify('default', 'Account was deleted successfully.');
+					this.router.navigate(['/home']);
+				}, err => {
+					this.notifier.notify('error', `${err.message}`);
+					console.error(err);
+				}
+			)
 		}
-		this.userCtrl.deleteCurrentUser().subscribe(
-			() => {
-				this.notifier.notify('default', 'Account was deleted successfully.');
-				this.router.navigate(['/home']);
-			}, err => {
-				this.notifier.notify('error', `${err.message}`);
-				console.error(err);
-			}
-		)
 	}
 
 	public logout(): void {

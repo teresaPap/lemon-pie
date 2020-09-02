@@ -51,20 +51,21 @@ export class ProfileComponent implements OnInit {
 	}
 
 	public submitUserDetailForm(): void {
-		if (!this.userDetailForm.valid) {
-			console.log('TODO show user friendly message');
-			return;
+		if (this.userDetailForm.valid && !this.userDetailForm.pristine) {
+			this.userCtrl.updateCurrentUser({
+				username: this.userDetailForm.controls['username'].value,
+				role: this.userDetailForm.controls['role'].value
+			}).subscribe(
+				() => {
+					this.notifier.notify('success', `User details updated successfully.`);
+					this.userDetailForm.markAsPristine();
+				},
+				err => {
+					this.notifier.notify('error', `Error! ${err.message}`);
+					console.log(err);
+				}
+			)
 		}
-		this.userCtrl.updateCurrentUser({
-			username: this.userDetailForm.controls['username'].value,
-			role: this.userDetailForm.controls['role'].value
-		}).subscribe(
-			() => this.notifier.notify('success', `User details updated successfully.`),
-			err => {
-				this.notifier.notify('error', `Error! ${err.message}`);
-				console.log(err);
-			}
-		)
 	}
 
 	public submitChangePasswordForm(): void {

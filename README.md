@@ -15,7 +15,15 @@ Built with Angular 9 and Firebase.
 * `npm start`
 
 ## Run
- Open terminal in the project's root folder and run `npm start`. This will automatically run the project in your default browser (port 5200).
+Open terminal in the project's root folder and run `npm start`. This will automatically run the project in your default browser (port 5200).
 
 ## Build
 Open terminal in the project's root folder and run `npm run build`. This will create the project's dist folder. 
+
+## Deploy 
+### Firebase Hosting 
+Open terminal to the project root folder and run 
+* `npm run build`
+* `firebase deploy --only hosting`
+
+The *dist* folder will be created in the project's root folder and will be deployed to [https://lemonpie-f5dba.firebaseapp.com](https://lemonpie-f5dba.firebaseapp.com).

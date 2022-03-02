@@ -1,8 +1,13 @@
 # Lemon Pie 
+
+_Archiving this repository, as it is not being maintained anymore. Feel free to clone and run it locally._
+
 ### An Interactive Prototyping Tool
 A web tool for creating interactive prototypes by creating links between mockup images. 
 
 Built with Angular 9 and Firebase. 
+
+Created as part of my Bachelor's Thesis. 
 
 ## Latest stable environment 
 * node v12.16.3
